@@ -1,17 +1,28 @@
-import { useState } from "react";
-// import logo from "./assets/react.svg";
-// import viteLogo from "/vite.svg";
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar.tsx";
+
+import FirstPage from "./pages/firstPage.tsx";
+import SecondPage from "./pages/secondPage.tsx";
+import ThirdPage from "./pages/thirdPage.tsx";
+import FourthPage from "./pages/fourthPage.tsx";
+import FifthPage from "./pages/fifthPage.tsx";
+
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <div>{/* <img src={viteLogo} className="logo" alt="Vite logo" /> */}</div>
-      <h1>Scoreboard</h1>
-      <div className="card"></div>
-      <p className="read-the-docs">Copyrights ECSC 2024</p>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<FirstPage />} />
+          <Route path="/second" element={<SecondPage />} />
+          <Route path="/third" element={<ThirdPage />} />
+          <Route path="/fourth" element={<FourthPage />} />
+          <Route path="/fifth" element={<FifthPage />} />
+          
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
