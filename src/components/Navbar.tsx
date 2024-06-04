@@ -29,15 +29,7 @@ export default function Example() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
             <Link
-              to={"/"}
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              <a className="text-sm font-semibold leading-6 text-gray-900">
-                First Page
-              </a>
-            </Link>
-            <Link
-              to={"/second"}
+              to={"/admin"}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
@@ -45,7 +37,7 @@ export default function Example() {
               </a>
             </Link>
             <Link
-              to={"/third"}
+              to={"/admin/third"}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
@@ -53,7 +45,7 @@ export default function Example() {
               </a>
             </Link>
             <Link
-              to={"/fourth"}
+              to={"/admin/fourth"}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
@@ -61,7 +53,7 @@ export default function Example() {
               </a>
             </Link>
             <Link
-              to={"/fifth"}
+              to={"/admin/fifth"}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">

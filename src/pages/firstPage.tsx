@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState } from "react";
 function firstPage() {
   const [mainTime, setMainTime] = useState();
