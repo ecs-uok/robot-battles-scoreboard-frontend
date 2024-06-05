@@ -1,9 +1,9 @@
 import React from 'react'
 
-function secondPage() {
+function Creategame() {
   return (
-    <div className=''>Sithum develop this</div>
+    <div>Creategame</div>
   )
 }
 
-export default secondPage
+export default Creategame
