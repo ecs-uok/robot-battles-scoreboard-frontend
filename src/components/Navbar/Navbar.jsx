@@ -28,17 +28,45 @@ export default function Example() {
             </button>
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
-            <Link to={"/admin"} className="text-sm font-semibold leading-6 text-gray-900">
-              Second Page
+            <Link
+              to={"/"}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              <a className="text-sm font-semibold leading-6 text-gray-900">
+                First Page
+              </a>
             </Link>
-            <Link to={"/admin/third"} className="text-sm font-semibold leading-6 text-gray-900">
-              Third Page
+            <Link
+              to={"/second"}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              <a className="text-sm font-semibold leading-6 text-gray-900">
+                Second Page
+              </a>
             </Link>
-            <Link to={"/admin/fourth"} className="text-sm font-semibold leading-6 text-gray-900">
-              Fourth Page
+            <Link
+              to={"/third"}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              <a className="text-sm font-semibold leading-6 text-gray-900">
+                Third Page
+              </a>
             </Link>
-            <Link to={"/admin/fifth"} className="text-sm font-semibold leading-6 text-gray-900">
-              Fifth Page
+            <Link
+              to={"/fourth"}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              <a className="text-sm font-semibold leading-6 text-gray-900">
+                Fourth Page
+              </a>
+            </Link>
+            <Link
+              to={"/fifth"}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              <a className="text-sm font-semibold leading-6 text-gray-900">
+                Fifth Page
+              </a>
             </Link>
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
