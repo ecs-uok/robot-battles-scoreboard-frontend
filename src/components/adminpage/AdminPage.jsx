@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Navbar from "../components/Navbar.tsx";
+import Navbar from "../components/Navbar/Navbar.tsx";
 import SecondPage from "./secondPage.tsx";
 import ThirdPage from "./thirdPage.tsx";
 import FourthPage from "./fourthPage.tsx";
