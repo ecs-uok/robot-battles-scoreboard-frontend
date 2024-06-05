@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Navbar from "../components/Navbar/Navbar.tsx";
-import SecondPage from "./secondPage.tsx";
-import ThirdPage from "./thirdPage.tsx";
-import FourthPage from "./fourthPage.tsx";
-import FifthPage from "./fifthPage.tsx";
+import Navbar from "../components/Navbar/Navbar.jsx";
+import SecondPage from "../components/Creategame.jsx";
+import ThirdPage from "../components/ThirdPage.jsx";
+import FourthPage from "../components/FourthPage.jsx";
+import FifthPage from ".components/FifthPage.jsx";
 function adminPage() {
   return (
     <>
