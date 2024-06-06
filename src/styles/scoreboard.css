@@ -1,0 +1,9 @@
+/* src/App.css */
+@font-face {
+    font-family: 'Zaptron';
+    src: url('../assets/fonts/Zaptron-Regular.otf') format('truetype');
+  }
+  
+  body {
+    font-family: 'Zaptron',  sans-serif;
+  }
