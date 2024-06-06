@@ -159,7 +159,7 @@ function firstPage() {
           <div className="text-8xl text-center text-white">
 
 
-            {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
+            {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}
             {mainTime ? mainTime % 60 : mainTime || "00"}
 
           </div>
