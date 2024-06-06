@@ -118,7 +118,8 @@ function firstPage() {
         <div className="md:col-span-3 lg:col-span-6 ">
           <div className="text-3xl text-center text-white">TIME REMAINING</div>
           <div className="text-8xl text-center text-white">
-            {mainTime || "00.00"}
+            {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
+            {mainTime ? mainTime % 60 : mainTime || "00"}
           </div>
           <hr className="border-2 border-white my-5" />
           <div className="text-2xl text-center text-white">ADDITIONAL TIME</div>
