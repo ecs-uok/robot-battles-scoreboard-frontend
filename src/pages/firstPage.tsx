@@ -7,16 +7,42 @@ import "../styles/scoreboard.css";
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import versusImg from "../assets/Images/versus-img.png";
-import team1Img from "../assets/Images/sample-team-logo-1.png";
-import team2Img from "../assets/Images/sample-team-logo-2.png";
 
 // **
 // TODO: add a smoke effect to the background
 // **
 
 function firstPage() {
+  const [gameNo, setGameNo] = useState();
+
   const [mainTime, setMainTime] = useState();
   const [pitTime, setPitTime] = useState();
+
+
+  const [team1name, setTeam1Name] = useState();
+  const [team2name, setTeam2Name] = useState();
+
+  const [team1Leader, setTeam1Leader] = useState();
+  const [team2Leader, setTeam2Leader] = useState();
+
+  const [team1Logo, setTeam1Logo] = useState();
+  const [team2Logo, setTeam2Logo] = useState();
+
+  async function setTeamInfo() {
+    fetch(
+      "https://robot-battles-scoreboard-backend.onrender.com/getGameDetails"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setTeam1Name(data.team1.name);
+        setTeam2Name(data.team2.name);
+        setTeam1Logo(data.team1.logo);
+        setTeam2Logo(data.team2.logo);
+        setTeam1Leader(data.team1.leader);
+        setTeam2Leader(data.team2.leader);
+      });
+  }
 
   useEffect(() => {
     AOS.init();
@@ -25,11 +51,18 @@ function firstPage() {
     );
     if (typeof eventSource != undefined) {
       console.log("Connection with timer successful");
+      let oldVal = -1;
       eventSource.onmessage = (event) => {
         const eventData = JSON.parse(event.data);
         console.log(eventData);
         setMainTime(eventData.mainTime);
         setPitTime(eventData.pitTime);
+        setGameNo(eventData.gameId);
+        if (oldVal != eventData.gameId) {
+          oldVal = eventData.gameId;
+          console.log("Game no changed");
+          setTeamInfo();
+        }
       };
     } else {
       console.log("Coudn't connect to timer");
@@ -58,18 +91,20 @@ function firstPage() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 mx-8  my-4 text-right">
         <div
+
           data-aos="fade-right"
           data-aos-delay="500"
           data-aos-duration="1000"
           style={{
-            backgroundImage: `url(${team1Img})`,
+            backgroundImage: `url(${team1Logo})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
           className="md:col-span-3 lg:col-span-5 rounded-l-2xl text-4xl text-red-600 pt-3 "
+
         >
           <span style={{ color: "#FFF338" }}>TEAM</span>
-          <br /> MACHINE
+          <br /> {team1name}
         </div>
         <div className="md:col-span-3 lg:col-span-2 ">
           <img
@@ -86,7 +121,7 @@ function firstPage() {
           data-aos-delay="500"
           data-aos-duration="1000"
           style={{
-            backgroundImage: `url(${team2Img})`,
+            backgroundImage: `url(${team2Logo})`,
             backgroundSize: "cover",
             backgroundPosition: "center ",
           }}
@@ -94,18 +129,19 @@ function firstPage() {
         >
           <span style={{ color: "#FFF338" }}>TEAM</span>
           <br />
-          ROBOTS
+          {team2name}
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 mx-8  ">
         <div className="md:col-span-3 lg:col-span-3  ">
+
           {/* <div className="w-1 h-full bg-white"></div> */}
           <img
             data-aos="zoom-out-up"
             data-aos-delay="1500"
             data-aos-duration="500"
-            src={team1Img}
+            src={team1Logo}
             className="w-4/5 mx-auto"
             style={{ paddingRight: "10px", backgroundColor: "#0DECC4" }}
           />
@@ -114,13 +150,18 @@ function firstPage() {
             className="text-xl text-left text-white"
             style={{ color: "#FFF338" }}
           >
-            YASIRU WEDITHUWAKKU
+             {team1Leader}
+
           </div>
         </div>
         <div className="md:col-span-3 lg:col-span-6 ">
           <div className="text-3xl text-center text-white">TIME REMAINING</div>
           <div className="text-8xl text-center text-white">
-            {mainTime || "00.00"}
+
+
+            {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
+            {mainTime ? mainTime % 60 : mainTime || "00"}
+
           </div>
           <hr className="border-2 border-white my-5" />
           <div className="text-2xl text-center text-white">ADDITIONAL TIME</div>
@@ -130,11 +171,12 @@ function firstPage() {
           <div className="text-xl text-center text-white">SECONDS</div>
         </div>
         <div className="md:col-span-3 lg:col-span-3  ">
+
           <img
             data-aos="zoom-out-up"
             data-aos-delay="1500"
             data-aos-duration="500"
-            src={team2Img}
+            src={team2Logo}
             className="w-4/5 mx-auto"
             style={{ paddingLeft: "10px", backgroundColor: "#001AFF" }}
           />
@@ -143,7 +185,8 @@ function firstPage() {
             className="text-xl text-right text-white"
             style={{ color: "#FFF338" }}
           >
-            DIMUTHU LAKMAL
+             {team2Leader}
+
           </div>
         </div>
       </div>
