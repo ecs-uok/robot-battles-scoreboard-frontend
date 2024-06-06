@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 export default function Example() {
   return (
-    <div className="bg-white">
-      <header className="inset-x-0 top-0 z-50">
+    <div className=" bg-gray-200">
+      <header className="inset-x-0 top-0 z-50   bg-gray-200">
         <nav
           className="flex items-center justify-between p-6 lg:px-8"
           aria-label="Global"
