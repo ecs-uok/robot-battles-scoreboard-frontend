@@ -25,7 +25,7 @@ function thirdPage() {
 
   return (
     <div
-      className="font-custom overflow-hidden"
+      className=" overflow-hidden"
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",
