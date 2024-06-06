@@ -22,22 +22,63 @@ function SecondPage() {
         />
       </div>
 
-      <div className="mt-10 ml-8 text-white align-left">
-        
-        <div className="justify-flex">
-        <h1 >TEAM A</h1>
-        <h3 className="bg-[#001AFF] mt-3">NUMBER</h3>
-        <h3 className="bg-[#001AFF] mt-3">NAME</h3>
-        <h3 className="bg-[#001AFF] mt-3">LEADER</h3>
-        <h3 className="bg-[#001AFF] mt-3">LOGO</h3>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2  mx-8 my-4 text-center ">
+        <div className="md:col-span-1 lg:col-span-1 flex mx-8 flex-col text-black">
+          <div
+            className="text-2xl rounded-xl  p-2 text-black"
+            style={{ backgroundColor: "#001AFF" }}
+          >
+            TEAM A : 
+          </div>
+          <input
+            type="text"
+            placeholder="Enter team number.."
+            className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <input
+            type="text"
+            placeholder="Enter team name.."
+            className="mt-4 px-4 py-2  rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <input
+            type="text"
+            placeholder="Enter team leader name.."
+            className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+        <div className="md:col-span-1 lg:col-span-1 ">
+          <div className="md:col-span-1 lg:col-span-1 flex mx-8 flex-col text-black">
+            <div
+              className="text-2xl rounded-xl  p-2 text-black"
+              style={{ backgroundColor: "#FFF338" }}
+            >
+              TEAM A : 
+            </div>
+            <input
+              type="text"
+              placeholder="Enter team number.."
+              className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <input
+              type="text"
+              placeholder="Enter team name.."
+              className="mt-4 px-4 py-2  rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <input
+              type="text"
+              placeholder="Enter team leader name.."
+              className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+          </div>
         </div>
       </div>
 
-
-
-
-
-
+      <div className="text-center text-white text-2xl mt-10">Game No: 00</div>
+      <div className="flex flex-row justify-center my-5">
+        <button className="bg-yellow-300 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg  ">
+          CREATE GAME
+        </button>
+      </div>
     </div>
   );
 }
