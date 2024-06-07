@@ -17,6 +17,8 @@ async function getTeamList() {
     });
   var select1 = document.getElementById("teamA");
   var select2 = document.getElementById("teamB");
+  select1!.innerHTML = "";
+  select2!.innerHTML = "";
   for (var i = 0; i < teamList.length; i++) {
     var opt = teamList[i];
     var el1 = document.createElement("option");
@@ -30,15 +32,17 @@ async function getTeamList() {
   }
 }
 
+var isSelectPopulated = false;
 function SecondPage() {
-  getTeamList();
+  isSelectPopulated ? "" : getTeamList();
+  isSelectPopulated = true;
   const [gameNo, setGameNo] = useState(1);
   const [team1id, setTeam1id] = useState("0");
   const [team2id, setTeam2id] = useState("0");
   var totalTime = 180;
   var pitOpenTime = 60;
   var pitTime = 20;
-  fetch("http://localhost:5000/nextGameId")
+  fetch("https://robot-battles-scoreboard-backend.onrender.com/nextGameId")
     .then((response) => response.json())
     .then((json) => {
       setGameNo(json.gameId);
