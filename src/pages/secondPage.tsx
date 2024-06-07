@@ -28,14 +28,14 @@ function SecondPage() {
             className="text-2xl rounded-xl  p-2 text-black"
             style={{ backgroundColor: "#001AFF" }}
           >
-            TEAM A : 
+            TEAM A :
           </div>
           <input
             type="text"
             placeholder="Enter team number.."
             className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           />
-          <input
+          {/* <input
             type="text"
             placeholder="Enter team name.."
             className="mt-4 px-4 py-2  rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -44,7 +44,7 @@ function SecondPage() {
             type="text"
             placeholder="Enter team leader name.."
             className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+          /> */}
         </div>
         <div className="md:col-span-1 lg:col-span-1 ">
           <div className="md:col-span-1 lg:col-span-1 flex mx-8 flex-col text-black">
@@ -52,14 +52,14 @@ function SecondPage() {
               className="text-2xl rounded-xl  p-2 text-black"
               style={{ backgroundColor: "#FFF338" }}
             >
-              TEAM A : 
+              TEAM B :
             </div>
             <input
               type="text"
               placeholder="Enter team number.."
               className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
-            <input
+            {/* <input
               type="text"
               placeholder="Enter team name.."
               className="mt-4 px-4 py-2  rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -68,7 +68,7 @@ function SecondPage() {
               type="text"
               placeholder="Enter team leader name.."
               className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+            /> */}
           </div>
         </div>
       </div>
