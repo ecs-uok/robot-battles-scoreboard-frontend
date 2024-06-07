@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import FirstPage from "./pages/firstPage.tsx";
 import AdminPage from "./pages/adminPage.tsx";
-import SecondPage from "./pages/secondPage.tsx";
 
 function App() {
   return (
@@ -14,8 +13,6 @@ function App() {
         <Routes>
           <Route path="/" element={<FirstPage />} />
           <Route path="/admin/*" element={<AdminPage />} />
-          <Route path="/admin/*" element={<SecondPage />} />
-
         </Routes>
       </BrowserRouter>
     </>
