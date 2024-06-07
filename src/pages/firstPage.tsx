@@ -14,6 +14,8 @@ import versusImg from "../assets/Images/versus-img.png";
 
 function firstPage() {
   const [gameNo, setGameNo] = useState();
+  var team1Id: number;
+  var team2Id: number;
 
   const [mainTime, setMainTime] = useState();
   const [pitTime, setPitTime] = useState();
@@ -57,9 +59,16 @@ function firstPage() {
         setMainTime(eventData.mainTime);
         setPitTime(eventData.pitTime);
         setGameNo(eventData.gameId);
-        if (oldVal != eventData.gameId) {
+
+        if (
+          oldVal != eventData.gameId ||
+          team1Id != eventData.team1Id ||
+          team2Id != eventData.team2Id
+        ) {
           oldVal = eventData.gameId;
-          console.log("Game no changed");
+          team1Id = eventData.team1Id;
+          team2Id = eventData.team2Id;
+          console.log("Game details changed");
           setTeamInfo();
         }
       };
