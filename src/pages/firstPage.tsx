@@ -18,7 +18,6 @@ function firstPage() {
   const [mainTime, setMainTime] = useState();
   const [pitTime, setPitTime] = useState();
 
-
   const [team1name, setTeam1Name] = useState();
   const [team2name, setTeam2Name] = useState();
 
@@ -91,7 +90,6 @@ function firstPage() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 mx-8  my-4 text-right">
         <div
-
           data-aos="fade-right"
           data-aos-delay="500"
           data-aos-duration="1000"
@@ -101,7 +99,6 @@ function firstPage() {
             backgroundPosition: "center",
           }}
           className="md:col-span-3 lg:col-span-5 rounded-l-2xl text-4xl text-red-600 pt-3 "
-
         >
           <span style={{ color: "#FFF338" }}>TEAM</span>
           <br /> {team1name}
@@ -135,7 +132,6 @@ function firstPage() {
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 mx-8  ">
         <div className="md:col-span-3 lg:col-span-3  ">
-
           {/* <div className="w-1 h-full bg-white"></div> */}
           <img
             data-aos="zoom-out-up"
@@ -150,18 +146,19 @@ function firstPage() {
             className="text-xl text-left text-white"
             style={{ color: "#FFF338" }}
           >
-             {team1Leader}
-
+            {team1Leader}
           </div>
         </div>
         <div className="md:col-span-3 lg:col-span-6 ">
           <div className="text-3xl text-center text-white">TIME REMAINING</div>
           <div className="text-8xl text-center text-white">
-
-
-            {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}
-            {mainTime ? mainTime % 60 : mainTime || "00"}
-
+            {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
+            {mainTime
+              ? (mainTime % 60).toLocaleString("en-US", {
+                  minimumIntegerDigits: 2,
+                  useGrouping: false,
+                })
+              : mainTime || "00"}
           </div>
           <hr className="border-2 border-white my-5" />
           <div className="text-2xl text-center text-white">ADDITIONAL TIME</div>
@@ -171,7 +168,6 @@ function firstPage() {
           <div className="text-xl text-center text-white">SECONDS</div>
         </div>
         <div className="md:col-span-3 lg:col-span-3  ">
-
           <img
             data-aos="zoom-out-up"
             data-aos-delay="1500"
@@ -185,8 +181,7 @@ function firstPage() {
             className="text-xl text-right text-white"
             style={{ color: "#FFF338" }}
           >
-             {team2Leader}
-
+            {team2Leader}
           </div>
         </div>
       </div>
