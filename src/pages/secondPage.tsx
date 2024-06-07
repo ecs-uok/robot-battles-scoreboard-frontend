@@ -1,8 +1,37 @@
 import React from "react";
+import { useEffect, useState } from "react";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import TitleImg from "../assets/Images/scoreboard-title.png";
 
+var teamList: string[] = [];
+async function getTeamList() {
+  console.log("fetching teams..");
+  teamList.length = 0;
+  await fetch("https://robot-battles-scoreboard-backend.onrender.com/teams")
+    .then((response) => response.json())
+    .then((json) => {
+      for (let i = 0; i < json.length; i++) {
+        let obj = json[i];
+        if (obj) teamList.push(i + " " + obj.name);
+      }
+    });
+  var select1 = document.getElementById("teamA");
+  var select2 = document.getElementById("teamB");
+  for (var i = 0; i < teamList.length; i++) {
+    var opt = teamList[i];
+    var el1 = document.createElement("option");
+    var el2 = document.createElement("option");
+    el1.textContent = opt;
+    el1.value = "" + (i + 1);
+    el2.textContent = opt;
+    el2.value = "" + (i + 1);
+    select1 ? select1.appendChild(el1) : select1;
+    select2 ? select2.appendChild(el2) : select2;
+  }
+}
 function SecondPage() {
+  getTeamList();
+
   return (
     <div
       className="font-custom"
@@ -30,11 +59,10 @@ function SecondPage() {
           >
             TEAM A :
           </div>
-          <input
-            type="text"
-            placeholder="Enter team number.."
-            className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
+          <select
+            id="teamA"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          ></select>
           {/* <input
             type="text"
             placeholder="Enter team name.."
@@ -54,11 +82,10 @@ function SecondPage() {
             >
               TEAM B :
             </div>
-            <input
-              type="text"
-              placeholder="Enter team number.."
-              className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+            <select
+              id="teamB"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            ></select>
             {/* <input
               type="text"
               placeholder="Enter team name.."
