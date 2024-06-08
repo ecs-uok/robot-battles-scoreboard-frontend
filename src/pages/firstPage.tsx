@@ -197,7 +197,7 @@ function firstPage() {
 
       <div className="  mx-auto mt-4  text-lg  bg-gray-900 text-white text-center w-full">
         <h3>LIVE ON</h3>
-        <h3>SATURDAY JUNE 13RD</h3>
+        <h3>SATURDAY JUNE 13TH</h3>
       </div>
     </div>
   );
