@@ -96,7 +96,7 @@ function firstPage() {
           style={{ maxWidth: "80%", margin: "0 auto" }}
         />
       </div>
-      {team2Logo && team2Logo && (
+      {team1Logo && team2Logo && (
         <div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 mx-8  my-4 text-right">
             <div

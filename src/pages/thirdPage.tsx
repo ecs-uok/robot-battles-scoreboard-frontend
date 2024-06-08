@@ -199,7 +199,7 @@ function thirdPage() {
             className="w-4/5 mx-auto"
             style={{ paddingLeft: "10px", backgroundColor: "#001AFF" }}
           />
-          <div className="text-center text-white text-xl">TEAM 1</div>
+          <div className="text-center text-white text-xl">TEAM 2</div>
           <div className="text-center text-yellow-300 text-2xl">
             {team2name}
           </div>
