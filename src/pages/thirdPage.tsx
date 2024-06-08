@@ -7,7 +7,6 @@ import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
 
 function thirdPage() {
-  const [gameNo, setGameNo] = useState();
   var team1Id: number;
   var team2Id: number;
 
@@ -121,7 +120,6 @@ function thirdPage() {
         console.log(eventData);
         setMainTime(eventData.mainTime);
         setPitTime(eventData.pitTime);
-        setGameNo(eventData.gameId);
 
         if (
           oldVal != eventData.gameId ||
