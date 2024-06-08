@@ -49,7 +49,7 @@ export default function Example() {
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
-                Fourth Page
+                Add Points
               </a>
             </Link>
             <Link
