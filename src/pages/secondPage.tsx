@@ -90,7 +90,7 @@ function SecondPage() {
         pitTime: pitTime,
       }),
     };
-    fetch(host + "setPit", requestOptions3);
+    fetch(host + "/setPit", requestOptions3);
 
     const requestOptions4 = {
       method: "POST",
@@ -99,7 +99,7 @@ function SecondPage() {
         pitOpenTime: pitOpenTime,
       }),
     };
-    fetch(host + "setPitOpen", requestOptions4);
+    fetch(host + "/setPitOpen", requestOptions4);
 
     navigate("/admin/third");
   }
