@@ -1,4 +1,3 @@
-import React from "react";
 import { useEffect, useState, useRef } from "react";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import TitleImg from "../assets/Images/scoreboard-title.png";

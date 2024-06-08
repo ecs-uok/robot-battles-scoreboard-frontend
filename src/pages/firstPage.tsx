@@ -13,7 +13,6 @@ import versusImg from "../assets/Images/versus-img.png";
 // **
 
 function firstPage() {
-  const [gameNo, setGameNo] = useState();
   var team1Id: number;
   var team2Id: number;
 
@@ -58,7 +57,6 @@ function firstPage() {
         console.log(eventData);
         setMainTime(eventData.mainTime);
         setPitTime(eventData.pitTime);
-        setGameNo(eventData.gameId);
 
         if (
           oldVal != eventData.gameId ||

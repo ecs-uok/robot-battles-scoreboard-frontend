@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "../styles/scoreboard.css";
 
 //images
