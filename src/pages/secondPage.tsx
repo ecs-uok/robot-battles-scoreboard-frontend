@@ -5,10 +5,12 @@ import TitleImg from "../assets/Images/scoreboard-title.png";
 import { useNavigate } from "react-router-dom";
 
 var teamList: string[] = [];
+const host = "https://robot-battles-scoreboard-backend.onrender.com";
+//const host = "http://localhost:5000";
 async function getTeamList() {
   console.log("fetching teams..");
   teamList.length = 0;
-  await fetch("https://robot-battles-scoreboard-backend.onrender.com/teams")
+  await fetch(host + "/teams")
     .then((response) => response.json())
     .then((json) => {
       for (let i = 0; i < json.length; i++) {
@@ -53,7 +55,7 @@ function SecondPage() {
   var pitOpenTime = 60;
   var pitTime = 20;
   const navigate = useNavigate();
-  fetch("https://robot-battles-scoreboard-backend.onrender.com/nextGameId")
+  fetch(host + "/nextGameId")
     .then((response) => response.json())
     .then((json) => {
       setGameNo(json.gameId);
@@ -70,10 +72,7 @@ function SecondPage() {
       headers: { "Content-Type": "application/json" },
       body: body,
     };
-    fetch(
-      "https://robot-battles-scoreboard-backend.onrender.com/setGameDetails",
-      requestOptions
-    );
+    fetch(host + "/setGameDetails", requestOptions);
 
     const requestOptions2 = {
       method: "POST",
@@ -82,10 +81,7 @@ function SecondPage() {
         mainTime: totalTime,
       }),
     };
-    fetch(
-      "https://robot-battles-scoreboard-backend.onrender.com/setMain",
-      requestOptions2
-    );
+    fetch(host + "/setMain", requestOptions2);
 
     const requestOptions3 = {
       method: "POST",
@@ -94,10 +90,7 @@ function SecondPage() {
         pitTime: pitTime,
       }),
     };
-    fetch(
-      "https://robot-battles-scoreboard-backend.onrender.com/setPit",
-      requestOptions3
-    );
+    fetch(host + "setPit", requestOptions3);
 
     const requestOptions4 = {
       method: "POST",
@@ -106,10 +99,7 @@ function SecondPage() {
         pitOpenTime: pitOpenTime,
       }),
     };
-    fetch(
-      "https://robot-battles-scoreboard-backend.onrender.com/setPitOpen",
-      requestOptions4
-    );
+    fetch(host + "setPitOpen", requestOptions4);
 
     navigate("/admin/third");
   }
