@@ -17,9 +17,6 @@ function thirdPage() {
   const [team1name, setTeam1Name] = useState();
   const [team2name, setTeam2Name] = useState();
 
-  const [team1Leader, setTeam1Leader] = useState();
-  const [team2Leader, setTeam2Leader] = useState();
-
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
 
@@ -34,8 +31,6 @@ function thirdPage() {
         setTeam2Name(data.team2.name);
         setTeam1Logo(data.team1.logo);
         setTeam2Logo(data.team2.logo);
-        setTeam1Leader(data.team1.leader);
-        setTeam2Leader(data.team2.leader);
       });
   }
   const navigate = useNavigate();

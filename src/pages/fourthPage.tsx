@@ -18,7 +18,59 @@ function fourthPage() {
   const handleInputChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeam2Points(event.target.value);
   };
+  const [gameNo, setGameNo] = useState();
+  var team1Id: number;
+  var team2Id: number;
 
+  const [team1name, setTeam1Name] = useState();
+  const [team2name, setTeam2Name] = useState();
+
+  const [team1Logo, setTeam1Logo] = useState();
+  const [team2Logo, setTeam2Logo] = useState();
+
+  async function setTeamInfo() {
+    fetch(
+      "https://robot-battles-scoreboard-backend.onrender.com/getGameDetails"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setTeam1Name(data.team1.name);
+        setTeam2Name(data.team2.name);
+        setTeam1Logo(data.team1.logo);
+        setTeam2Logo(data.team2.logo);
+      });
+  }
+
+  useEffect(() => {
+    const eventSource = new EventSource(
+      "https://robot-battles-scoreboard-backend.onrender.com/timer"
+    );
+    if (typeof eventSource != undefined) {
+      console.log("Connection with timer successful");
+      let oldVal = -1;
+      eventSource.onmessage = (event) => {
+        const eventData = JSON.parse(event.data);
+        console.log(eventData);
+        setGameNo(eventData.gameId);
+
+        if (
+          oldVal != eventData.gameId ||
+          team1Id != eventData.team1Id ||
+          team2Id != eventData.team2Id
+        ) {
+          oldVal = eventData.gameId;
+          team1Id = eventData.team1Id;
+          team2Id = eventData.team2Id;
+          console.log("Game details changed");
+          setTeamInfo();
+        }
+      };
+    } else {
+      console.log("Coudn't connect to timer");
+    }
+    return () => eventSource.close();
+  }, []);
   return (
     <div
       className=" overflow-hidden"
@@ -29,12 +81,14 @@ function fourthPage() {
         minHeight: "100vh",
       }}
     >
-
-      <div className="text-white text-2xl text-center mt-4"> Add Final Points</div>
+      <div className="text-white text-2xl text-center mt-4">
+        {" "}
+        Add Final Points - Game {gameNo}
+      </div>
       <div className="grid col-span-1 py-16  gap-4 sm:grid-cols-1 md:grid-cols-3 text-white text-center mt-8 py-5 mx-8 rounded-lg ">
         <div className="flex flex-col items-center gap-4">
-          <div className="text-4xl  ">TEAM ROBOTS </div>
-          <img src={sampleLogo1} className="w-1/3"></img>
+          <div className="text-4xl  ">{team1name}</div>
+          <img src={team1Logo} className="w-1/3"></img>
           <input
             type="text"
             value={team1Points}
@@ -47,8 +101,8 @@ function fourthPage() {
           <img src={versusImg} className="w-1/4"></img>
         </div>
         <div className=" flex flex-col items-center gap-4">
-          <div className="text-4xl ">TEAM MACHINE</div>
-          <img src={sampleLogo2} className="w-1/3"></img>
+          <div className="text-4xl ">{team2name}</div>
+          <img src={team2Logo} className="w-1/3"></img>
           <input
             type="text"
             value={team2Points}
@@ -60,7 +114,12 @@ function fourthPage() {
       </div>
 
       <div className="text-center text-2xl text-gray-500  mt-8">
-        <button className="bg-yellow-300    hover:text-black p-2 rounded-2xl" style={{ width: "200px" }}>Submit</button>
+        <button
+          className="bg-yellow-300    hover:text-black p-2 rounded-2xl"
+          style={{ width: "200px" }}
+        >
+          Submit
+        </button>
       </div>
     </div>
   );
