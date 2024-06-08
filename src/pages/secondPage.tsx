@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +20,7 @@ async function getTeamList() {
   var select2 = document.getElementById("teamB");
   select1!.innerHTML = "";
   select2!.innerHTML = "";
+
   for (var i = 0; i < teamList.length; i++) {
     var opt = teamList[i];
     var el1 = document.createElement("option");
@@ -33,10 +34,18 @@ async function getTeamList() {
   }
 }
 
-var isSelectPopulated = false;
 function SecondPage() {
-  isSelectPopulated ? "" : getTeamList();
-  isSelectPopulated = true;
+  const effectRan = useRef(false);
+
+  useEffect(() => {
+    if (effectRan.current === false) {
+      getTeamList();
+      return () => {
+        effectRan.current = true;
+      };
+    }
+  });
+
   const [gameNo, setGameNo] = useState(1);
   const [team1id, setTeam1id] = useState("1");
   const [team2id, setTeam2id] = useState("1");
