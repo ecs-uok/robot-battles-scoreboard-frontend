@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import "../styles/scoreboard.css";
 import AOS from "aos";
+import { useNavigate } from "react-router-dom";
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
-
-import sampleLogo1 from "../assets/Images/sample-team-logo-1.png";
-import sampleLogo2 from "../assets/Images/sample-team-logo-2.png";
 
 function thirdPage() {
   const [gameNo, setGameNo] = useState();
@@ -39,6 +37,64 @@ function thirdPage() {
         setTeam1Leader(data.team1.leader);
         setTeam2Leader(data.team2.leader);
       });
+  }
+  const navigate = useNavigate();
+  function handleAddPoints() {
+    navigate("/admin/fourth");
+  }
+  function handleStartStop() {
+    if (start) {
+      setStart(false);
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: "{}",
+      };
+      fetch(
+        "https://robot-battles-scoreboard-backend.onrender.com/stopMain",
+        requestOptions
+      );
+      fetch(
+        "https://robot-battles-scoreboard-backend.onrender.com/stopPit",
+        requestOptions
+      );
+    } else {
+      setStart(true);
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: "{}",
+      };
+      fetch(
+        "https://robot-battles-scoreboard-backend.onrender.com/startMain",
+        requestOptions
+      );
+    }
+  }
+  function handlePitCounter() {
+    if (pit) {
+      setPit(false);
+      const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: "{}",
+      };
+      fetch(
+        "https://robot-battles-scoreboard-backend.onrender.com/resetPit",
+        requestOptions
+      );
+    } else {
+      setPit(true);
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: "{}",
+      };
+      fetch(
+        "https://robot-battles-scoreboard-backend.onrender.com/startPit",
+        requestOptions
+      );
+    }
   }
 
   useEffect(() => {
@@ -74,6 +130,8 @@ function thirdPage() {
     return () => eventSource.close();
   }, []);
 
+  const [start, setStart] = useState(false);
+  const [pit, setPit] = useState(false);
   return (
     <div
       className=" overflow-hidden"
@@ -140,24 +198,33 @@ function thirdPage() {
       <div>
         <div className="grid grid-cols-1   md:grid-cols-3  gap-6  text-center text-white mt-6">
           <div className="col-span-1 flex flex-col gap-2 mx-5">
-            <button className="bg-gray-300  hover:bg-gray-500  text-black font-bold py-2 px-4 rounded">
-              start/stop
+            <button
+              className="bg-gray-300  hover:bg-gray-500  text-black font-bold py-2 px-4 rounded"
+              onClick={handleStartStop}
+            >
+              {start ? "Stop" : "Start"} GAME
             </button>
-            <button className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded">
+            {/* <button className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded">
               pause
-            </button>
+            </button> */}
           </div>
           <div className="col-span-1">
-            <button className="bg-yellow-300  hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded">
+            <button
+              className="bg-yellow-300  hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded"
+              onClick={handleAddPoints}
+            >
               ADD POINTS
             </button>
           </div>
           <div className="col-span-1 flex flex-col gap-2 mx-5">
-            <button className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded">
+            {/* <button className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded">
               PITCH OPEN
-            </button>
-            <button className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded">
-              20 COUNTER
+            </button> */}
+            <button
+              className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded"
+              onClick={handlePitCounter}
+            >
+              {pit ? "RESET" : "START"} 20 COUNTER
             </button>
           </div>
         </div>

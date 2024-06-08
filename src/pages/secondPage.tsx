@@ -4,13 +4,6 @@ import bgImg from "../assets/Images/scoreboard-background.png";
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import { useNavigate } from "react-router-dom";
 
-const SomeComponent = () => {
-  const navigate = useNavigate();
-
-  const someEventHandler = () => {
-    navigate("/some-route");
-  };
-};
 var teamList: string[] = [];
 async function getTeamList() {
   console.log("fetching teams..");

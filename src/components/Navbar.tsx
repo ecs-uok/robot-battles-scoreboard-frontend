@@ -33,7 +33,7 @@ export default function Example() {
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
-                Second Page
+                New game
               </a>
             </Link>
             <Link
@@ -41,7 +41,7 @@ export default function Example() {
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
-                Third Page
+                Control panel
               </a>
             </Link>
             <Link
@@ -57,7 +57,7 @@ export default function Example() {
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
-                Fifth Page
+                Game History
               </a>
             </Link>
           </div>
