@@ -91,7 +91,23 @@ function thirdPage() {
       );
     }
   }
-
+  function resetCounters() {
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+    };
+    fetch(
+      "https://robot-battles-scoreboard-backend.onrender.com/resetMain",
+      requestOptions
+    );
+    fetch(
+      "https://robot-battles-scoreboard-backend.onrender.com/resetPit",
+      requestOptions
+    );
+    setPit(false);
+    setStart(false);
+  }
   useEffect(() => {
     AOS.init();
     const eventSource = new EventSource(
@@ -198,6 +214,12 @@ function thirdPage() {
               onClick={handleStartStop}
             >
               {start ? "Stop" : "Start"} GAME
+            </button>
+            <button
+              className="bg-gray-300  hover:bg-gray-500  text-black font-bold py-2 px-4 rounded"
+              onClick={resetCounters}
+            >
+              RESET COUNTERS
             </button>
             {/* <button className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded">
               pause
