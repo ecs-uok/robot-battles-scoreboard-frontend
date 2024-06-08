@@ -2,7 +2,15 @@ import React from "react";
 import { useEffect, useState } from "react";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import TitleImg from "../assets/Images/scoreboard-title.png";
+import { useNavigate } from "react-router-dom";
 
+const SomeComponent = () => {
+  const navigate = useNavigate();
+
+  const someEventHandler = () => {
+    navigate("/some-route");
+  };
+};
 var teamList: string[] = [];
 async function getTeamList() {
   console.log("fetching teams..");
@@ -37,17 +45,18 @@ function SecondPage() {
   isSelectPopulated ? "" : getTeamList();
   isSelectPopulated = true;
   const [gameNo, setGameNo] = useState(1);
-  const [team1id, setTeam1id] = useState("0");
-  const [team2id, setTeam2id] = useState("0");
+  const [team1id, setTeam1id] = useState("1");
+  const [team2id, setTeam2id] = useState("1");
   var totalTime = 180;
   var pitOpenTime = 60;
   var pitTime = 20;
+  const navigate = useNavigate();
   fetch("https://robot-battles-scoreboard-backend.onrender.com/nextGameId")
     .then((response) => response.json())
     .then((json) => {
       setGameNo(json.gameId);
     });
-  function setGameDetails() {
+  async function setGameDetails() {
     var gameNo = document.getElementById("gameNo")?.innerText;
     var body = JSON.stringify({
       gameId: `${gameNo}`,
@@ -99,6 +108,8 @@ function SecondPage() {
       "https://robot-battles-scoreboard-backend.onrender.com/setPitOpen",
       requestOptions4
     );
+
+    navigate("/admin/third");
   }
   return (
     <div
