@@ -96,109 +96,117 @@ function firstPage() {
           style={{ maxWidth: "80%", margin: "0 auto" }}
         />
       </div>
+      {team2Logo && team2Logo && (
+        <div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 mx-8  my-4 text-right">
+            <div
+              data-aos="fade-right"
+              data-aos-delay="500"
+              data-aos-duration="1000"
+              style={{
+                backgroundImage: `url(${team1Logo})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+              className="md:col-span-3 bg-black lg:col-span-5 rounded-l-2xl text-4xl text-red-600 pt-3 "
+            >
+              <span style={{ color: "#FFF338" }}>TEAM</span>
+              <br /> {team1name}
+            </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 mx-8  my-4 text-right">
-        <div
-          data-aos="fade-right"
-          data-aos-delay="500"
-          data-aos-duration="1000"
-          style={{
-            backgroundImage: `url(${team1Logo})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          className="md:col-span-3 lg:col-span-5 rounded-l-2xl text-4xl text-red-600 pt-3 "
-        >
-          <span style={{ color: "#FFF338" }}>TEAM</span>
-          <br /> {team1name}
-        </div>
-        <div className="md:col-span-3 lg:col-span-2 ">
-          <img
-            data-aos="fade-up"
-            data-aos-delay="1000"
-            data-aos-duration="500"
-            src={versusImg}
-            alt="robot 1 vs robot 2"
-            className="w-1/6 sm:w-1/3 mx-auto"
-          />
-        </div>
-        <div
-          data-aos="fade-left"
-          data-aos-delay="500"
-          data-aos-duration="1000"
-          style={{
-            backgroundImage: `url(${team2Logo})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center ",
-          }}
-          className="md:col-span-3 lg:col-span-5  rounded-r-2xl text-left text-4xl text-red-600 pt-3"
-        >
-          <span style={{ color: "#FFF338" }}>TEAM</span>
-          <br />
-          {team2name}
-        </div>
-      </div>
+            <div className="md:col-span-3 lg:col-span-2 ">
+              <img
+                data-aos="fade-up"
+                data-aos-delay="1000"
+                data-aos-duration="500"
+                src={versusImg}
+                alt="robot 1 vs robot 2"
+                className="w-1/6 sm:w-1/3 mx-auto"
+              />
+            </div>
+            <div
+              data-aos="fade-left"
+              data-aos-delay="500"
+              data-aos-duration="1000"
+              style={{
+                backgroundImage: `url(${team2Logo})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center ",
+              }}
+              className="md:col-span-3 lg:col-span-5  rounded-r-2xl text-left text-4xl text-red-600 pt-3"
+            >
+              <span style={{ color: "#FFF338" }}>TEAM</span>
+              <br />
+              {team2name}
+            </div>
+          </div>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 mx-8  ">
-        <div className="md:col-span-3 lg:col-span-3  ">
-          {/* <div className="w-1 h-full bg-white"></div> */}
-          <img
-            data-aos="zoom-out-up"
-            data-aos-delay="1500"
-            data-aos-duration="500"
-            src={team1Logo}
-            className="w-4/5 mx-auto"
-            style={{ paddingRight: "10px", backgroundColor: "#0DECC4" }}
-          />
-          <div className="text-xl text-left text-white pt-3">LEADER</div>
-          <div
-            className="text-xl text-left text-white"
-            style={{ color: "#FFF338" }}
-          >
-            {team1Leader}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 mx-8  ">
+            <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center flex-col ">
+              {/* <div className="w-1 h-full bg-white"></div> */}
+              <img
+                data-aos="zoom-out-up"
+                data-aos-delay="1500"
+                data-aos-duration="500"
+                src={team1Logo}
+                className="w-4/5 mx-auto"
+                style={{ paddingRight: "10px", backgroundColor: "#0DECC4" }}
+              />
+              <div className="text-xl text-left text-white pt-3">LEADER</div>
+              <div
+                className="text-xl text-left text-white"
+                style={{ color: "#FFF338" }}
+              >
+                {team1Leader}
+              </div>
+            </div>
+            <div className="md:col-span-3 lg:col-span-6 ">
+              <div className="text-3xl text-center text-white">
+                TIME REMAINING
+              </div>
+              <div className="text-8xl text-center text-white">
+                {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
+                {mainTime
+                  ? (mainTime % 60).toLocaleString("en-US", {
+                      minimumIntegerDigits: 2,
+                      useGrouping: false,
+                    })
+                  : mainTime || "00"}
+              </div>
+              <hr className="border-2 border-white my-5" />
+              <div className="text-2xl text-center text-white">
+                ADDITIONAL TIME
+              </div>
+              <div className="text-6xl text-center text-green-400">
+                {pitTime || "0"}
+              </div>
+              <div className="text-xl  text-center text-white">SECONDS</div>
+            </div>
+            <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center flex-col  ">
+              <img
+                data-aos="zoom-out-up"
+                data-aos-delay="1500"
+                data-aos-duration="500"
+                src={team2Logo}
+                className="w-4/5 mx-auto"
+                style={{ paddingLeft: "10px", backgroundColor: "#001AFF" }}
+              />
+              <div className="text-xl text-right text-white pt-3">LEADER</div>
+              <div
+                className="text-xl text-right text-white"
+                style={{ color: "#FFF338" }}
+              >
+                {team2Leader}
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="md:col-span-3 lg:col-span-6 ">
-          <div className="text-3xl text-center text-white">TIME REMAINING</div>
-          <div className="text-8xl text-center text-white">
-            {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
-            {mainTime
-              ? (mainTime % 60).toLocaleString("en-US", {
-                  minimumIntegerDigits: 2,
-                  useGrouping: false,
-                })
-              : mainTime || "00"}
-          </div>
-          <hr className="border-2 border-white my-5" />
-          <div className="text-2xl text-center text-white">ADDITIONAL TIME</div>
-          <div className="text-6xl text-center text-green-400">
-            {pitTime || "0"}
-          </div>
-          <div className="text-xl text-center text-white">SECONDS</div>
-        </div>
-        <div className="md:col-span-3 lg:col-span-3  ">
-          <img
-            data-aos="zoom-out-up"
-            data-aos-delay="1500"
-            data-aos-duration="500"
-            src={team2Logo}
-            className="w-4/5 mx-auto"
-            style={{ paddingLeft: "10px", backgroundColor: "#001AFF" }}
-          />
-          <div className="text-xl text-right text-white pt-3">LEADER</div>
-          <div
-            className="text-xl text-right text-white"
-            style={{ color: "#FFF338" }}
-          >
-            {team2Leader}
-          </div>
-        </div>
-      </div>
 
-      <div className="  mx-auto mt-4  text-lg  bg-gray-900 text-white text-center w-full">
-        <h3>LIVE ON</h3>
-        <h3>SATURDAY JUNE 13TH</h3>
-      </div>
+          <div className="  mx-auto mt-4  text-lg  bg-gray-900 text-white text-center w-full">
+            <h3>LIVE ON</h3>
+            <h3>SATURDAY JUNE 13TH</h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
