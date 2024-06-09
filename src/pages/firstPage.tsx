@@ -10,6 +10,7 @@ import versusImg from "../assets/Images/versus-img.png";
 
 // **
 // TODO: add a smoke effect to the background
+// ! if their is no connection with the timer, the page will not load
 // **
 
 function firstPage() {
@@ -46,7 +47,7 @@ function firstPage() {
   }
 
   useEffect(() => {
-    AOS.init();
+    AOS.init({once: true});
     const eventSource = new EventSource(
       "https://robot-battles-scoreboard-backend.onrender.com/timer"
     );
@@ -98,7 +99,7 @@ function firstPage() {
       </div>
       {team2Logo && team2Logo && (
         <div>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 mx-8  my-4 text-right">
+          <div className="mt-12 mx-8 md:mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12  text-right">
             <div
               data-aos="fade-right"
               data-aos-delay="500"
@@ -107,8 +108,9 @@ function firstPage() {
                 backgroundImage: `url(${team1Logo})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                backgroundColor:"#0DECC4"
               }}
-              className="md:col-span-3 bg-black lg:col-span-5 rounded-l-2xl text-4xl text-red-600 pt-3 "
+              className=" md:col-span-3 lg:col-span-5 rounded-l-2xl text-2xl md:text-4xl text-red-600 pt-3 "
             >
               <span style={{ color: "#FFF338" }}>TEAM</span>
               <br /> {team1name}
@@ -132,8 +134,9 @@ function firstPage() {
                 backgroundImage: `url(${team2Logo})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center ",
+                backgroundColor:"#001AFF"
               }}
-              className="md:col-span-3 lg:col-span-5  rounded-r-2xl text-left text-4xl text-red-600 pt-3"
+              className="md:col-span-3 lg:col-span-5  rounded-r-2xl text-left text-2xl md:text-4xl text-red-600 pt-3"
             >
               <span style={{ color: "#FFF338" }}>TEAM</span>
               <br />
@@ -141,7 +144,7 @@ function firstPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 mx-8  ">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 my-12 md:my-0 mx-8 border-solid border-2 rounded-xl border-white md:border-none ">
             <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center flex-col ">
               {/* <div className="w-1 h-full bg-white"></div> */}
               <img
@@ -158,6 +161,7 @@ function firstPage() {
                 style={{ color: "#FFF338" }}
               >
                 {team1Leader}
+              <hr className=" md:border-2  border-white my-5 md:hidden" />
               </div>
             </div>
             <div className="md:col-span-3 lg:col-span-6 ">
@@ -173,14 +177,17 @@ function firstPage() {
                     })
                   : mainTime || "00"}
               </div>
-              <hr className="border-2 border-white my-5" />
-              <div className="text-2xl text-center text-white">
+              <hr className="hidden md:border-2  md:border-white my-5" />
+              <div className="mt-4 md-mt-0 text-2xl text-center text-white">
                 ADDITIONAL TIME
               </div>
               <div className="text-6xl text-center text-green-400">
                 {pitTime || "0"}
               </div>
               <div className="text-xl  text-center text-white">SECONDS</div>
+              <hr className=" md:border-2  border-white my-5 md:hidden mx-6" />
+              
+
             </div>
             <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center flex-col  ">
               <img
