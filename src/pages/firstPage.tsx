@@ -46,7 +46,7 @@ function firstPage() {
   }
 
   useEffect(() => {
-    AOS.init({once: true});
+    AOS.init({ once: true });
     const eventSource = new EventSource(
       "https://robot-battles-scoreboard-backend.onrender.com/timer"
     );
@@ -106,7 +106,7 @@ function firstPage() {
                 backgroundImage: `url(${team1Logo})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                backgroundColor:"#0DECC4"
+                backgroundColor: "#0DECC4",
               }}
               className=" md:col-span-3 lg:col-span-5 rounded-l-2xl text-2xl md:text-4xl text-red-600 pt-3 "
             >
@@ -132,7 +132,7 @@ function firstPage() {
                 backgroundImage: `url(${team2Logo})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center ",
-                backgroundColor:"#001AFF"
+                backgroundColor: "#001AFF",
               }}
               className="md:col-span-3 lg:col-span-5  rounded-r-2xl text-left text-2xl md:text-4xl text-red-600 pt-3"
             >
@@ -159,7 +159,7 @@ function firstPage() {
                 style={{ color: "#FFF338" }}
               >
                 {team1Leader}
-              <hr className=" md:border-2  border-white my-5 md:hidden" />
+                <hr className=" md:border-2  border-white my-5 md:hidden" />
               </div>
             </div>
             <div className="md:col-span-3 lg:col-span-6 ">
@@ -184,8 +184,6 @@ function firstPage() {
               </div>
               <div className="text-xl  text-center text-white">SECONDS</div>
               <hr className=" md:border-2  border-white my-5 md:hidden mx-6" />
-              
-
             </div>
             <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center flex-col  ">
               <img
@@ -205,13 +203,12 @@ function firstPage() {
               </div>
             </div>
           </div>
-
-          <div className="  mx-auto mt-4  text-lg  bg-gray-900 text-white text-center w-full">
-            <h3>LIVE ON</h3>
-            <h3>SATURDAY JUNE 13TH</h3>
-          </div>
         </div>
       )}
+      <div className="  mx-auto mt-4  text-lg  bg-gray-900 text-white text-center w-full">
+        <h3>LIVE ON</h3>
+        <h3>SATURDAY JUNE 13TH</h3>
+      </div>
     </div>
   );
 }
