@@ -4,9 +4,6 @@ import { useEffect, useState } from "react";
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
 
-import sampleLogo1 from "../assets/Images/sample-team-logo-1.png";
-import sampleLogo2 from "../assets/Images/sample-team-logo-2.png";
-
 interface gameType {
   team1name: string;
   team2name: string;
@@ -17,16 +14,15 @@ interface gameType {
 const ShowGames = () => {
   const [gamesList, setGamesList] = useState<Array<gameType>>([]);
   useEffect(() => {
-    async function fetchData() {
+    function fetchData() {
       try {
-        await fetch(
-          "https://robot-battles-scoreboard-backend.onrender.com/games"
-        )
+        fetch("https://robot-battles-scoreboard-backend.onrender.com/games")
           .then((response) => response.json())
           .then((json) => {
             for (let i = 0; i < json.length; i++) {
               let obj = json[i];
-              if (obj) setGamesList([...gamesList, obj]);
+              console.log(obj);
+              if (obj) setGamesList((prevState) => [...prevState, obj]);
             }
           });
       } catch (err) {
@@ -35,9 +31,10 @@ const ShowGames = () => {
     }
     fetchData();
   }, []);
-  return gamesList.map((game) => {
+  console.log(gamesList);
+  const content = gamesList.map((game) => {
     return (
-      <div className="  gap-4">
+      <div key={game.gameid} className="  gap-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-3 bg-gray-300 text-center mt-8 py-5 mx-8 rounded-lg ">
           <div className="col-span-1 flex flex-row justify-center items-center ">
             <div className="text-2xl ">{game.team1name}</div>
@@ -62,6 +59,7 @@ const ShowGames = () => {
       </div>
     );
   });
+  return content;
 };
 function fifthPage() {
   return (
