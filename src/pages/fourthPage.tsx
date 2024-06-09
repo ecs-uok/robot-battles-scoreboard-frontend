@@ -3,12 +3,11 @@ import "../styles/scoreboard.css";
 
 //images
 import bgImg from "../assets/Images/scoreboard-background.png";
-
-import sampleLogo1 from "../assets/Images/sample-team-logo-1.png";
-import sampleLogo2 from "../assets/Images/sample-team-logo-2.png";
 import versusImg from "../assets/Images/versus-img.png";
 
 function fourthPage() {
+  const host = "https://robot-battles-scoreboard-backend.onrender.com";
+  //const host = "http://localhost:5000";
   const [team1Points, setTeam1Points] = useState("");
   const [team2Points, setTeam2Points] = useState("");
 
@@ -28,10 +27,26 @@ function fourthPage() {
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
 
+  function saveGame() {
+    const body = { team1score: team1Points, team2score: team2Points };
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    };
+    console.log(body);
+    fetch(host + "/saveGame", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        window.alert(data.message);
+      });
+  }
   async function setTeamInfo() {
-    fetch(
-      "https://robot-battles-scoreboard-backend.onrender.com/getGameDetails"
-    )
+    fetch(host + "/getGameDetails")
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -43,9 +58,7 @@ function fourthPage() {
   }
 
   useEffect(() => {
-    const eventSource = new EventSource(
-      "https://robot-battles-scoreboard-backend.onrender.com/timer"
-    );
+    const eventSource = new EventSource(host + "/timer");
     if (typeof eventSource != undefined) {
       console.log("Connection with timer successful");
       let oldVal = -1;
@@ -117,8 +130,9 @@ function fourthPage() {
         <button
           className="bg-yellow-300    hover:text-black p-2 rounded-2xl"
           style={{ width: "200px" }}
+          onClick={saveGame}
         >
-          Submit
+          Save Game
         </button>
       </div>
     </div>

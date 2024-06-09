@@ -14,7 +14,6 @@ import versusImg from "../assets/Images/versus-img.png";
 // **
 
 function firstPage() {
-  const [gameNo, setGameNo] = useState();
   var team1Id: number;
   var team2Id: number;
 
@@ -59,7 +58,6 @@ function firstPage() {
         console.log(eventData);
         setMainTime(eventData.mainTime);
         setPitTime(eventData.pitTime);
-        setGameNo(eventData.gameId);
 
         if (
           oldVal != eventData.gameId ||
@@ -97,7 +95,7 @@ function firstPage() {
           style={{ maxWidth: "80%", margin: "0 auto" }}
         />
       </div>
-      {team2Logo && team2Logo && (
+      {team1Logo && team2Logo && (
         <div>
           <div className="mt-12 mx-8 md:mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12  text-right">
             <div

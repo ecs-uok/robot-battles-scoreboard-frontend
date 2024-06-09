@@ -7,7 +7,6 @@ import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
 
 function thirdPage() {
-  const [gameNo, setGameNo] = useState();
   var team1Id: number;
   var team2Id: number;
 
@@ -121,7 +120,6 @@ function thirdPage() {
         console.log(eventData);
         setMainTime(eventData.mainTime);
         setPitTime(eventData.pitTime);
-        setGameNo(eventData.gameId);
 
         if (
           oldVal != eventData.gameId ||
@@ -199,7 +197,7 @@ function thirdPage() {
             className="w-4/5 mx-auto"
             style={{ paddingLeft: "10px", backgroundColor: "#001AFF" }}
           />
-          <div className="text-center text-white text-xl">TEAM 1</div>
+          <div className="text-center text-white text-xl">TEAM 2</div>
           <div className="text-center text-yellow-300 text-2xl">
             {team2name}
           </div>

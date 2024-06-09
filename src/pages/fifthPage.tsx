@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import "../styles/scoreboard.css";
 
 //images
@@ -9,6 +8,19 @@ import sampleLogo1 from "../assets/Images/sample-team-logo-1.png";
 import sampleLogo2 from "../assets/Images/sample-team-logo-2.png";
 
 function fifthPage() {
+  var gamesList: string[] = [];
+  console.log("fetching teams..");
+  gamesList.length = 0;
+  fetch("https://robot-battles-scoreboard-backend.onrender.com/games")
+    .then((response) => response.json())
+    .then((json) => {
+      for (let i = 0; i < json.length; i++) {
+        let obj = json[i];
+        if (obj) gamesList.push(i + " " + obj.name);
+      }
+    });
+  console.log(gamesList);
+
   return (
     <div
       className=" overflow-hidden"
