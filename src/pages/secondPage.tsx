@@ -27,9 +27,9 @@ async function getTeamList() {
     var el1 = document.createElement("option");
     var el2 = document.createElement("option");
     el1.textContent = opt;
-    el1.value = "" + (i + 1);
+    el1.value = "" + i;
     el2.textContent = opt;
-    el2.value = "" + (i + 1);
+    el2.value = "" + i;
     select1 ? select1.appendChild(el1) : select1;
     select2 ? select2.appendChild(el2) : select2;
   }
@@ -48,8 +48,8 @@ function SecondPage() {
   });
 
   const [gameNo, setGameNo] = useState(1);
-  const [team1id, setTeam1id] = useState("1");
-  const [team2id, setTeam2id] = useState("1");
+  const [team1id, setTeam1id] = useState("0");
+  const [team2id, setTeam2id] = useState("0");
   var totalTime = 180;
   var pitOpenTime = 60;
   var pitTime = 20;
