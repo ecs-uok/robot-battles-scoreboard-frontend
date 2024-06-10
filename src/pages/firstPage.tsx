@@ -97,7 +97,7 @@ function firstPage() {
       </div>
       {team1Logo && team2Logo && (
         <div>
-          <div className="mt-12 mx-8 md:mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12  text-right">
+          <div className="mt-12 mx-8 md:mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12  text-right ">
             <div
               data-aos="fade-right"
               data-aos-delay="500"
@@ -142,27 +142,40 @@ function firstPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 my-12 md:my-0 mx-8 border-solid border-2 rounded-xl border-white md:border-none ">
-            <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center flex-col ">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 my-12 md:my-0 mx-8 ">
+            <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center md:flex-col flex-row  ">
               {/* <div className="w-1 h-full bg-white"></div> */}
               <img
                 data-aos="zoom-out-up"
                 data-aos-delay="1500"
                 data-aos-duration="500"
                 src={team1Logo}
-                className="w-4/5 mx-auto"
+                className="w-2/5 md:w-4/5 mx-auto"
                 style={{ paddingRight: "10px", backgroundColor: "#0DECC4" }}
               />
-              <div className="text-xl text-left text-white pt-3">LEADER</div>
-              <div
-                className="text-xl text-left text-white"
-                style={{ color: "#FFF338" }}
-              >
-                {team1Leader}
-                <hr className=" md:border-2  border-white my-5 md:hidden" />
+              <div className=" hidden md:block  md:flex md:flex-col items-center justify-center ">
+                <div className=" text-xl text-left text-white pt-3">LEADER</div>
+                <div
+                  className="text-xl text-left "
+                  style={{ color: "#FFF338" }}
+                >
+                  {team1Leader}
+                  <hr className=" md:border-2  border-white my-5 md:hidden" />
+                </div>
+              </div>
+              <div className="md:hidden flex flex-col items-center justify-center text-center">
+                <div className=" text-xl   text-white pt-3">LEADER</div>
+                <div
+                  className="text-xl   "
+                  style={{ color: "#FFF338" }}
+                >
+                  {team1Leader}
+                  <hr className=" md:border-2  border-white my-5 md:hidden" />
+                </div>
               </div>
             </div>
-            <div className="md:col-span-3 lg:col-span-6 ">
+
+            <div className="md:col-span-3 lg:col-span-6 py-4 md:py-0">
               <div className="text-3xl text-center text-white">
                 TIME REMAINING
               </div>
@@ -183,24 +196,41 @@ function firstPage() {
                 {pitTime || "0"}
               </div>
               <div className="text-xl  text-center text-white">SECONDS</div>
-              <hr className=" md:border-2  border-white my-5 md:hidden mx-6" />
             </div>
-            <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center flex-col  ">
+
+            <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center md:flex-col-reverse flex-row  ">
+              <div className="for-position-change-purpose">
+                <div className=" hidden md:block  md:flex md:flex-col items-center justify-center ">
+                  <div className=" text-xl text-left text-white pt-3">
+                    LEADER
+                  </div>
+                  <div
+                    className="text-xl text-left "
+                    style={{ color: "#FFF338" }}
+                  >
+                    {team2Leader}
+                    <hr className=" md:border-2  border-white my-5 md:hidden" />
+                  </div>
+                </div>
+                <div className="md:hidden flex flex-col items-center text-center justify-center">
+                  <div className=" text-xl  text-white pt-3">LEADER</div>
+                  <div
+                    className="text-lg md:text-xl "
+                    style={{ color: "#FFF338" }}
+                  >
+                    {team2Leader}
+                    <hr className=" md:border-2  border-white my-5 md:hidden " />
+                  </div>
+                </div>
+              </div>
               <img
                 data-aos="zoom-out-up"
                 data-aos-delay="1500"
                 data-aos-duration="500"
                 src={team2Logo}
-                className="w-4/5 mx-auto"
+                className="w-2/5 md:w-4/5 mx-auto"
                 style={{ paddingLeft: "10px", backgroundColor: "#001AFF" }}
               />
-              <div className="text-xl text-right text-white pt-3">LEADER</div>
-              <div
-                className="text-xl text-right text-white"
-                style={{ color: "#FFF338" }}
-              >
-                {team2Leader}
-              </div>
             </div>
           </div>
         </div>
