@@ -50,9 +50,9 @@ function SecondPage() {
   const [gameNo, setGameNo] = useState(1);
   const [team1id, setTeam1id] = useState("0");
   const [team2id, setTeam2id] = useState("0");
-  var totalTime = 180;
-  var pitOpenTime = 60;
-  var pitTime = 20;
+  const [totalTime, setTotalTime] = useState(180);
+  const [pitOpenTime, setPitOpenTime] = useState(60);
+  const [pitTime, setPitTime] = useState(20);
   const navigate = useNavigate();
   fetch(host + "/nextGameId")
     .then((response) => response.json())
@@ -102,6 +102,10 @@ function SecondPage() {
 
     navigate("/admin/third");
   }
+  const handleTotalTimeChange = (e: any) => setTotalTime(e.target.value);
+  const handlePitOpenTimeChange = (e: any) => setPitOpenTime(e.target.value);
+  const handlePitTimeChange = (e: any) => setPitTime(e.target.value);
+
   return (
     <div
       className="font-custom"
@@ -173,13 +177,37 @@ function SecondPage() {
       </div>
 
       <div className="text-center text-white text-2xl mt-10">
-        Total time: {totalTime} s
+        Total time:{" "}
+        <input
+          type="text"
+          className="text-black"
+          value={totalTime}
+          onChange={handleTotalTimeChange}
+          size={4}
+        />{" "}
+        s
       </div>
       <div className="text-center text-white text-2xl mt-10">
-        Pit opens at: {pitOpenTime} s
+        Pit opens at:{" "}
+        <input
+          className="text-black"
+          type="text"
+          value={pitOpenTime}
+          onChange={handlePitOpenTimeChange}
+          size={4}
+        />{" "}
+        s
       </div>
       <div className="text-center text-white text-2xl mt-10">
-        Pit time: {pitTime} s
+        Pit time:{" "}
+        <input
+          type="text"
+          className="text-black"
+          value={pitTime}
+          size={4}
+          onChange={handlePitTimeChange}
+        />{" "}
+        s
       </div>
       <div className="text-center text-white text-2xl mt-10">
         Game No <span id="gameNo">{gameNo}</span>
