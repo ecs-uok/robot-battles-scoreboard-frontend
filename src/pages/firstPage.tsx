@@ -97,7 +97,7 @@ function firstPage() {
       </div>
       {team1Logo && team2Logo && (
         <div>
-          <div className="mt-12 mx-8 md:mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12  text-right ">
+          <div className="hidden md:inline-grid mt-12 mx-8 md:mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12  text-right ">
             <div
               data-aos="fade-right"
               data-aos-delay="500"
@@ -141,8 +141,13 @@ function firstPage() {
               {team2name}
             </div>
           </div>
+          <div
+          data-aos="zoom-in-up"
+          data-aos-delay="1500"
+          data-aos-duration="500"
+          className="md:hidden mt-8 flex flex-row items-center justify-center text-2xl text-red-500">{"TEAM " + team1name}</div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 my-12 md:my-0 mx-8 ">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 md:pt-5 md:my-12 md:my-0 mx-8 ">
             <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center md:flex-col flex-row  ">
               {/* <div className="w-1 h-full bg-white"></div> */}
               <img
@@ -164,18 +169,15 @@ function firstPage() {
                 </div>
               </div>
               <div className="md:hidden flex flex-col items-center justify-center text-center">
-                <div className=" text-xl   text-white pt-3">LEADER</div>
-                <div
-                  className="text-xl   "
-                  style={{ color: "#FFF338" }}
-                >
+                <div className="  text-xl   text-white pt-3">LEADER</div>
+                <div className="text-xl   " style={{ color: "#FFF338" }}>
                   {team1Leader}
                   <hr className=" md:border-2  border-white my-5 md:hidden" />
                 </div>
               </div>
             </div>
 
-            <div className="md:col-span-3 lg:col-span-6 py-4 md:py-0">
+            <div className="border-2 border-white rounded-xl md:border-none md:col-span-3 lg:col-span-6 py-4 md:py-0">
               <div className="text-3xl text-center text-white">
                 TIME REMAINING
               </div>
@@ -197,6 +199,11 @@ function firstPage() {
               </div>
               <div className="text-xl  text-center text-white">SECONDS</div>
             </div>
+            <div
+            data-aos="zoom-in-up"
+            data-aos-delay="1500"
+            data-aos-duration="500"
+            className="md:hidden  flex flex-row items-center justify-center text-2xl text-red-500">{"TEAM " + team2name}</div>
 
             <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center md:flex-col-reverse flex-row  ">
               <div className="for-position-change-purpose">
