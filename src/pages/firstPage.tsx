@@ -7,6 +7,8 @@ import "../styles/scoreboard.css";
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import versusImg from "../assets/Images/versus-img.png";
+import lankaTronics from "../assets/Images/lanka-tronic.jpg";
+import tronicLK from "../assets/Images/tronic-lk.png";
 
 // **
 // TODO: add a smoke effect to the background
@@ -89,15 +91,15 @@ function firstPage() {
     >
       <div className="text-2xl  mx-auto    w-full">
         <img
-          className="text-black  lg:px-8 h-13 pt-3"
+          className="text-black  lg:px-8 h-13 pt-1"
           src={TitleImg}
           alt="uok robot battles scoreboard"
-          style={{ maxWidth: "80%", margin: "0 auto" }}
+          style={{ maxWidth: "72%", margin: "0 auto" }}
         />
       </div>
       {team1Logo && team2Logo && (
         <div>
-          <div className="hidden md:inline-grid mt-12 mx-8 md:mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12  text-right ">
+          <div className="hidden md:inline-grid mt-2 mx-8 md:mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12  text-right  md:pt-4  ">
             <div
               data-aos="fade-right"
               data-aos-delay="500"
@@ -142,12 +144,15 @@ function firstPage() {
             </div>
           </div>
           <div
-          data-aos="zoom-in-up"
-          data-aos-delay="1500"
-          data-aos-duration="500"
-          className="md:hidden mt-8 flex flex-row items-center justify-center text-2xl text-red-500">{"TEAM " + team1name}</div>
+            data-aos="zoom-in-up"
+            data-aos-delay="1500"
+            data-aos-duration="500"
+            className="md:hidden mt-8 flex flex-row items-center justify-center text-2xl text-red-500"
+          >
+            {"TEAM " + team1name}
+          </div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 md:pt-5 md:my-12 md:my-0 mx-8 ">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 md:pt-5  md:my-1 mx-8 ">
             <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center md:flex-col flex-row  ">
               {/* <div className="w-1 h-full bg-white"></div> */}
               <img
@@ -200,10 +205,13 @@ function firstPage() {
               <div className="text-xl  text-center text-white">SECONDS</div>
             </div>
             <div
-            data-aos="zoom-in-up"
-            data-aos-delay="1500"
-            data-aos-duration="500"
-            className="md:hidden  flex flex-row items-center justify-center text-2xl text-red-500">{"TEAM " + team2name}</div>
+              data-aos="zoom-in-up"
+              data-aos-delay="1500"
+              data-aos-duration="500"
+              className="md:hidden  flex flex-row items-center justify-center text-2xl text-red-500"
+            >
+              {"TEAM " + team2name}
+            </div>
 
             <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center md:flex-col-reverse flex-row  ">
               <div className="for-position-change-purpose">
@@ -219,7 +227,7 @@ function firstPage() {
                     <hr className=" md:border-2  border-white my-5 md:hidden" />
                   </div>
                 </div>
-                <div className="md:hidden flex flex-col items-center text-center justify-center">
+                <div className="md:hidden  flex flex-col items-center text-center justify-center">
                   <div className=" text-xl  text-white pt-3">LEADER</div>
                   <div
                     className="text-lg md:text-xl "
@@ -242,9 +250,22 @@ function firstPage() {
           </div>
         </div>
       )}
-      <div className="  mx-auto mt-4  text-lg  bg-gray-900 text-white text-center w-full">
-        <h3>LIVE ON</h3>
-        <h3>SATURDAY JUNE 13TH</h3>
+      <div className="  mx-auto pt-2 mt-4  text-lg  bg-gray-900 text-white text-center w-full  pb-4">
+        <p className="text-sm md:text-lg ">Title Partners</p>
+        <div className="flex flex-row items-center justify-center  ">
+          <img
+            src={tronicLK}
+            alt="tronic lk"
+            className="px-4 w-40"
+            
+          />
+          <img
+            src={tronicLK}
+            alt="tronic lk"
+            className="px-4 w-40"
+             
+          />
+        </div>
       </div>
     </div>
   );
