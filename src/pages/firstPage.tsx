@@ -253,18 +253,8 @@ function firstPage() {
       <div className="  mx-auto pt-2 mt-4  text-lg  bg-gray-900 text-white text-center w-full  pb-4">
         <p className="text-sm md:text-lg ">Title Partners</p>
         <div className="flex flex-row items-center justify-center  ">
-          <img
-            src={tronicLK}
-            alt="tronic lk"
-            className="px-4 w-40"
-            
-          />
-          <img
-            src={tronicLK}
-            alt="tronic lk"
-            className="px-4 w-40"
-             
-          />
+          <img src={tronicLK} alt="tronic lk" className="px-4 w-40" />
+          <img src={lankaTronics} alt="tronic lk" className="px-4 w-40" />
         </div>
       </div>
     </div>
