@@ -9,15 +9,55 @@ import bgImg from "../assets/Images/scoreboard-background.png";
 import versusImg from "../assets/Images/versus-img.png";
 import lankaTronics from "../assets/Images/lanka-tronic.jpg";
 import tronicLK from "../assets/Images/tronic-lk.png";
+import FireWorks from "./FireWorks";
 
 // **
 // TODO: add a smoke effect to the background
 // ! if their is no connection with the timer, the page will not load
 // **
 
+interface DialogProps {
+  isOpen: boolean;
+  title: string;
+  winnerData: {name: string, logo: string};
+}
+
+const Dialog: React.FC<DialogProps> = ({ isOpen, title, winnerData }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 " >
+      <FireWorks fire={winnerData!=null?true:false} />
+      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+        <div className="flex justify-center items-center mb-4">
+          <h3 className="text-4xl font-semibold text-black">{title}</h3>
+        </div>
+        <>
+          <div className="flex flex-col" >
+            <div>
+              <img
+                data-aos="zoom-out-up"
+                data-aos-delay="1500"
+                data-aos-duration="500"
+                src={winnerData.logo}
+                className="w-2/5 md:w-4/5 mx-auto rounded-md"
+                // style={{ paddingRight: "10px", backgroundColor: "#0DECC4" }}
+              />
+            </div>
+            <div className="mt-5 flex justify-center text-2xl text-red-500" >
+              {winnerData.name}
+            </div>
+          </div>
+        </>
+      </div>
+    </div>
+  );
+};
+
 function firstPage() {
   var team1Id: number;
   var team2Id: number;
+  var winnerId: number | string;
 
   const [mainTime, setMainTime] = useState();
   const [pitTime, setPitTime] = useState();
@@ -30,6 +70,7 @@ function firstPage() {
 
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
+  const [winnerData, setWinnerData] = useState<{name: string; logo: string;} | null>(null);
 
   async function setTeamInfo() {
     fetch(
@@ -64,13 +105,21 @@ function firstPage() {
         if (
           oldVal != eventData.gameId ||
           team1Id != eventData.team1Id ||
-          team2Id != eventData.team2Id
+          team2Id != eventData.team2Id || 
+          winnerId != eventData.winnerId
         ) {
           oldVal = eventData.gameId;
           team1Id = eventData.team1Id;
           team2Id = eventData.team2Id;
+          winnerId = eventData.winnerId;
+          console.log(winnerId, "")
           console.log("Game details changed");
           setTeamInfo();
+          setWinnerInfo({
+            team1_id: eventData.team1Id,
+            team2_id: eventData.team2Id,
+            winner_id: eventData.winnerId
+          })
         }
       };
     } else {
@@ -78,6 +127,25 @@ function firstPage() {
     }
     return () => eventSource.close();
   }, []);
+
+
+  const setWinnerInfo = ({winner_id, team1_id, team2_id}: {winner_id: string; team1_id: string; team2_id: string}) => {
+    if(winner_id){
+      if(winner_id == team1_id){
+        setWinnerData({
+          name: team1name??"",
+          logo: team1Logo??""
+        })
+      } else if(winner_id == team2_id){
+        setWinnerData({
+          name: team2name??"",
+          logo: team2Logo??""
+        })
+      } else {
+        setWinnerData(null);
+      }
+    }
+  }
 
   return (
     <div
@@ -89,6 +157,11 @@ function firstPage() {
         minHeight: "100vh",
       }}
     >
+      <Dialog 
+        isOpen={winnerData!=null?true:false} 
+        title="Winner" 
+        winnerData={{name:team1name??"", logo: team1Logo??""}}
+      />        
       <div className="text-2xl  mx-auto    w-full">
         <img
           className="text-black  lg:px-8 h-13 pt-1"
@@ -163,7 +236,7 @@ function firstPage() {
                 className="w-2/5 md:w-4/5 mx-auto"
                 style={{ paddingRight: "10px", backgroundColor: "#0DECC4" }}
               />
-              <div className=" hidden md:block  md:flex md:flex-col items-center justify-center ">
+              <div className=" hidden md:block md:flex md:flex-col items-center justify-center ">
                 <div className=" text-xl text-left text-white pt-3">LEADER</div>
                 <div
                   className="text-xl text-left "

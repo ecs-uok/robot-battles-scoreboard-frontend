@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "aos": "^2.3.4",
+    "canvas-confetti": "^1.9.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",
+    "@types/canvas-confetti": "^1.6.4",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
