@@ -2,14 +2,26 @@ import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../styles/scoreboard.css";
+import FireWorks from "../components/FireWorks";
+import LogoSlider from "../components/LogoSlider";
 
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import versusImg from "../assets/Images/versus-img.png";
-import lankaTronics from "../assets/Images/lanka-tronic.jpg";
+
 import tronicLK from "../assets/Images/tronic-lk.png";
-import FireWorks from "./FireWorks";
+
+import microRewordsLogo from "../assets/Images/MicroRewards_teal.png";
+import IEEELogo from "../assets/Images/IEEE logo.png";
+import icapsLogo from "../assets/Images/ICAPS_logo_with_UoK_logo_2024.png";
+import ecscLogo from "../assets/Images/ECSC_transparent.png";
+import gavelLogo from "../assets/Images/gavel.png";
+import XydderLogo from "../assets/Images/Xydder 3D Logo.png";
+import codeChefLogo from "../assets/Images/Codechefs.png";
+import hackSL from "../assets/Images/HackSL.png";
+import NeoLogo from "../assets/Images/NEO Logo.png";
+import IEEStudentsLogo from "../assets/Images/IEEE_Student_Branch_University_of_Kelaniya_Logo_00629B.png";
 
 // **
 // TODO: add a smoke effect to the background
@@ -71,6 +83,20 @@ function firstPage() {
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
   const [winnerData, setWinnerData] = useState<{name: string; logo: string;} | null>(null);
+
+  const logos = [
+    ecscLogo,
+    hackSL,
+    icapsLogo,
+    codeChefLogo,
+    tronicLK,
+    NeoLogo,
+    IEEELogo,
+    microRewordsLogo,
+    gavelLogo,
+    IEEStudentsLogo,
+    XydderLogo,
+  ];
 
   async function setTeamInfo() {
     fetch(
@@ -149,7 +175,7 @@ function firstPage() {
 
   return (
     <div
-      className="font-custom overflow-hidden"
+      className="font-custom overflow-hidden w-full"
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",
@@ -323,13 +349,10 @@ function firstPage() {
           </div>
         </div>
       )}
-      <div className="  mx-auto pt-2 mt-4  text-lg  bg-gray-900 text-white text-center w-full  pb-4">
-        <p className="text-sm md:text-lg ">Title Partners</p>
-        <div className="flex flex-row items-center justify-center  ">
-          <img src={tronicLK} alt="tronic lk" className="px-4 w-40" />
-          <img src={lankaTronics} alt="tronic lk" className="px-4 w-40" />
-        </div>
+      <div className="container mt-10">
+        <LogoSlider logos={logos} />
       </div>
+      
     </div>
   );
 }
