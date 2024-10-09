@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import FirstPage from "./pages/firstPage.tsx";
 import AdminPage from "./pages/adminPage.tsx";
+import TonamentDrawPage from "./pages/drawPage.tsx";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<FirstPage />} />
+          <Route path="/draw" element={<TonamentDrawPage />} />
           <Route path="/admin/*" element={<AdminPage />} />
         </Routes>
       </BrowserRouter>
