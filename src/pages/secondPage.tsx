@@ -100,7 +100,7 @@ function SecondPage() {
     };
     fetch(host + "/setPitOpen", requestOptions4);
 
-    navigate("/admin/third");
+    navigate("/h72xutmpivrro7/third");
   }
   const handleTotalTimeChange = (e: any) => setTotalTime(e.target.value);
   const handlePitOpenTimeChange = (e: any) => setPitOpenTime(e.target.value);

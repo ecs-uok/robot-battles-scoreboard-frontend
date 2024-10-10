@@ -34,7 +34,7 @@ function thirdPage() {
   }
   const navigate = useNavigate();
   function handleAddPoints() {
-    navigate("/admin/fourth");
+    navigate("/h72xutmpivrro7/fourth");
   }
   function handleStartStop() {
     if (start) {
