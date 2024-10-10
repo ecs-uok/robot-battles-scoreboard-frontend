@@ -13,8 +13,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<FirstPage />} />
-          <Route path="/draw" element={<TonamentDrawPage />} />
-          <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="/bracket" element={<TonamentDrawPage />} />
+          <Route path="/h72xutmpivrro7/*" element={<AdminPage />} />
         </Routes>
       </BrowserRouter>
     </>
