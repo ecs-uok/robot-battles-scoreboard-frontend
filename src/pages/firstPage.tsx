@@ -4,6 +4,7 @@ import "aos/dist/aos.css";
 import "../styles/scoreboard.css";
 import FireWorks from "../components/FireWorks";
 import LogoSlider from "../components/LogoSlider";
+import { Link } from "react-router-dom";
 
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";
@@ -11,7 +12,6 @@ import bgImg from "../assets/Images/scoreboard-background.png";
 import versusImg from "../assets/Images/versus-img.png";
 
 import tronicLK from "../assets/Images/tronic-lk.png";
-
 import microRewordsLogo from "../assets/Images/MicroRewards_teal.png";
 import IEEELogo from "../assets/Images/IEEE logo.png";
 import icapsLogo from "../assets/Images/ICAPS_logo_with_UoK_logo_2024.png";
@@ -349,6 +349,13 @@ function firstPage() {
           </div>
         </div>
       )}
+      <div className="container mt-10 m-auto flex justify-center">
+        <Link
+          to={"/bracket"}
+          className="py-5 px-20 w-[60%] text-2xl bg-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,1)] flex justify-center items-center text-center rounded-xl" >
+          Brackets
+        </Link>
+      </div>
       <div className="container mt-10">
         <LogoSlider logos={logos} />
       </div>
