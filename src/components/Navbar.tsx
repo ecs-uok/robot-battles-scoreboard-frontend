@@ -12,7 +12,7 @@ export default function Example() {
           <div className="flex lg:hidden"></div>
           <div className="hidden lg:flex lg:gap-x-12">
             <Link
-              to={"/admin"}
+              to={"/h72xutmpivrro7"}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
@@ -20,7 +20,7 @@ export default function Example() {
               </a>
             </Link>
             <Link
-              to={"/admin/third"}
+              to={"/h72xutmpivrro7/third"}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
@@ -28,7 +28,7 @@ export default function Example() {
               </a>
             </Link>
             <Link
-              to={"/admin/fourth"}
+              to={"/h72xutmpivrro7/fourth"}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
@@ -36,11 +36,19 @@ export default function Example() {
               </a>
             </Link>
             <Link
-              to={"/admin/fifth"}
+              to={"/h72xutmpivrro7/fifth"}
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               <a className="text-sm font-semibold leading-6 text-gray-900">
                 Game History
+              </a>
+            </Link>
+            <Link
+              to={"/h72xutmpivrro7/bracket"}
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              <a className="text-sm font-semibold leading-6 text-gray-900">
+                Bracket
               </a>
             </Link>
           </div>
