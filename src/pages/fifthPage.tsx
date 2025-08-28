@@ -10,13 +10,14 @@ interface gameType {
   gameid: string;
   team1score: string;
   team2score: string;
+  winnerId?: string | number;
 }
 const ShowGames = () => {
   const [gamesList, setGamesList] = useState<Array<gameType>>([]);
   useEffect(() => {
     function fetchData() {
       try {
-        fetch("https://robot-battles-scoreboard-backend.onrender.com/games")
+        fetch("http://localhost:5000/games")
           .then((response) => response.json())
           .then((json) => {
             for (let i = 0; i < json.length; i++) {
@@ -33,6 +34,37 @@ const ShowGames = () => {
   }, []);
   console.log(gamesList);
   const content = gamesList.map((game) => {
+    // Determine winner using winnerId
+    let winnerName = "";
+    if (game.winnerId && game.winnerId !== "0" && game.winnerId !== 0) {
+      // winnerId matches team1 or team2? (Assume team ids are not available here, fallback to score comparison if needed)
+      // If you want to show "Draw" for 0, else show nothing if winnerId missing
+      if (game.winnerId === undefined || game.winnerId === null || game.winnerId === "0" || game.winnerId === 0) {
+        winnerName = "Draw";
+      } else if (game.winnerId === (game as any).team1id) {
+        winnerName = game.team1name;
+      } else if (game.winnerId === (game as any).team2id) {
+        winnerName = game.team2name;
+      } else {
+        // fallback: try to infer by score
+        if (Number(game.team1score) > Number(game.team2score)) {
+          winnerName = game.team1name;
+        } else if (Number(game.team2score) > Number(game.team1score)) {
+          winnerName = game.team2name;
+        } else {
+          winnerName = "Draw";
+        }
+      }
+    } else {
+      // fallback: try to infer by score
+      if (Number(game.team1score) > Number(game.team2score)) {
+        winnerName = game.team1name;
+      } else if (Number(game.team2score) > Number(game.team1score)) {
+        winnerName = game.team2name;
+      } else {
+        winnerName = "Draw";
+      }
+    }
     return (
       <div key={game.gameid} className="  gap-4">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-3 bg-gray-300 text-center mt-8 py-5 mx-8 rounded-lg ">
@@ -47,9 +79,7 @@ const ShowGames = () => {
             </div>
             <div className="text-xl ">Winner</div>
             <div className="text-2xl text-center text-red-500">
-              {game.team1score > game.team2score
-                ? game.team1name
-                : game.team2name}
+              {winnerName}
             </div>
           </div>
           <div className="col-span-1 flex flex-row justify-center items-center">

@@ -6,8 +6,7 @@ import bgImg from "../assets/Images/scoreboard-background.png";
 import versusImg from "../assets/Images/versus-img.png";
 
 function fourthPage() {
-  const host = "https://robot-battles-scoreboard-backend.onrender.com";
-  //const host = "http://localhost:5000";
+  const host = "http://localhost:5000";
   const [team1Points, setTeam1Points] = useState("");
   const [team2Points, setTeam2Points] = useState("");
 
@@ -27,6 +26,10 @@ function fourthPage() {
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
 
+  const [winnerId, setWinnerId] = useState<number | string | undefined>(
+    undefined
+  );
+
   function saveGame() {
     const body = { team1score: team1Points, team2score: team2Points };
     const requestOptions = {
@@ -43,6 +46,7 @@ function fourthPage() {
       .then((data) => {
         console.log(data);
         window.alert(data.message);
+        // Optionally, you can fetch the latest timer/winner info here if needed
       });
   }
   async function setTeamInfo() {
@@ -66,6 +70,13 @@ function fourthPage() {
         const eventData = JSON.parse(event.data);
         console.log(eventData);
         setGameNo(eventData.gameId);
+
+        // Set winnerId if present in eventData
+        if ("winnerId" in eventData) {
+          setWinnerId(eventData.winnerId);
+        } else {
+          setWinnerId(undefined);
+        }
 
         if (
           oldVal != eventData.gameId ||
@@ -98,6 +109,12 @@ function fourthPage() {
         {" "}
         Add Final Points - Game {gameNo}
       </div>
+      {/* Winner display if winnerId is present */}
+      {winnerId && (
+        <div className="text-green-400 text-3xl text-center mt-2">
+          Winner ID: {winnerId}
+        </div>
+      )}
       <div className="grid col-span-1 py-16  gap-4 sm:grid-cols-1 md:grid-cols-3 text-white text-center mt-8 py-5 mx-8 rounded-lg ">
         <div className="flex flex-col items-center gap-4">
           <div className="text-4xl  ">{team1name}</div>
