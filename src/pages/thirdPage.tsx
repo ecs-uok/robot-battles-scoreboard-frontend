@@ -21,7 +21,7 @@ function thirdPage() {
 
   async function setTeamInfo() {
     fetch(
-      "https://robot-battles-scoreboard-backend.onrender.com/getGameDetails"
+      "http://localhost:5000/getGameDetails"
     )
       .then((response) => response.json())
       .then((data) => {
@@ -45,11 +45,11 @@ function thirdPage() {
         body: "{}",
       };
       fetch(
-        "https://robot-battles-scoreboard-backend.onrender.com/stopMain",
+        "http://localhost:5000/stopMain",
         requestOptions
       );
       fetch(
-        "https://robot-battles-scoreboard-backend.onrender.com/stopPit",
+        "http://localhost:5000/stopPit",
         requestOptions
       );
     } else {
@@ -60,7 +60,7 @@ function thirdPage() {
         body: "{}",
       };
       fetch(
-        "https://robot-battles-scoreboard-backend.onrender.com/startMain",
+        "http://localhost:5000/startMain",
         requestOptions
       );
     }
@@ -74,7 +74,7 @@ function thirdPage() {
         body: "{}",
       };
       fetch(
-        "https://robot-battles-scoreboard-backend.onrender.com/resetPit",
+        "http://localhost:5000/resetPit",
         requestOptions
       );
     } else {
@@ -85,7 +85,7 @@ function thirdPage() {
         body: "{}",
       };
       fetch(
-        "https://robot-battles-scoreboard-backend.onrender.com/startPit",
+        "http://localhost:5000/startPit",
         requestOptions
       );
     }
@@ -97,11 +97,11 @@ function thirdPage() {
       body: "{}",
     };
     fetch(
-      "https://robot-battles-scoreboard-backend.onrender.com/resetMain",
+      "http://localhost:5000/resetMain",
       requestOptions
     );
     fetch(
-      "https://robot-battles-scoreboard-backend.onrender.com/resetPit",
+      "http://localhost:5000/resetPit",
       requestOptions
     );
     setPit(false);
@@ -110,7 +110,7 @@ function thirdPage() {
   useEffect(() => {
     AOS.init();
     const eventSource = new EventSource(
-      "https://robot-battles-scoreboard-backend.onrender.com/timer"
+      "http://localhost:5000/timer"
     );
     if (typeof eventSource != undefined) {
       console.log("Connection with timer successful");

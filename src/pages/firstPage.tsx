@@ -5,6 +5,7 @@ import "../styles/scoreboard.css";
 import FireWorks from "../components/FireWorks";
 import LogoSlider from "../components/LogoSlider";
 import { Link } from "react-router-dom";
+import { useRef } from "react";
 
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";
@@ -83,6 +84,7 @@ function firstPage() {
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
   const [winnerData, setWinnerData] = useState<{name: string; logo: string;} | null>(null);
+  const [winnerIds, setWinnerIds] = useState<{winner_id?: any, team1_id?: any, team2_id?: any}>({});
 
   const logos = [
     ecscLogo,
@@ -100,11 +102,10 @@ function firstPage() {
 
   async function setTeamInfo() {
     fetch(
-      "https://robot-battles-scoreboard-backend.onrender.com/getGameDetails"
+      "http://localhost:5000/getGameDetails"
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setTeam1Name(data.team1.name);
         setTeam2Name(data.team2.name);
         setTeam1Logo(data.team1.logo);
@@ -117,14 +118,13 @@ function firstPage() {
   useEffect(() => {
     AOS.init({ once: true });
     const eventSource = new EventSource(
-      "https://robot-battles-scoreboard-backend.onrender.com/timer"
+      "http://localhost:5000/timer"
     );
     if (typeof eventSource != undefined) {
       console.log("Connection with timer successful");
       let oldVal = -1;
       eventSource.onmessage = (event) => {
         const eventData = JSON.parse(event.data);
-        console.log(eventData);
         setMainTime(eventData.mainTime);
         setPitTime(eventData.pitTime);
 
@@ -138,14 +138,12 @@ function firstPage() {
           team1Id = eventData.team1Id;
           team2Id = eventData.team2Id;
           winnerId = eventData.winnerId;
-          console.log(winnerId, "")
-          console.log("Game details changed");
           setTeamInfo();
-          setWinnerInfo({
+          setWinnerIds({
             team1_id: eventData.team1Id,
             team2_id: eventData.team2Id,
             winner_id: eventData.winnerId
-          })
+          });
         }
       };
     } else {
@@ -154,24 +152,25 @@ function firstPage() {
     return () => eventSource.close();
   }, []);
 
-
-  const setWinnerInfo = ({winner_id, team1_id, team2_id}: {winner_id: string; team1_id: string; team2_id: string}) => {
-    if(winner_id){
-      if(winner_id == team1_id){
+  // This effect will update winnerData when all info is available
+  useEffect(() => {
+    const { winner_id, team1_id, team2_id } = winnerIds;
+    if (winner_id && team1_id && team2_id) {
+      if (winner_id == team1_id) {
         setWinnerData({
-          name: team1name??"",
-          logo: team1Logo??""
-        })
-      } else if(winner_id == team2_id){
+          name: team1name ?? "",
+          logo: team1Logo ?? ""
+        });
+      } else if (winner_id == team2_id) {
         setWinnerData({
-          name: team2name??"",
-          logo: team2Logo??""
-        })
+          name: team2name ?? "",
+          logo: team2Logo ?? ""
+        });
       } else {
         setWinnerData(null);
       }
     }
-  }
+  }, [winnerIds, team1name, team2name, team1Logo, team2Logo]);
 
   return (
     <div
@@ -186,7 +185,7 @@ function firstPage() {
       <Dialog 
         isOpen={winnerData!=null?true:false} 
         title="Winner" 
-        winnerData={{name:team1name??"", logo: team1Logo??""}}
+        winnerData={winnerData ?? { name: "", logo: "" }}
       />        
       <div className="text-2xl  mx-auto    w-full">
         <img

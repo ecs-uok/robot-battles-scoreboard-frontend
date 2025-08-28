@@ -1,66 +1,39 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import { useNavigate } from "react-router-dom";
 
-var teamList: string[] = [];
-const host = "https://robot-battles-scoreboard-backend.onrender.com";
-//const host = "http://localhost:5000";
-async function getTeamList() {
-  console.log("fetching teams..");
-  teamList.length = 0;
-  await fetch(host + "/teams")
-    .then((response) => response.json())
-    .then((json) => {
-      for (let i = 0; i < json.length; i++) {
-        let obj = json[i];
-        if (obj) teamList.push(i + " " + obj.name);
-      }
-    });
-  var select1 = document.getElementById("teamA");
-  var select2 = document.getElementById("teamB");
-  select1!.innerHTML = "";
-  select2!.innerHTML = "";
-
-  for (var i = 0; i < teamList.length; i++) {
-    var opt = teamList[i];
-    var el1 = document.createElement("option");
-    var el2 = document.createElement("option");
-    el1.textContent = opt;
-    el1.value = "" + i;
-    el2.textContent = opt;
-    el2.value = "" + i;
-    select1 ? select1.appendChild(el1) : select1;
-    select2 ? select2.appendChild(el2) : select2;
-  }
-}
+const host = "http://localhost:5000";
 
 function SecondPage() {
-  const effectRan = useRef(false);
-
-  useEffect(() => {
-    if (effectRan.current === false) {
-      getTeamList();
-      return () => {
-        effectRan.current = true;
-      };
-    }
-  });
-
+  const [teams, setTeams] = useState<{ [id: string]: { leader: string; logo: string; name: string } }>({});
+  const [team1id, setTeam1id] = useState<string>("");
+  const [team2id, setTeam2id] = useState<string>("");
   const [gameNo, setGameNo] = useState(1);
-  const [team1id, setTeam1id] = useState("0");
-  const [team2id, setTeam2id] = useState("0");
   const [totalTime, setTotalTime] = useState(180);
   const [pitOpenTime, setPitOpenTime] = useState(60);
   const [pitTime, setPitTime] = useState(20);
   const navigate = useNavigate();
-  fetch(host + "/nextGameId")
-    .then((response) => response.json())
-    .then((json) => {
-      setGameNo(json.gameId);
-    });
+
+  useEffect(() => {
+    fetch(host + "/teams")
+      .then((response) => response.json())
+      .then((json) => {
+        setTeams(json);
+        const ids = Object.keys(json);
+        if (ids.length > 0) {
+          setTeam1id(ids[0]);
+          setTeam2id(ids.length > 1 ? ids[1] : ids[0]);
+        }
+      });
+    fetch(host + "/nextGameId")
+      .then((response) => response.json())
+      .then((json) => {
+        setGameNo(json.gameId);
+      });
+  }, []);
+
   async function setGameDetails() {
-    var gameNo = document.getElementById("gameNo")?.innerText;
     var body = JSON.stringify({
       gameId: `${gameNo}`,
       team1: team1id,
@@ -102,6 +75,7 @@ function SecondPage() {
 
     navigate("/h72xutmpivrro7/third");
   }
+
   const handleTotalTimeChange = (e: any) => setTotalTime(e.target.value);
   const handlePitOpenTimeChange = (e: any) => setPitOpenTime(e.target.value);
   const handlePitTimeChange = (e: any) => setPitTime(e.target.value);
@@ -134,20 +108,22 @@ function SecondPage() {
             TEAM A :
           </div>
           <select
-            id="teamA"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            value={team1id}
             onChange={(e) => setTeam1id(e.target.value)}
-          ></select>
-          {/* <input
-            type="text"
-            placeholder="Enter team name.."
-            className="mt-4 px-4 py-2  rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          />
-          <input
-            type="text"
-            placeholder="Enter team leader name.."
-            className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          /> */}
+          >
+            {Object.entries(teams).map(([id, team]) => (
+              <option key={id} value={id}>
+                {team.name}
+              </option>
+            ))}
+          </select>
+          {team1id && teams[team1id] && (
+            <div className="mt-2 flex flex-col items-center">
+              <img src={teams[team1id].logo} alt="logo" className="w-16 h-16" />
+              <div>Leader: {teams[team1id].leader}</div>
+            </div>
+          )}
         </div>
         <div className="md:col-span-1 lg:col-span-1 ">
           <div className="md:col-span-1 lg:col-span-1 flex mx-8 flex-col text-black">
@@ -158,20 +134,22 @@ function SecondPage() {
               TEAM B :
             </div>
             <select
-              id="teamB"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              value={team2id}
               onChange={(e) => setTeam2id(e.target.value)}
-            ></select>
-            {/* <input
-              type="text"
-              placeholder="Enter team name.."
-              className="mt-4 px-4 py-2  rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-            <input
-              type="text"
-              placeholder="Enter team leader name.."
-              className="mt-4 px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            /> */}
+            >
+              {Object.entries(teams).map(([id, team]) => (
+                <option key={id} value={id}>
+                  {team.name}
+                </option>
+              ))}
+            </select>
+            {team2id && teams[team2id] && (
+              <div className="mt-2 flex flex-col items-center">
+                <img src={teams[team2id].logo} alt="logo" className="w-16 h-16" />
+                <div>Leader: {teams[team2id].leader}</div>
+              </div>
+            )}
           </div>
         </div>
       </div>
