@@ -181,12 +181,24 @@ function firstPage() {
         winnerData={winnerData ?? { name: "", logo: "" }}
       />        
       <div className="text-2xl  mx-auto    w-full">
-        <img
-          className="text-black  lg:px-8 h-13 pt-1 rounded-2xl"
-          src={TitleImg}
-          alt="uok robot battles scoreboard"
-          style={{ maxWidth: "72%", margin: "0 auto" }}
-        />
+        <div
+          style={{
+            maxWidth: "85%",
+            margin: "0 auto",
+            background: "rgba(255,255,255,0.9)",
+            overflow: "hidden",
+            borderBottomLeftRadius: "12px",
+            borderBottomRightRadius: "12px"
+          }}
+          className="md:!max-w-[50%]"
+        >
+          <img
+            className="text-black  lg:px-8 h-13 pt-1"
+            src={TitleImg}
+            alt="uok robot battles scoreboard"
+            style={{ width: "100%", display: "block" }}
+          />
+        </div>
       </div>
       {team1Logo && team2Logo && (
         <div>
