@@ -2,7 +2,6 @@ import "../styles/scoreboard.css";
 import { useEffect, useState } from "react";
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";
-import bgImg from "../assets/Images/scoreboard-background.png";
 
 interface gameType {
   team1name: string;
@@ -20,11 +19,7 @@ const ShowGames = () => {
         fetch("http://localhost:5000/games")
           .then((response) => response.json())
           .then((json) => {
-            for (let i = 0; i < json.length; i++) {
-              let obj = json[i];
-              console.log(obj);
-              if (obj) setGamesList((prevState) => [...prevState, obj]);
-            }
+            setGamesList(json.reverse());
           });
       } catch (err) {
         console.log(err);
@@ -33,7 +28,7 @@ const ShowGames = () => {
     fetchData();
   }, []);
   console.log(gamesList);
-  const content = gamesList.map((game) => {
+  const content = gamesList.map((game, idx) => {
     // Determine winner using winnerId
     let winnerName = "";
     if (game.winnerId && game.winnerId !== "0" && game.winnerId !== 0) {
@@ -65,25 +60,53 @@ const ShowGames = () => {
         winnerName = "Draw";
       }
     }
+    // Color logic for winner
+    const winnerColor =
+      winnerName === "Draw"
+        ? "text-gray-500"
+        : winnerName === game.team1name
+        ? "text-blue-600"
+        : winnerName === game.team2name
+        ? "text-yellow-600"
+        : "text-red-500";
     return (
-      <div key={game.gameid} className="  gap-4">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-3 bg-gray-300 text-center mt-8 py-5 mx-8 rounded-lg ">
-          <div className="col-span-1 flex flex-row justify-center items-center ">
-            <div className="text-2xl ">{game.team1name}</div>
-          </div>
-          <div className="col-span-1">
-            <div className="text-xl text-center">Match No: {game.gameid} </div>
-            <div className="flex flex-row justify-center items-center">
-              <div className="text-6xl ">{game.team1score} : </div>
-              <div className="text-6xl "> {game.team2score}</div>
+      <div key={game.gameid} className="flex justify-center px-2">
+        <div className="w-full max-w-3xl bg-white/90 rounded-3xl shadow-2xl my-4 px-3 py-4 md:px-6 md:py-6 border border-blue-200 flex flex-col items-center transition-all duration-300 hover:scale-[1.015] hover:shadow-3xl">
+          <div className="flex flex-col md:flex-row w-full items-center mb-2">
+            <div className="flex-1 flex flex-col items-center justify-center mb-1 md:mb-0">
+              <div className="text-base md:text-xl font-extrabold text-blue-700 uppercase tracking-widest text-center break-words">
+                {game.team1name}
+              </div>
             </div>
-            <div className="text-xl ">Winner</div>
-            <div className="text-2xl text-center text-red-500">
+            <div className="flex flex-col items-center justify-center mx-0 md:mx-2">
+              <div className="text-sm md:text-lg font-bold text-gray-400 tracking-widest text-center whitespace-nowrap mb-1">
+                MATCH NO: <span className="text-blue-700">{game.gameid}</span>
+              </div>
+              <div className="flex flex-row items-center">
+                <span className="text-2xl md:text-5xl font-extrabold text-blue-900 drop-shadow-lg">{game.team1score}</span>
+                <span className="px-2 md:px-4 text-2xl md:text-5xl font-extrabold text-gray-400 drop-shadow-lg">:</span>
+                <span className="text-2xl md:text-5xl font-extrabold text-yellow-600 drop-shadow-lg">{game.team2score}</span>
+              </div>
+            </div>
+            <div className="flex-1 flex flex-col items-center justify-center mt-1 md:mt-0">
+              <div className="text-base md:text-xl font-extrabold text-yellow-500 uppercase tracking-widest text-center break-words">
+                {game.team2name}
+              </div>
+            </div>
+          </div>
+          {/* Winner for mobile - after both team names */}
+          <div className="flex flex-col items-center w-full md:hidden mt-2">
+            <div className="text-sm font-bold text-gray-700 tracking-wide">WINNER</div>
+            <div className={`text-lg font-extrabold text-center mt-1 tracking-widest ${winnerColor} drop-shadow`}>
               {winnerName}
             </div>
           </div>
-          <div className="col-span-1 flex flex-row justify-center items-center">
-            <div className="text-2xl ">{game.team2name}</div>
+          {/* Winner for desktop */}
+          <div className="hidden md:flex flex-col items-center w-full">
+            <div className="mt-2 text-lg font-bold text-gray-700 tracking-wide">WINNER</div>
+            <div className={`text-2xl font-extrabold text-center mt-1 tracking-widest ${winnerColor} drop-shadow`}>
+              {winnerName}
+            </div>
           </div>
         </div>
       </div>
@@ -93,7 +116,7 @@ const ShowGames = () => {
 };
 function GameHistory() {
   return (
-    <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)]">
+    <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 via-white to-yellow-50">
       <div className="w-full flex flex-col items-center mt-5 mb-2">
         <img
           className="text-black h-13 drop-shadow-xl w-11/12 max-w-xs md:max-w-md lg:max-w-lg rounded-[18px] bg-[rgba(255,255,255,0.85)]"
@@ -102,7 +125,7 @@ function GameHistory() {
         />
       </div>
       <div className="w-full flex justify-center">
-        <div className="bg-white/90 rounded-2xl shadow-2xl p-4 max-w-3xl w-full mx-2 border border-blue-200">
+        <div className="w-full max-w-4xl">
           {ShowGames()}
         </div>
       </div>

@@ -4,7 +4,6 @@ import AOS from "aos";
 import { useNavigate } from "react-router-dom";
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";
-import bgImg from "../assets/Images/scoreboard-background.png";
 
 function ControlPanel() {
   var team1Id: number;
@@ -65,6 +64,79 @@ function ControlPanel() {
       );
     }
   }
+  const [start, setStart] = useState(false);
+  const [pit, setPit] = useState(false);
+  const [pitStatus, setPitStatus] = useState<boolean>(false);
+  const [gameNo, setGameNo] = useState<number | undefined>(undefined); // <-- add state for game id
+
+  // Fetch pit status from backend
+  async function fetchPitStatus() {
+    try {
+      const res = await fetch("http://localhost:5000/pitstatus");
+      const data = await res.json();
+      setPitStatus(!!data.pitopen);
+    } catch (e) {
+      setPitStatus(false);
+    }
+  }
+
+  // Fetch main timer running status from backend
+  async function fetchMainRunningStatus() {
+    try {
+      const res = await fetch("http://localhost:5000/timerstatus");
+      const data = await res.json();
+      setStart(!!data.mainRunning);
+    } catch (e) {
+      setStart(false);
+    }
+  }
+
+  useEffect(() => {
+    AOS.init();
+    const eventSource = new EventSource(
+      "http://localhost:5000/timer"
+    );
+    if (typeof eventSource != undefined) {
+      let oldVal = -1;
+      eventSource.onmessage = (event) => {
+        const eventData = JSON.parse(event.data);
+        setMainTime(eventData.mainTime);
+        setPitTime(eventData.pitTime);
+
+        // Set game id from backend
+        if ("gameId" in eventData) {
+          setGameNo(eventData.gameId);
+        }
+
+        // Optionally update start state from SSE if available
+        if ("mainRunning" in eventData) {
+          setStart(!!eventData.mainRunning);
+        } else {
+          // Fallback: fetch from backend REST endpoint
+          fetchMainRunningStatus();
+        }
+
+        // Real-time pit status update
+        fetchPitStatus();
+
+        if (
+          oldVal != eventData.gameId ||
+          team1Id != eventData.team1Id ||
+          team2Id != eventData.team2Id
+        ) {
+          oldVal = eventData.gameId;
+          team1Id = eventData.team1Id;
+          team2Id = eventData.team2Id;
+          setTeamInfo();
+        }
+      };
+    }
+    // Initial fetch
+    fetchPitStatus();
+    fetchMainRunningStatus();
+    return () => eventSource.close();
+  }, []);
+
   function handlePitCounter() {
     if (pit) {
       setPit(false);
@@ -89,6 +161,7 @@ function ControlPanel() {
         requestOptions
       );
     }
+    fetchPitStatus();
   }
   function resetCounters() {
     const requestOptions = {
@@ -107,72 +180,39 @@ function ControlPanel() {
     setPit(false);
     setStart(false);
   }
-  useEffect(() => {
-    AOS.init();
-    const eventSource = new EventSource(
-      "http://localhost:5000/timer"
-    );
-    if (typeof eventSource != undefined) {
-      console.log("Connection with timer successful");
-      let oldVal = -1;
-      eventSource.onmessage = (event) => {
-        const eventData = JSON.parse(event.data);
-        console.log(eventData);
-        setMainTime(eventData.mainTime);
-        setPitTime(eventData.pitTime);
-
-        if (
-          oldVal != eventData.gameId ||
-          team1Id != eventData.team1Id ||
-          team2Id != eventData.team2Id
-        ) {
-          oldVal = eventData.gameId;
-          team1Id = eventData.team1Id;
-          team2Id = eventData.team2Id;
-          console.log("Game details changed");
-          setTeamInfo();
-        }
-      };
-    } else {
-      console.log("Coudn't connect to timer");
-    }
-    return () => eventSource.close();
-  }, []);
-
-  const [start, setStart] = useState(false);
-  const [pit, setPit] = useState(false);
   return (
     <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 via-white to-yellow-50">
-      <div className="w-full flex flex-col items-center mt-5 mb-10">
+      <div className="w-full flex flex-col items-center mt-5 mb-6 px-2">
+        {/* Removed top Game ID display */}
         <img
-          className="text-black h-13 drop-shadow-xl w-11/12 max-w-xs md:max-w-md lg:max-w-lg rounded-[18px] bg-[rgba(255,255,255,0.85)]"
+          className="text-black h-13 drop-shadow-xl w-full max-w-xs md:max-w-md lg:max-w-lg rounded-[18px] bg-[rgba(255,255,255,0.85)]"
           src={TitleImg}
           alt="uok robot battles scoreboard"
         />
       </div>
-      <div className="w-full flex justify-center">
-        <div className="relative bg-white/95 rounded-3xl shadow-2xl p-6 max-w-4xl w-full mx-2 border border-blue-200 flex flex-col gap-8">
+      <div className="w-full flex justify-center px-2">
+        <div className="relative bg-white/95 rounded-3xl shadow-2xl p-3 md:p-6 max-w-4xl w-full mx-0 border border-blue-200 flex flex-col gap-6 md:gap-8">
           {/* Teams and Timer Row */}
-          <div className="grid grid-cols-3 gap-4 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
             {/* Team 1 */}
-            <div className="flex flex-col items-center gap-2 bg-blue-50 rounded-2xl p-4 shadow-inner min-h-[180px]">
-              <div className="w-20 h-20 rounded-full bg-white border-4 border-blue-200 flex items-center justify-center shadow">
+            <div className="flex flex-col items-center gap-2 bg-blue-50 rounded-2xl p-3 md:p-4 shadow-inner min-h-[120px] md:min-h-[180px] mb-2 md:mb-0">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-4 border-blue-200 flex items-center justify-center shadow">
                 {team1Logo && (
-                  <img src={team1Logo} alt="Team 1 Logo" className="w-16 h-16 object-contain rounded-full" />
+                  <img src={team1Logo} alt="Team 1 Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full" />
                 )}
               </div>
-              <div className="mt-2 text-lg font-bold text-blue-700 uppercase tracking-wide text-center">{team1name}</div>
+              <div className="mt-2 text-base md:text-lg font-bold text-blue-700 uppercase tracking-wide text-center break-words">{team1name}</div>
             </div>
             {/* Timer Card - Overlapping and Centered */}
-            <div className="relative flex flex-col items-center justify-center z-10">
-              <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full flex justify-center">
-                <span className="bg-blue-200 px-6 py-2 rounded-t-xl text-lg font-bold text-blue-800 tracking-widest shadow border-b-2 border-blue-400">
+            <div className="relative flex flex-col items-center justify-center z-10 my-2 md:my-0">
+              <div className="absolute -top-7 md:-top-8 left-1/2 -translate-x-1/2 w-full flex justify-center">
+                <span className="bg-blue-200 px-3 md:px-6 py-1 md:py-2 rounded-t-xl text-base md:text-lg font-bold text-blue-800 tracking-widest shadow border-b-2 border-blue-400">
                   TIME REMAINING
                 </span>
               </div>
               <div
-                className="relative z-10 font-mono text-5xl md:text-6xl text-white bg-black px-6 py-2 rounded-2xl shadow-2xl border-2 border-blue-400 outline outline-2 outline-yellow-400"
-                style={{ letterSpacing: "0.15em", fontVariantNumeric: "tabular-nums", marginTop: "2.5rem" }}
+                className="relative z-10 font-bold text-4xl md:text-5xl text-white bg-black px-4 md:px-6 py-2 rounded-2xl shadow-2xl border-2 border-blue-400 outline outline-2 outline-yellow-400 font-custom"
+                style={{ letterSpacing: "0.15em", fontVariantNumeric: "tabular-nums", marginTop: "2.2rem" }}
               >
                 {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
                 {mainTime
@@ -182,41 +222,44 @@ function ControlPanel() {
                     })
                   : mainTime || "00"}
               </div>
-              <div className="mt-4 flex flex-col items-center">
-                <span className="text-green-700 font-bold text-lg tracking-wide">ADDITIONAL TIME</span>
-                <div className="font-mono text-2xl text-green-600 bg-white px-4 py-1 rounded-xl shadow border border-green-200 mt-2">
+              <div className="mt-3 md:mt-4 flex flex-col items-center">
+                <span className="text-green-700 font-bold text-base md:text-lg tracking-wide">ADDITIONAL TIME</span>
+                <div className="font-bold text-xl md:text-2xl text-green-600 bg-white px-3 md:px-4 py-1 rounded-xl shadow border border-green-200 mt-2">
                   {pitTime || "0"}
                 </div>
                 <span className="text-xs text-gray-600 mt-1">SECONDS</span>
               </div>
             </div>
             {/* Team 2 */}
-            <div className="flex flex-col items-center gap-2 bg-yellow-50 rounded-2xl p-4 shadow-inner min-h-[180px]">
-              <div className="w-20 h-20 rounded-full bg-white border-4 border-yellow-200 flex items-center justify-center shadow">
+            <div className="flex flex-col items-center gap-2 bg-yellow-50 rounded-2xl p-3 md:p-4 shadow-inner min-h-[120px] md:min-h-[180px] mb-2 md:mb-0">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-4 border-yellow-200 flex items-center justify-center shadow">
                 {team2Logo && (
-                  <img src={team2Logo} alt="Team 2 Logo" className="w-16 h-16 object-contain rounded-full" />
+                  <img src={team2Logo} alt="Team 2 Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full" />
                 )}
               </div>
-              <div className="mt-2 text-lg font-bold text-yellow-600 uppercase tracking-wide text-center">{team2name}</div>
+              <div className="mt-2 text-base md:text-lg font-bold text-yellow-600 uppercase tracking-wide text-center break-words">{team2name}</div>
             </div>
           </div>
           {/* Buttons */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-6 mt-2">
             <div className="flex flex-col gap-3">
               <button
-                className={`transition bg-blue-200 hover:bg-blue-400 text-blue-900 font-bold py-2 px-4 rounded-xl shadow`}
+                className="transition bg-blue-200 hover:bg-blue-400 text-blue-900 font-bold py-2 px-4 rounded-xl shadow w-full"
                 onClick={handleStartStop}
               >
                 {start ? "Stop" : "Start"} GAME
               </button>
               <button
-                className="transition bg-gray-200 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-xl shadow"
+                className="transition bg-gray-200 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-xl shadow w-full"
                 onClick={resetCounters}
               >
                 RESET COUNTERS
               </button>
             </div>
             <div className="flex flex-col gap-3 items-center justify-center">
+              <div className="text-base md:text-lg font-bold text-blue-700 text-center mb-1 tracking-wider">
+                {gameNo !== undefined && gameNo !== null ? `Game ID: ${gameNo}` : ""}
+              </div>
               <button
                 className="transition bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 text-black font-bold py-2 px-8 rounded-xl shadow"
                 onClick={handleAddPoints}
@@ -231,6 +274,9 @@ function ControlPanel() {
               >
                 {pit ? "RESET" : "START"} 20 COUNTER
               </button>
+              <div className={`mt-1 text-sm font-semibold ${pitStatus ? "text-green-600" : "text-red-500"} text-center`}>
+                {pitStatus ? "Pit Open" : "Pit Close"}
+              </div>
             </div>
           </div>
         </div>
