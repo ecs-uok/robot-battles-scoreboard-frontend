@@ -5,7 +5,7 @@ import "../styles/scoreboard.css";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import versusImg from "../assets/Images/versus-img.png";
 
-function fourthPage() {
+function AddPoints() {
   const host = "http://localhost:5000";
   const [team1Points, setTeam1Points] = useState("");
   const [team2Points, setTeam2Points] = useState("");
@@ -97,7 +97,7 @@ function fourthPage() {
   }, []);
   return (
     <div
-      className=" overflow-hidden"
+      className=""
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",
@@ -156,4 +156,4 @@ function fourthPage() {
   );
 }
 
-export default fourthPage;
+export default AddPoints;

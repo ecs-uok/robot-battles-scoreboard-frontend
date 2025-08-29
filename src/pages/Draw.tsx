@@ -1,6 +1,4 @@
-
-const TonamentDrawPage = () => {
-
+const Draw = () => {
     return(
         <>
             <iframe 
@@ -12,4 +10,4 @@ const TonamentDrawPage = () => {
     )
 }
 
-export default TonamentDrawPage;
+export default Draw;

@@ -91,10 +91,10 @@ const ShowGames = () => {
   });
   return content;
 };
-function fifthPage() {
+function GameHistory() {
   return (
     <div
-      className=" overflow-hidden"
+      className=""
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",
@@ -115,4 +115,4 @@ function fifthPage() {
   );
 }
 
-export default fifthPage;
+export default GameHistory;
