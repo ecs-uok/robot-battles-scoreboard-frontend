@@ -64,7 +64,7 @@ const Dialog: React.FC<DialogProps> = ({ isOpen, title, winnerData }) => {
   );
 };
 
-function firstPage() {
+function Main() {
   var team1Id: number;
   var team2Id: number;
   var winnerId: number | string;
@@ -167,7 +167,7 @@ function firstPage() {
 
   return (
     <div
-      className="font-custom overflow-hidden w-full"
+      className="font-custom w-full" // removed overflow-hidden
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",
@@ -353,6 +353,7 @@ function firstPage() {
           </div>
         </div>
       )}
+      {/* Move Brackets button above LogoSlider */}
       <div className="container mt-10 m-auto flex justify-center">
         <Link
           to={"/bracket"}
@@ -368,4 +369,4 @@ function firstPage() {
   );
 }
 
-export default firstPage;
+export default Main;

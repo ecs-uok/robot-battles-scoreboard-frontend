@@ -567,3 +567,11 @@ video {
   text-decoration-line: underline;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+}
+

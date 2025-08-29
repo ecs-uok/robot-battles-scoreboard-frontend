@@ -10,7 +10,7 @@ const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
 
   return (
     <div
-      className="fixed left-1/2 -translate-x-1/2 bottom-6 z-50 w-[90vw] max-w-6xl rounded-full shadow-xl border border-white/30 overflow-hidden"
+      className="absolute left-1/2 -translate-x-1/2 bottom-6 z-50 w-[90vw] max-w-6xl rounded-full shadow-xl border border-white/30 overflow-hidden"
       style={{
         padding: "0.5rem 0",
         boxShadow: "0 4px 32px 0 rgba(31,38,135,0.15)",
@@ -19,6 +19,7 @@ const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
         backdropFilter: "blur(18px) saturate(160%)",
         WebkitBackdropFilter: "blur(18px) saturate(160%)",
         border: "1.5px solid rgba(255,255,255,0.25)",
+        maxWidth: "90vw", // ensure it never exceeds viewport width
       }}
     >
       <div

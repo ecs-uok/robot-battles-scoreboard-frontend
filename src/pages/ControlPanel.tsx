@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
 
-function thirdPage() {
+function ControlPanel() {
   var team1Id: number;
   var team2Id: number;
 
@@ -34,7 +34,7 @@ function thirdPage() {
   }
   const navigate = useNavigate();
   function handleAddPoints() {
-    navigate("/h72xutmpivrro7/fourth");
+    navigate("/admin/AddPoints");
   }
   function handleStartStop() {
     if (start) {
@@ -143,7 +143,7 @@ function thirdPage() {
   const [pit, setPit] = useState(false);
   return (
     <div
-      className=" overflow-hidden"
+      className=""
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",
@@ -248,4 +248,4 @@ function thirdPage() {
   );
 }
 
-export default thirdPage;
+export default ControlPanel;
