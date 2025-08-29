@@ -142,105 +142,96 @@ function ControlPanel() {
   const [start, setStart] = useState(false);
   const [pit, setPit] = useState(false);
   return (
-    <div
-      className=""
-      style={{
-        backgroundImage: `url(${bgImg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <div className="text-2xl  mx-auto    w-full">
+    <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 via-white to-yellow-50">
+      <div className="w-full flex flex-col items-center mt-5 mb-10">
         <img
-          className="text-black  lg:px-8 h-13 pt-3"
+          className="text-black h-13 drop-shadow-xl w-11/12 max-w-xs md:max-w-md lg:max-w-lg rounded-[18px] bg-[rgba(255,255,255,0.85)]"
           src={TitleImg}
           alt="uok robot battles scoreboard"
-          style={{ maxWidth: "80%", margin: "0 auto" }}
         />
       </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 pt-5 mx-8  ">
-        <div className="md:col-span-3 lg:col-span-3  ">
-          <img
-            src={team1Logo}
-            className="w-4/5 mx-auto"
-            style={{ paddingRight: "10px", backgroundColor: "#0DECC4" }}
-          />
-          <div className="text-center text-white text-xl">TEAM 1</div>
-          <div className="text-center text-yellow-300 text-2xl">
-            {team1name}
+      <div className="w-full flex justify-center">
+        <div className="relative bg-white/95 rounded-3xl shadow-2xl p-6 max-w-4xl w-full mx-2 border border-blue-200 flex flex-col gap-8">
+          {/* Teams and Timer Row */}
+          <div className="grid grid-cols-3 gap-4 items-center">
+            {/* Team 1 */}
+            <div className="flex flex-col items-center gap-2 bg-blue-50 rounded-2xl p-4 shadow-inner min-h-[180px]">
+              <div className="w-20 h-20 rounded-full bg-white border-4 border-blue-200 flex items-center justify-center shadow">
+                {team1Logo && (
+                  <img src={team1Logo} alt="Team 1 Logo" className="w-16 h-16 object-contain rounded-full" />
+                )}
+              </div>
+              <div className="mt-2 text-lg font-bold text-blue-700 uppercase tracking-wide text-center">{team1name}</div>
+            </div>
+            {/* Timer Card - Overlapping and Centered */}
+            <div className="relative flex flex-col items-center justify-center z-10">
+              <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-full flex justify-center">
+                <span className="bg-blue-200 px-6 py-2 rounded-t-xl text-lg font-bold text-blue-800 tracking-widest shadow border-b-2 border-blue-400">
+                  TIME REMAINING
+                </span>
+              </div>
+              <div
+                className="relative z-10 font-mono text-5xl md:text-6xl text-white bg-black px-6 py-2 rounded-2xl shadow-2xl border-2 border-blue-400 outline outline-2 outline-yellow-400"
+                style={{ letterSpacing: "0.15em", fontVariantNumeric: "tabular-nums", marginTop: "2.5rem" }}
+              >
+                {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
+                {mainTime
+                  ? (mainTime % 60).toLocaleString("en-US", {
+                      minimumIntegerDigits: 2,
+                      useGrouping: false,
+                    })
+                  : mainTime || "00"}
+              </div>
+              <div className="mt-4 flex flex-col items-center">
+                <span className="text-green-700 font-bold text-lg tracking-wide">ADDITIONAL TIME</span>
+                <div className="font-mono text-2xl text-green-600 bg-white px-4 py-1 rounded-xl shadow border border-green-200 mt-2">
+                  {pitTime || "0"}
+                </div>
+                <span className="text-xs text-gray-600 mt-1">SECONDS</span>
+              </div>
+            </div>
+            {/* Team 2 */}
+            <div className="flex flex-col items-center gap-2 bg-yellow-50 rounded-2xl p-4 shadow-inner min-h-[180px]">
+              <div className="w-20 h-20 rounded-full bg-white border-4 border-yellow-200 flex items-center justify-center shadow">
+                {team2Logo && (
+                  <img src={team2Logo} alt="Team 2 Logo" className="w-16 h-16 object-contain rounded-full" />
+                )}
+              </div>
+              <div className="mt-2 text-lg font-bold text-yellow-600 uppercase tracking-wide text-center">{team2name}</div>
+            </div>
           </div>
-        </div>
-        <div className="md:col-span-3 lg:col-span-6 ">
-          <div className="text-3xl text-center text-white">TIME REMAINING</div>
-          <div className="text-8xl text-center text-white">
-            {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
-            {mainTime
-              ? (mainTime % 60).toLocaleString("en-US", {
-                  minimumIntegerDigits: 2,
-                  useGrouping: false,
-                })
-              : mainTime || "00"}
-          </div>
-          <hr className="border-2 border-white my-5" />
-          <div className="text-2xl text-center text-white">ADDITIONAL TIME</div>
-          <div className="text-6xl text-center text-green-400">
-            {pitTime || "0"}
-          </div>
-          <div className="text-xl text-center text-white">SECONDS</div>
-        </div>
-
-        <div className="md:col-span-3 lg:col-span-3  ">
-          <img
-            src={team2Logo}
-            className="w-4/5 mx-auto"
-            style={{ paddingLeft: "10px", backgroundColor: "#001AFF" }}
-          />
-          <div className="text-center text-white text-xl">TEAM 2</div>
-          <div className="text-center text-yellow-300 text-2xl">
-            {team2name}
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div className="grid grid-cols-1   md:grid-cols-3  gap-6  text-center text-white mt-6">
-          <div className="col-span-1 flex flex-col gap-2 mx-5">
-            <button
-              className="bg-gray-300  hover:bg-gray-500  text-black font-bold py-2 px-4 rounded"
-              onClick={handleStartStop}
-            >
-              {start ? "Stop" : "Start"} GAME
-            </button>
-            <button
-              className="bg-gray-300  hover:bg-gray-500  text-black font-bold py-2 px-4 rounded"
-              onClick={resetCounters}
-            >
-              RESET COUNTERS
-            </button>
-            {/* <button className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded">
-              pause
-            </button> */}
-          </div>
-          <div className="col-span-1">
-            <button
-              className="bg-yellow-300  hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded"
-              onClick={handleAddPoints}
-            >
-              ADD POINTS
-            </button>
-          </div>
-          <div className="col-span-1 flex flex-col gap-2 mx-5">
-            {/* <button className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded">
-              PITCH OPEN
-            </button> */}
-            <button
-              className="bg-gray-300  hover:bg-gray-500 text-black font-bold py-2 px-4 rounded"
-              onClick={handlePitCounter}
-            >
-              {pit ? "RESET" : "START"} 20 COUNTER
-            </button>
+          {/* Buttons */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-2">
+            <div className="flex flex-col gap-3">
+              <button
+                className={`transition bg-blue-200 hover:bg-blue-400 text-blue-900 font-bold py-2 px-4 rounded-xl shadow`}
+                onClick={handleStartStop}
+              >
+                {start ? "Stop" : "Start"} GAME
+              </button>
+              <button
+                className="transition bg-gray-200 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-xl shadow"
+                onClick={resetCounters}
+              >
+                RESET COUNTERS
+              </button>
+            </div>
+            <div className="flex flex-col gap-3 items-center justify-center">
+              <button
+                className="transition bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 text-black font-bold py-2 px-8 rounded-xl shadow"
+                onClick={handleAddPoints}
+              >
+                ADD POINTS
+              </button>
+            </div>
+            <div className="flex flex-col gap-3">
+              <button
+                className="transition bg-gray-200 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-xl shadow"
+                onClick={handlePitCounter}
+              >
+                {pit ? "RESET" : "START"} 20 COUNTER
+              </button>
+            </div>
           </div>
         </div>
       </div>
