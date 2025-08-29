@@ -9,7 +9,7 @@ export default {
     keyframes: {
       slide: {
         '0%': { transform: 'translateX(0)' },
-        '100%': { transform: 'translateX(-100%)' },
+        '100%': { transform: 'translateX(-50%)' }, // changed from -100% to -50%
       },
     },
     animation: {
