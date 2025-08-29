@@ -96,51 +96,80 @@ function AddPoints() {
     return () => eventSource.close();
   }, []);
   return (
-    <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)]">
+    <div
+      className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 via-white to-yellow-50"
+    >
       <div className="w-full flex flex-col items-center mt-5 mb-2">
-        <div className="text-white text-2xl text-center mb-2">
-          Add Final Points - Game {gameNo}
+        <div className="text-xl md:text-2xl font-bold text-blue-700 text-center mb-1 tracking-wider">
+          {gameNo !== undefined && gameNo !== null ? `Game ID: ${gameNo}` : ""}
+        </div>
+        <div className="text-3xl md:text-4xl font-bold text-green-400 text-center mb-6 drop-shadow-lg tracking-wider">
+          {winnerId !== undefined && winnerId !== null
+            ? `Winner ID: ${winnerId}`
+            : "Add Final Points"}
         </div>
       </div>
       <div className="w-full flex justify-center">
-        <div className="bg-white/90 rounded-2xl shadow-2xl p-4 max-w-3xl w-full mx-2 border border-blue-200">
-          {/* Winner display if winnerId is present */}
-          {winnerId && (
-            <div className="text-green-400 text-3xl text-center mt-2">
-              Winner ID: {winnerId}
-            </div>
-          )}
-          <div className="grid col-span-1 py-8 gap-4 sm:grid-cols-1 md:grid-cols-3 text-white text-center mt-4 rounded-lg">
+        <div className="bg-white/95 rounded-3xl shadow-2xl p-8 max-w-3xl w-full mx-2 border border-blue-200 flex flex-col gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            {/* Team 1 */}
             <div className="flex flex-col items-center gap-4">
-              <div className="text-4xl  ">{team1name}</div>
-              <img src={team1Logo} className="w-1/3"></img>
-              <input
-                type="text"
-                value={team1Points}
-                className="text-black text-xl bg-white w-1/2 mt-4 p-2 rounded-lg"
-                onChange={handleInputChange1}
-                placeholder="Enter points.."
+              <div className="text-2xl md:text-3xl font-bold text-blue-700 uppercase tracking-wide">
+                {team1name}
+              </div>
+              <img
+                src={team1Logo}
+                className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-blue-200 shadow bg-white object-contain"
+                alt="Team 1 Logo"
               />
+              <div className="w-44 min-h-[64px] flex items-center justify-center bg-blue-50 border-2 border-blue-300 rounded-xl shadow">
+                <input
+                  type="number"
+                  value={team1Points}
+                  className="text-center text-3xl font-bold text-blue-900 bg-transparent outline-none w-full placeholder:text-blue-300"
+                  onChange={handleInputChange1}
+                  placeholder="Enter points"
+                  min={0}
+                  style={{ fontSize: "1rem" }}
+                />
+              </div>
             </div>
-            <div className="flex items-center justify-center">
-              <img src={versusImg} className="w-1/4"></img>
+            {/* Versus */}
+            <div className="flex flex-col items-center justify-center gap-4">
+              <img src={versusImg} className="w-16 md:w-24" alt="versus" />
+              <div className="text-lg font-bold text-gray-400">VS</div>
+              <div className="text-gray-400 text-sm mt-2">
+                Game No:{" "}
+                <span className="font-bold text-blue-700">{gameNo}</span>
+              </div>
             </div>
-            <div className=" flex flex-col items-center gap-4">
-              <div className="text-4xl ">{team2name}</div>
-              <img src={team2Logo} className="w-1/3"></img>
-              <input
-                type="text"
-                value={team2Points}
-                className="text-black text-xl bg-white w-1/2 mt-4 p-2 rounded-lg"
-                onChange={handleInputChange2}
-                placeholder="Enter points.."
+            {/* Team 2 */}
+            <div className="flex flex-col items-center gap-4">
+              <div className="text-2xl md:text-3xl font-bold text-yellow-600 uppercase tracking-wide">
+                {team2name}
+              </div>
+              <img
+                src={team2Logo}
+                className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-yellow-200 shadow bg-white object-contain"
+                alt="Team 2 Logo"
               />
+              <div className="w-44 min-h-[64px] flex items-center justify-center bg-yellow-50 border-2 border-yellow-300 rounded-xl shadow">
+                <input
+                  type="number"
+                  value={team2Points}
+                  className="text-center text-3xl font-bold text-yellow-700 bg-transparent outline-none w-full placeholder:text-yellow-300"
+                  onChange={handleInputChange2}
+                  placeholder="Enter points"
+                  min={0}
+                  style={{ fontSize: "1rem" }}
+                />
+              </div>
             </div>
           </div>
-          <div className="text-center text-2xl text-gray-500 mt-8">
+          <div className="flex flex-col items-center mt-4">
             <button
-              className="bg-yellow-300 hover:text-black p-2 rounded-2xl"
-              style={{ width: "200px" }}
+              className="bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 text-black font-bold px-10 py-4 rounded-2xl shadow-lg text-2xl tracking-widest transition-all duration-200 uppercase"
+              style={{ minWidth: "200px" }}
               onClick={saveGame}
             >
               Save Game
