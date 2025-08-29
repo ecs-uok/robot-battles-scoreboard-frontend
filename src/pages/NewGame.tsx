@@ -81,7 +81,7 @@ function NewGame() {
 
   return (
     <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)]">
-      <div className="w-full flex flex-col items-center mt-5 mb-2">
+      <div className="w-full flex flex-col items-center mt-5 mb-5">
         <img
           className="text-black h-13 drop-shadow-xl w-11/12 max-w-xs md:max-w-md lg:max-w-lg rounded-[18px] bg-[rgba(255,255,255,0.85)]"
           src={TitleImg}

@@ -96,61 +96,57 @@ function AddPoints() {
     return () => eventSource.close();
   }, []);
   return (
-    <div
-      className=""
-      style={{
-        backgroundImage: `url(${bgImg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <div className="text-white text-2xl text-center mt-4">
-        {" "}
-        Add Final Points - Game {gameNo}
-      </div>
-      {/* Winner display if winnerId is present */}
-      {winnerId && (
-        <div className="text-green-400 text-3xl text-center mt-2">
-          Winner ID: {winnerId}
-        </div>
-      )}
-      <div className="grid col-span-1 py-16  gap-4 sm:grid-cols-1 md:grid-cols-3 text-white text-center mt-8 py-5 mx-8 rounded-lg ">
-        <div className="flex flex-col items-center gap-4">
-          <div className="text-4xl  ">{team1name}</div>
-          <img src={team1Logo} className="w-1/3"></img>
-          <input
-            type="text"
-            value={team1Points}
-            className="text-black text-xl bg-white w-1/2 mt-4 p-2 rounded-lg"
-            onChange={handleInputChange1}
-            placeholder="Enter points.."
-          />
-        </div>
-        <div className="flex items-center justify-center">
-          <img src={versusImg} className="w-1/4"></img>
-        </div>
-        <div className=" flex flex-col items-center gap-4">
-          <div className="text-4xl ">{team2name}</div>
-          <img src={team2Logo} className="w-1/3"></img>
-          <input
-            type="text"
-            value={team2Points}
-            className="text-black text-xl bg-white w-1/2 mt-4 p-2 rounded-lg"
-            onChange={handleInputChange2}
-            placeholder="Enter points.."
-          />
+    <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)]">
+      <div className="w-full flex flex-col items-center mt-5 mb-2">
+        <div className="text-white text-2xl text-center mb-2">
+          Add Final Points - Game {gameNo}
         </div>
       </div>
-
-      <div className="text-center text-2xl text-gray-500  mt-8">
-        <button
-          className="bg-yellow-300    hover:text-black p-2 rounded-2xl"
-          style={{ width: "200px" }}
-          onClick={saveGame}
-        >
-          Save Game
-        </button>
+      <div className="w-full flex justify-center">
+        <div className="bg-white/90 rounded-2xl shadow-2xl p-4 max-w-3xl w-full mx-2 border border-blue-200">
+          {/* Winner display if winnerId is present */}
+          {winnerId && (
+            <div className="text-green-400 text-3xl text-center mt-2">
+              Winner ID: {winnerId}
+            </div>
+          )}
+          <div className="grid col-span-1 py-8 gap-4 sm:grid-cols-1 md:grid-cols-3 text-white text-center mt-4 rounded-lg">
+            <div className="flex flex-col items-center gap-4">
+              <div className="text-4xl  ">{team1name}</div>
+              <img src={team1Logo} className="w-1/3"></img>
+              <input
+                type="text"
+                value={team1Points}
+                className="text-black text-xl bg-white w-1/2 mt-4 p-2 rounded-lg"
+                onChange={handleInputChange1}
+                placeholder="Enter points.."
+              />
+            </div>
+            <div className="flex items-center justify-center">
+              <img src={versusImg} className="w-1/4"></img>
+            </div>
+            <div className=" flex flex-col items-center gap-4">
+              <div className="text-4xl ">{team2name}</div>
+              <img src={team2Logo} className="w-1/3"></img>
+              <input
+                type="text"
+                value={team2Points}
+                className="text-black text-xl bg-white w-1/2 mt-4 p-2 rounded-lg"
+                onChange={handleInputChange2}
+                placeholder="Enter points.."
+              />
+            </div>
+          </div>
+          <div className="text-center text-2xl text-gray-500 mt-8">
+            <button
+              className="bg-yellow-300 hover:text-black p-2 rounded-2xl"
+              style={{ width: "200px" }}
+              onClick={saveGame}
+            >
+              Save Game
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

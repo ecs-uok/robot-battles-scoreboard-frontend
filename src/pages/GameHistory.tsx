@@ -93,24 +93,19 @@ const ShowGames = () => {
 };
 function GameHistory() {
   return (
-    <div
-      className=""
-      style={{
-        backgroundImage: `url(${bgImg})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-      }}
-    >
-      <div className="text-2xl  mx-auto    w-full">
+    <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)]">
+      <div className="w-full flex flex-col items-center mt-5 mb-2">
         <img
-          className="text-black  lg:px-8 h-13 pt-3"
+          className="text-black h-13 drop-shadow-xl w-11/12 max-w-xs md:max-w-md lg:max-w-lg rounded-[18px] bg-[rgba(255,255,255,0.85)]"
           src={TitleImg}
           alt="uok robot battles scoreboard"
-          style={{ maxWidth: "80%", margin: "0 auto" }}
         />
       </div>
-      <div>{ShowGames()}</div>
+      <div className="w-full flex justify-center">
+        <div className="bg-white/90 rounded-2xl shadow-2xl p-4 max-w-3xl w-full mx-2 border border-blue-200">
+          {ShowGames()}
+        </div>
+      </div>
     </div>
   );
 }
