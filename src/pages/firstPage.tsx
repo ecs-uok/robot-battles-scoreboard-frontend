@@ -12,17 +12,14 @@ import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
 import versusImg from "../assets/Images/versus-img.png";
 
-import tronicLK from "../assets/Images/tronic-lk.png";
-import microRewordsLogo from "../assets/Images/MicroRewards_teal.png";
+import varioSystem from "../assets/Images/Vario-Systems.png";
+import zone24x7 from "../assets/Images/Zone24x7.png";
 import IEEELogo from "../assets/Images/IEEE logo.png";
-import icapsLogo from "../assets/Images/ICAPS_logo_with_UoK_logo_2024.png";
 import ecscLogo from "../assets/Images/ECSC_transparent.png";
 import gavelLogo from "../assets/Images/gavel.png";
-import XydderLogo from "../assets/Images/Xydder 3D Logo.png";
 import codeChefLogo from "../assets/Images/Codechefs.png";
 import hackSL from "../assets/Images/HackSL.png";
-import NeoLogo from "../assets/Images/NEO Logo.png";
-import IEEStudentsLogo from "../assets/Images/IEEE_Student_Branch_University_of_Kelaniya_Logo_00629B.png";
+
 
 // **
 // TODO: add a smoke effect to the background
@@ -88,16 +85,12 @@ function firstPage() {
 
   const logos = [
     ecscLogo,
+    varioSystem,
+    zone24x7,
     hackSL,
-    icapsLogo,
     codeChefLogo,
-    tronicLK,
-    NeoLogo,
     IEEELogo,
-    microRewordsLogo,
-    gavelLogo,
-    IEEStudentsLogo,
-    XydderLogo,
+    gavelLogo
   ];
 
   async function setTeamInfo() {
@@ -189,7 +182,7 @@ function firstPage() {
       />        
       <div className="text-2xl  mx-auto    w-full">
         <img
-          className="text-black  lg:px-8 h-13 pt-1"
+          className="text-black  lg:px-8 h-13 pt-1 rounded-2xl"
           src={TitleImg}
           alt="uok robot battles scoreboard"
           style={{ maxWidth: "72%", margin: "0 auto" }}
