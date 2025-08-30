@@ -7,6 +7,7 @@ import ControlPanel from "./ControlPanel.tsx";
 import AddPoints from "./AddPoints.tsx";
 import GameHistory from "./GameHistory.tsx";
 import Draw from "./Draw.tsx";
+import ManageTeams from "./ManageTeams.tsx";
 
 // Simple hardcoded credentials (for demo only)
 const ADMIN_USER = "admin";
@@ -37,6 +38,15 @@ function AdminPage() {
     setIsLoggedIn(false);
     localStorage.removeItem("admin_logged_in");
   };
+
+  const navLinks = [
+    { to: "/admin/NewGame", label: "New Game" },
+    { to: "/admin/ControlPanel", label: "Control Panel" },
+    { to: "/admin/AddPoints", label: "Add Points" },
+    { to: "/admin/GameHistory", label: "Game History" },
+    { to: "/admin/Draw", label: "Bracket" },
+    { to: "/admin/ManageTeams", label: "Manage Teams" },
+  ];
 
   if (!isLoggedIn) {
     return (
@@ -89,6 +99,7 @@ function AdminPage() {
         <Route path="/AddPoints" element={<AddPoints />} />
         <Route path="/GameHistory" element={<GameHistory />} />
         <Route path="/Draw" element={<Draw />} />
+        <Route path="/ManageTeams" element={<ManageTeams />} />
       </Routes>
     </>
   );
