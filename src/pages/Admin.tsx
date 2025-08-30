@@ -9,9 +9,9 @@ import GameHistory from "./GameHistory.tsx";
 import Draw from "./Draw.tsx";
 import ManageTeams from "./ManageTeams.tsx";
 
-// Simple hardcoded credentials (for demo only)
-const ADMIN_USER = "admin";
-const ADMIN_PASS = "admin123";
+// Use environment variables for credentials
+const ADMIN_USER = import.meta.env.VITE_ADMIN_USER;
+const ADMIN_PASS = import.meta.env.VITE_ADMIN_PASS;
 const SESSION_TIMEOUT_MINUTES = 10; // 10 minutes
 
 function AdminPage() {
