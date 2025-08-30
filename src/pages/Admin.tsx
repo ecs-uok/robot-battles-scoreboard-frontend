@@ -12,23 +12,68 @@ import ManageTeams from "./ManageTeams.tsx";
 // Simple hardcoded credentials (for demo only)
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "admin123";
+const SESSION_TIMEOUT_MINUTES = 10; // 10 minutes
 
 function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // Helper: check if session expired
+  const isSessionExpired = () => {
+    const lastActive = localStorage.getItem("admin_last_active");
+    if (!lastActive) return true;
+    const last = parseInt(lastActive, 10);
+    return Date.now() - last > SESSION_TIMEOUT_MINUTES * 60 * 1000;
+  };
+
+  // On mount, check session validity
   useEffect(() => {
-    // Persist login state
     const logged = localStorage.getItem("admin_logged_in");
-    if (logged === "true") setIsLoggedIn(true);
+    if (logged === "true" && !isSessionExpired()) {
+      setIsLoggedIn(true);
+      // Update last active time
+      localStorage.setItem("admin_last_active", Date.now().toString());
+    } else {
+      setIsLoggedIn(false);
+      localStorage.removeItem("admin_logged_in");
+      localStorage.removeItem("admin_last_active");
+    }
   }, []);
+
+  // Listen for user activity to reset session timer
+  useEffect(() => {
+    if (!isLoggedIn) return;
+
+    const updateLastActive = () => {
+      localStorage.setItem("admin_last_active", Date.now().toString());
+    };
+
+    const events = ["mousemove", "keydown", "mousedown", "touchstart"];
+    events.forEach((evt) => window.addEventListener(evt, updateLastActive));
+
+    // Session timeout interval
+    const interval = setInterval(() => {
+      if (isSessionExpired()) {
+        setIsLoggedIn(false);
+        localStorage.removeItem("admin_logged_in");
+        localStorage.removeItem("admin_last_active");
+        alert("Session expired due to inactivity.");
+      }
+    }, 30 * 1000); // check every 30 seconds
+
+    return () => {
+      events.forEach((evt) => window.removeEventListener(evt, updateLastActive));
+      clearInterval(interval);
+    };
+  }, [isLoggedIn]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (username === ADMIN_USER && password === ADMIN_PASS) {
       setIsLoggedIn(true);
       localStorage.setItem("admin_logged_in", "true");
+      localStorage.setItem("admin_last_active", Date.now().toString());
     } else {
       alert("Invalid credentials");
     }
@@ -37,6 +82,7 @@ function AdminPage() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("admin_logged_in");
+    localStorage.removeItem("admin_last_active");
   };
 
   const navLinks = [
