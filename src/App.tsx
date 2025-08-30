@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/bracket" element={<TonamentDrawPage />} />
-          <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="/Admin/*" element={<AdminPage />} />
         </Routes>
       </BrowserRouter>
     </>

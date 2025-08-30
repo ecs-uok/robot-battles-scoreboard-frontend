@@ -86,12 +86,12 @@ function AdminPage() {
   };
 
   const navLinks = [
-    { to: "/admin/NewGame", label: "New Game" },
-    { to: "/admin/ControlPanel", label: "Control Panel" },
-    { to: "/admin/AddPoints", label: "Add Points" },
-    { to: "/admin/GameHistory", label: "Game History" },
-    { to: "/admin/Draw", label: "Bracket" },
-    { to: "/admin/ManageTeams", label: "Manage Teams" },
+    { to: "/Admin/NewGame", label: "New Game" },
+    { to: "/Admin/ControlPanel", label: "Control Panel" },
+    { to: "/Admin/AddPoints", label: "Add Points" },
+    { to: "/Admin/GameHistory", label: "Game History" },
+    { to: "/Admin/Draw", label: "Bracket" },
+    { to: "/Admin/ManageTeams", label: "Manage Teams" },
   ];
 
   if (!isLoggedIn) {

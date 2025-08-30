@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 interface gameType {
   team1name: string;
   team2name: string;
@@ -16,7 +18,7 @@ const ShowGames = () => {
   useEffect(() => {
     function fetchData() {
       try {
-        fetch("http://localhost:5000/games")
+        fetch(`${API_BASE_URL}/games`)
           .then((response) => response.json())
           .then((json) => {
             setGamesList(json.reverse());

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import TitleImg from "../assets/Images/scoreboard-title.png";
 import { useNavigate } from "react-router-dom";
 
-const host = "http://localhost:5000";
+const host = import.meta.env.VITE_API_BASE_URL;
 
 function NewGame() {
   const [teams, setTeams] = useState<{ [id: string]: { leader: string; logo: string; name: string } }>({});
@@ -72,7 +72,7 @@ function NewGame() {
     };
     fetch(host + "/setPitOpen", requestOptions4);
 
-    navigate("/admin/ControlPanel");
+    navigate("/Admin/ControlPanel");
   }
 
   const handleTotalTimeChange = (e: any) => setTotalTime(e.target.value);

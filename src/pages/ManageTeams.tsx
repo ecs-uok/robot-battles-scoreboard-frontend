@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+import TitleImg from "../assets/Images/scoreboard-title.png";
+
 function ManageTeam() {
   const [teamId, setTeamId] = useState("");
   const [teamName, setTeamName] = useState("");
@@ -23,7 +27,7 @@ function ManageTeam() {
   // Fetch all teams
   async function fetchTeams() {
     try {
-      const res = await fetch("http://localhost:5000/teams");
+      const res = await fetch(`${API_BASE_URL}/teams`);
       const data = await res.json();
       setTeams(data);
 
@@ -60,7 +64,7 @@ function ManageTeam() {
       points: 0, // Always set points to zero for new team
     };
     try {
-      const res = await fetch("http://localhost:5000/addTeam", {
+      const res = await fetch(`${API_BASE_URL}/addTeam`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(team),
@@ -94,7 +98,7 @@ function ManageTeam() {
 
   const handleEditSave = async (id: string) => {
     try {
-      const res = await fetch("http://localhost:5000/addTeam", {
+      const res = await fetch(`${API_BASE_URL}/addTeam`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, ...editTeam }),
@@ -116,7 +120,7 @@ function ManageTeam() {
   const handleDeleteTeam = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this team?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/deleteTeam/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/deleteTeam/${id}`, {
         method: "DELETE",
       });
       const data = await res.json();
@@ -138,7 +142,7 @@ function ManageTeam() {
       formData.append("logo", file);
 
       // Use your backend proxy endpoint
-      const res = await fetch("http://localhost:5000/api/upload-logo", {
+      const res = await fetch(`${API_BASE_URL}/api/upload-logo`, {
         method: "POST",
         body: formData,
       });
@@ -175,7 +179,7 @@ function ManageTeam() {
       const formData = new FormData();
       formData.append("logo", file);
 
-      const res = await fetch("http://localhost:5000/api/upload-logo", {
+      const res = await fetch(`${API_BASE_URL}/api/upload-logo`, {
         method: "POST",
         body: formData,
       });
@@ -204,6 +208,7 @@ function ManageTeam() {
 
   return (
     <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 via-white to-yellow-50">
+      
       <div className="w-full flex flex-col items-center mt-5 mb-2">
         <div className="text-3xl font-bold text-blue-700 mb-4">Manage Team</div>
       </div>
