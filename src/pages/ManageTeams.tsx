@@ -3,11 +3,9 @@ import { useState, useEffect } from "react";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function ManageTeam() {
-  const [teamId, setTeamId] = useState("");
   const [teamName, setTeamName] = useState("");
   const [leader, setLeader] = useState("");
   const [logo, setLogo] = useState("");
-  const [points, setPoints] = useState("");
   const [message, setMessage] = useState("");
   const [teams, setTeams] = useState<{ [id: string]: { name: string; leader: string; logo: string; points: number } }>({});
   const [editId, setEditId] = useState<string | null>(null);
@@ -39,11 +37,9 @@ function ManageTeam() {
       let nextNum = 1;
       while (ids.includes(nextNum) && nextNum <= 99) nextNum++;
       setAutoTeamId(`L${nextNum.toString().padStart(2, "0")}`);
-      setTeamId(`L${nextNum.toString().padStart(2, "0")}`);
     } catch (e) {
       setTeams({});
       setAutoTeamId("L01");
-      setTeamId("L01");
     }
   }
 
@@ -62,20 +58,16 @@ function ManageTeam() {
       points: 0, // Always set points to zero for new team
     };
     try {
-      const res = await fetch(`${API_BASE_URL}/addTeam`, {
+      await fetch(`${API_BASE_URL}/addTeam`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(team),
       });
-      const data = await res.json();
-      setMessage(data.message);
-      if (data.message === "Team added successfully") {
-        setTeamName("");
-        setLeader("");
-        setLogo("");
-        setPoints("");
-        fetchTeams(); // Refresh team list and autoTeamId
-      }
+      setMessage("Team added successfully");
+      setTeamName("");
+      setLeader("");
+      setLogo("");
+      fetchTeams(); // Refresh team list and autoTeamId
     } catch (err) {
       setMessage("Failed to add team");
     }
@@ -96,7 +88,7 @@ function ManageTeam() {
 
   const handleEditSave = async (id: string) => {
     try {
-      const res = await fetch(`${API_BASE_URL}/addTeam`, {
+      await fetch(`${API_BASE_URL}/addTeam`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, ...editTeam }),

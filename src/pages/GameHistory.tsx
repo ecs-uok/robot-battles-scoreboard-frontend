@@ -30,7 +30,7 @@ const ShowGames = () => {
     fetchData();
   }, []);
   console.log(gamesList);
-  const content = gamesList.map((game, idx) => {
+  const content = gamesList.map((game) => {
     // Determine winner using winnerId
     let winnerName = "";
     if (game.winnerId && game.winnerId !== "0" && game.winnerId !== 0) {
