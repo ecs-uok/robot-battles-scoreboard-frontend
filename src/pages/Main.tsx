@@ -5,7 +5,6 @@ import "../styles/scoreboard.css";
 import FireWorks from "../components/FireWorks";
 import LogoSlider from "../components/LogoSlider";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
 
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";

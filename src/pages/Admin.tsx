@@ -85,15 +85,6 @@ function AdminPage() {
     localStorage.removeItem("admin_last_active");
   };
 
-  const navLinks = [
-    { to: "/Admin/NewGame", label: "New Game" },
-    { to: "/Admin/ControlPanel", label: "Control Panel" },
-    { to: "/Admin/AddPoints", label: "Add Points" },
-    { to: "/Admin/GameHistory", label: "Game History" },
-    { to: "/Admin/Draw", label: "Bracket" },
-    { to: "/Admin/ManageTeams", label: "Manage Teams" },
-  ];
-
   if (!isLoggedIn) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
