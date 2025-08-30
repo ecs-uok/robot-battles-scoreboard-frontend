@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-import TitleImg from "../assets/Images/scoreboard-title.png";
-
 function ManageTeam() {
   const [teamId, setTeamId] = useState("");
   const [teamName, setTeamName] = useState("");
