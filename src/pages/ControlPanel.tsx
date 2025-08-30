@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function ControlPanel() {
   var team1Id: number;
   var team2Id: number;
@@ -20,7 +22,7 @@ function ControlPanel() {
 
   async function setTeamInfo() {
     fetch(
-      "http://localhost:5000/getGameDetails"
+      `${API_BASE_URL}/getGameDetails`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -33,7 +35,7 @@ function ControlPanel() {
   }
   const navigate = useNavigate();
   function handleAddPoints() {
-    navigate("/admin/AddPoints");
+    navigate("/Admin/AddPoints");
   }
   function handleStartStop() {
     if (start) {
@@ -44,11 +46,11 @@ function ControlPanel() {
         body: "{}",
       };
       fetch(
-        "http://localhost:5000/stopMain",
+        `${API_BASE_URL}/stopMain`,
         requestOptions
       );
       fetch(
-        "http://localhost:5000/stopPit",
+        `${API_BASE_URL}/stopPit`,
         requestOptions
       );
     } else {
@@ -59,7 +61,7 @@ function ControlPanel() {
         body: "{}",
       };
       fetch(
-        "http://localhost:5000/startMain",
+        `${API_BASE_URL}/startMain`,
         requestOptions
       );
     }
@@ -72,7 +74,7 @@ function ControlPanel() {
   // Fetch pit status from backend
   async function fetchPitStatus() {
     try {
-      const res = await fetch("http://localhost:5000/pitstatus");
+      const res = await fetch(`${API_BASE_URL}/pitstatus`);
       const data = await res.json();
       setPitStatus(!!data.pitopen);
     } catch (e) {
@@ -83,7 +85,7 @@ function ControlPanel() {
   // Fetch main timer running status from backend
   async function fetchMainRunningStatus() {
     try {
-      const res = await fetch("http://localhost:5000/timerstatus");
+      const res = await fetch(`${API_BASE_URL}/timerstatus`);
       const data = await res.json();
       setStart(!!data.mainRunning);
     } catch (e) {
@@ -94,7 +96,7 @@ function ControlPanel() {
   useEffect(() => {
     AOS.init();
     const eventSource = new EventSource(
-      "http://localhost:5000/timer"
+      `${API_BASE_URL}/timer`
     );
     if (typeof eventSource != undefined) {
       let oldVal = -1;
@@ -146,7 +148,7 @@ function ControlPanel() {
         body: "{}",
       };
       fetch(
-        "http://localhost:5000/resetPit",
+        `${API_BASE_URL}/resetPit`,
         requestOptions
       );
     } else {
@@ -157,7 +159,7 @@ function ControlPanel() {
         body: "{}",
       };
       fetch(
-        "http://localhost:5000/startPit",
+        `${API_BASE_URL}/startPit`,
         requestOptions
       );
     }
@@ -170,11 +172,11 @@ function ControlPanel() {
       body: "{}",
     };
     fetch(
-      "http://localhost:5000/resetMain",
+      `${API_BASE_URL}/resetMain`,
       requestOptions
     );
     fetch(
-      "http://localhost:5000/resetPit",
+      `${API_BASE_URL}/resetPit`,
       requestOptions
     );
     setPit(false);

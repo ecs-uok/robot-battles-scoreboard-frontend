@@ -93,9 +93,11 @@ function Main() {
     gavelLogo
   ];
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   async function setTeamInfo() {
     fetch(
-      "http://localhost:5000/getGameDetails"
+      `${API_BASE_URL}/getGameDetails`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -111,7 +113,7 @@ function Main() {
   useEffect(() => {
     AOS.init({ once: true });
     const eventSource = new EventSource(
-      "http://localhost:5000/timer"
+      `${API_BASE_URL}/timer`
     );
     if (typeof eventSource != undefined) {
       console.log("Connection with timer successful");

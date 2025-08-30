@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import "../styles/scoreboard.css";
 
 //images
-import bgImg from "../assets/Images/scoreboard-background.png";
+import TitleImg from "../assets/Images/scoreboard-title.png";
 import versusImg from "../assets/Images/versus-img.png";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function AddPoints() {
-  const host = "http://localhost:5000";
   const [team1Points, setTeam1Points] = useState("");
   const [team2Points, setTeam2Points] = useState("");
 
@@ -41,7 +42,7 @@ function AddPoints() {
       body: JSON.stringify(body),
     };
     console.log(body);
-    fetch(host + "/saveGame", requestOptions)
+    fetch(`${API_BASE_URL}/saveGame`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -50,7 +51,7 @@ function AddPoints() {
       });
   }
   async function setTeamInfo() {
-    fetch(host + "/getGameDetails")
+    fetch(`${API_BASE_URL}/getGameDetails`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -62,7 +63,7 @@ function AddPoints() {
   }
 
   useEffect(() => {
-    const eventSource = new EventSource(host + "/timer");
+    const eventSource = new EventSource(`${API_BASE_URL}/timer`);
     if (typeof eventSource != undefined) {
       console.log("Connection with timer successful");
       let oldVal = -1;
@@ -97,8 +98,14 @@ function AddPoints() {
   }, []);
   return (
     <div
-      className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 via-white to-yellow-50"
-    >
+      className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 via-white to-yellow-50 mb-5" >
+      <div className="w-full flex flex-col items-center mt-5 mb-5">
+        <img
+          className="text-black h-13 drop-shadow-xl w-11/12 max-w-xs md:max-w-md lg:max-w-lg rounded-[18px] bg-[rgba(255,255,255,0.85)]"
+          src={TitleImg}
+          alt="uok robot battles scoreboard"
+        />
+      </div>
       <div className="w-full flex flex-col items-center mt-5 mb-2">
         <div className="text-xl md:text-2xl font-bold text-blue-700 text-center mb-1 tracking-wider">
           {gameNo !== undefined && gameNo !== null ? `Game ID: ${gameNo}` : ""}
