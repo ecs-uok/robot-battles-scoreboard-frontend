@@ -13,6 +13,7 @@ export default function Navbar({ children }: { children?: ReactNode }) {
     { to: "/admin/AddPoints", label: "Add Points" },
     { to: "/admin/GameHistory", label: "Game History" },
     { to: "/admin/Draw", label: "Bracket" },
+    { to: "/admin/ManageTeams", label: "Manage Teams" }, // <-- updated label and route
   ];
 
   return (
