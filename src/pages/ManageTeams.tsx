@@ -16,6 +16,9 @@ function ManageTeam() {
     points: 0,
   });
   const [autoTeamId, setAutoTeamId] = useState(""); // for auto-generated team id
+  const [uploading, setUploading] = useState(false);
+  // Add a new state for edit logo uploading
+  const [editUploading, setEditUploading] = useState(false);
 
   // Fetch all teams
   async function fetchTeams() {
@@ -124,6 +127,81 @@ function ManageTeam() {
     }
   };
 
+  // Freeimage.host upload handler (via Node.js proxy)
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setMessage("");
+    try {
+      const formData = new FormData();
+      formData.append("logo", file);
+
+      // Use your backend proxy endpoint
+      const res = await fetch("http://localhost:5000/api/upload-logo", {
+        method: "POST",
+        body: formData,
+      });
+      if (!res.ok) {
+        setMessage("Failed to upload logo. Network error: " + res.status + " " + res.statusText);
+        setUploading(false);
+        return;
+      }
+      const data = await res.json();
+      if (data && data.status_code === 200 && data.image) {
+        const url = data.image.url || data.image.url_display;
+        if (url) {
+          setLogo(url);
+          setMessage("Logo uploaded successfully!");
+        } else {
+          setMessage("Upload succeeded but no URL returned.");
+        }
+      } else {
+        setMessage("Failed to upload logo. " + (data && data.error ? JSON.stringify(data.error) : ""));
+      }
+    } catch (err: any) {
+      setMessage("Error uploading logo: " + (err?.message || String(err)));
+    }
+    setUploading(false);
+  };
+
+  // Handler for uploading a new logo in edit mode
+  const handleEditLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setEditUploading(true);
+    setMessage("");
+    try {
+      const formData = new FormData();
+      formData.append("logo", file);
+
+      const res = await fetch("http://localhost:5000/api/upload-logo", {
+        method: "POST",
+        body: formData,
+      });
+      if (!res.ok) {
+        setMessage("Failed to upload logo. Network error: " + res.status + " " + res.statusText);
+        setEditUploading(false);
+        return;
+      }
+      const data = await res.json();
+      if (data && data.status_code === 200 && data.image) {
+        const url = data.image.url || data.image.url_display;
+        if (url) {
+          setEditTeam(prev => ({ ...prev, logo: url }));
+          setMessage("Logo uploaded successfully!");
+        } else {
+          setMessage("Upload succeeded but no URL returned.");
+        }
+      } else {
+        setMessage("Failed to upload logo. " + (data && data.error ? JSON.stringify(data.error) : ""));
+      }
+    } catch (err: any) {
+      setMessage("Error uploading logo: " + (err?.message || String(err)));
+    }
+    setEditUploading(false);
+  };
+
   return (
     <div className="font-custom flex flex-col items-center justify-start min-h-[calc(100vh-64px)] bg-gradient-to-br from-blue-50 via-white to-yellow-50">
       <div className="w-full flex flex-col items-center mt-5 mb-2">
@@ -167,19 +245,26 @@ function ManageTeam() {
               />
             </div>
             <div>
-              <label className="block font-semibold mb-1 text-blue-900">Logo URL</label>
+              <label className="block font-semibold mb-1 text-blue-900">Team Logo</label>
               <input
-                type="text"
-                className="w-full p-2 rounded-lg border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition"
-                value={logo}
-                onChange={(e) => setLogo(e.target.value)}
-                required
+                type="file"
+                accept="image/*"
+                className="w-full p-2 rounded-lg border-2 border-blue-200 bg-gray-100"
+                onChange={handleLogoUpload}
+                disabled={uploading}
               />
+              {uploading && <div className="text-blue-500 text-xs mt-1">Uploading...</div>}
+              {logo && (
+                <div className="mt-2 flex flex-col items-center">
+                  <img src={logo} alt="Logo Preview" className="w-16 h-16 rounded-full border-2 border-blue-200 object-contain bg-white" />
+                  <span className="text-xs text-gray-400 break-all">{logo}</span>
+                </div>
+              )}
             </div>
-            {/* Points input removed */}
             <button
               type="submit"
               className="bg-gradient-to-r from-blue-400 to-blue-700 text-white font-bold py-2 rounded-xl shadow hover:scale-105 transition"
+              disabled={uploading}
             >
               Add Team
             </button>
@@ -191,7 +276,7 @@ function ManageTeam() {
           </form>
         </div>
         {/* Show all teams - Right */}
-        <div className="w-full md:w-1/2 flex flex-col items-center mt-8 md:mt-0">
+        <div className="w-full md:w-1/2 flex flex-col items-center mt-8 mb-10 md:mt-0">
           <div className="text-2xl font-bold text-blue-700 mb-4">All Teams</div>
           <div className="w-full flex flex-wrap justify-center gap-4">
             {Object.entries(teams).map(([id, team]) => (
@@ -215,6 +300,16 @@ function ManageTeam() {
                       onChange={e => handleEditChange("name", e.target.value)}
                     />
                     <img src={editTeam.logo} alt={editTeam.name} className="w-16 h-16 rounded-full border-2 border-blue-200 mb-2 object-contain bg-white" />
+                    {/* New: Upload new logo in edit mode */}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="w-full mb-1 p-1 rounded-lg border border-blue-200 text-xs file:text-xs"
+                      onChange={handleEditLogoUpload}
+                      disabled={editUploading}
+                      style={{ fontSize: "0.75rem" }}
+                    />
+                    {editUploading && <div className="text-blue-500 text-xs mb-1">Uploading...</div>}
                     <input
                       type="text"
                       className="w-full mb-1 text-xs font-bold text-gray-800 text-center border-b border-blue-100"
@@ -242,6 +337,7 @@ function ManageTeam() {
                         className="bg-blue-500 text-white px-2 py-1 rounded text-xs font-bold hover:bg-blue-700"
                         onClick={() => handleEditSave(id)}
                         type="button"
+                        disabled={editUploading}
                       >
                         Save
                       </button>
@@ -249,6 +345,7 @@ function ManageTeam() {
                         className="bg-gray-300 text-gray-800 px-2 py-1 rounded text-xs font-bold hover:bg-gray-400"
                         onClick={handleEditCancel}
                         type="button"
+                        disabled={editUploading}
                       >
                         Cancel
                       </button>
