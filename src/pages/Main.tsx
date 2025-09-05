@@ -29,31 +29,43 @@ interface DialogProps {
   isOpen: boolean;
   title: string;
   winnerData: {name: string, logo: string};
+  onClose?: () => void;
 }
 
-const Dialog: React.FC<DialogProps> = ({ isOpen, title, winnerData }) => {
+const Dialog: React.FC<DialogProps> = ({ isOpen, title, winnerData, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 " >
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 backdrop-blur-sm p-4" >
       <FireWorks fire={winnerData!=null?true:false} />
-      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
-        <div className="flex justify-center items-center mb-4">
-          <h3 className="text-4xl font-semibold text-black">{title}</h3>
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl max-w-sm sm:max-w-md w-full p-6 sm:p-8 border border-cyan-400/30 animate-pulse-glow relative mx-4">
+        {/* Close button */}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 sm:top-4 sm:right-4 text-cyan-400 hover:text-white transition-colors duration-200 text-xl sm:text-2xl font-bold z-10"
+            aria-label="Close"
+          >
+            ×
+          </button>
+        )}
+        
+        <div className="flex justify-center items-center mb-4 sm:mb-6">
+          <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text animate-pulse text-center">{title}</h3>
         </div>
         <>
           <div className="flex flex-col" >
-            <div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-xl blur-lg opacity-75 animate-pulse"></div>
               <img
                 data-aos="zoom-out-up"
                 data-aos-delay="1500"
                 data-aos-duration="500"
                 src={winnerData.logo}
-                className="w-2/5 md:w-4/5 mx-auto rounded-md"
-                // style={{ paddingRight: "10px", backgroundColor: "#0DECC4" }}
+                className="relative w-3/5 sm:w-4/5 max-w-48 mx-auto rounded-xl border-2 border-cyan-400 shadow-2xl"
               />
             </div>
-            <div className="mt-5 flex justify-center text-2xl text-red-500" >
+            <div className="mt-4 sm:mt-6 flex justify-center text-xl sm:text-2xl lg:text-3xl font-bold text-transparent bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text animate-bounce text-center px-2" >
               {winnerData.name}
             </div>
           </div>
@@ -80,7 +92,8 @@ function Main() {
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
   const [winnerData, setWinnerData] = useState<{name: string; logo: string;} | null>(null);
-  const [winnerIds, setWinnerIds] = useState<{winner_id?: any, team1_id?: any, team2_id?: any}>({});
+  const [winnerIds, setWinnerIds] = useState<{winner_id?: any, team1_id?: any, team2_id?: any, game_id?: any}>({});
+  const [currentGameId, setCurrentGameId] = useState<number | null>(null);
 
   const logos = [
     ecscLogo,
@@ -132,11 +145,14 @@ function Main() {
           team1Id = eventData.team1Id;
           team2Id = eventData.team2Id;
           winnerId = eventData.winnerId;
+          
+          setCurrentGameId(eventData.gameId);
           setTeamInfo();
           setWinnerIds({
             team1_id: eventData.team1Id,
             team2_id: eventData.team2Id,
-            winner_id: eventData.winnerId
+            winner_id: eventData.winnerId,
+            game_id: eventData.gameId
           });
         }
       };
@@ -148,8 +164,10 @@ function Main() {
 
   // This effect will update winnerData when all info is available
   useEffect(() => {
-    const { winner_id, team1_id, team2_id } = winnerIds;
-    if (winner_id && team1_id && team2_id) {
+    const { winner_id, team1_id, team2_id, game_id } = winnerIds;
+    
+    // Update winner data when there's a valid winner
+    if (winner_id && team1_id && team2_id && winner_id !== 0 && winner_id !== "0") {
       if (winner_id == team1_id) {
         setWinnerData({
           name: team1name ?? "",
@@ -160,15 +178,16 @@ function Main() {
           name: team2name ?? "",
           logo: team2Logo ?? ""
         });
-      } else {
-        setWinnerData(null);
       }
+    } else {
+      // Clear winner data if no valid winner
+      setWinnerData(null);
     }
   }, [winnerIds, team1name, team2name, team1Logo, team2Logo]);
 
   return (
     <div
-      className="font-custom w-full" // removed overflow-hidden
+      className="font-custom w-full min-h-screen flex flex-col justify-between items-center relative overflow-hidden"
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",
@@ -176,198 +195,207 @@ function Main() {
         minHeight: "100vh",
       }}
     >
-      <Dialog 
-        isOpen={winnerData!=null?true:false} 
-        title="Winner" 
-        winnerData={winnerData ?? { name: "", logo: "" }}
-      />        
-      <div className="text-2xl  mx-auto    w-full">
-        <div
-          style={{
-            maxWidth: "85%",
-            margin: "0 auto",
-            background: "rgba(255,255,255,0.9)",
-            overflow: "hidden",
-            borderBottomLeftRadius: "12px",
-            borderBottomRightRadius: "12px"
-          }}
-          className="md:!max-w-[50%]"
-        >
-          <img
-            className="text-black  lg:px-8 h-13 pt-1"
-            src={TitleImg}
-            alt="uok robot battles scoreboard"
-            style={{ width: "100%", display: "block" }}
-          />
+      {/* Animated Background Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-cyan-900/20 animate-pulse"></div>
+      <div className="absolute inset-0 bg-black/30"></div>
+      
+      {/* Floating Particles Effect */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-cyan-400 rounded-full opacity-20 animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 4}s`
+            }}
+          ></div>
+        ))}
+      </div>
+
+      {/* Title Section */}
+      <div className="w-full flex justify-center mt-4 sm:mt-6 mb-2 px-4 relative z-10" data-aos="fade-down" data-aos-duration="1000">
+        <div className="relative bg-gradient-to-br from-gray-900/95 via-blue-900/90 to-cyan-900/95 border-2 sm:border-4 border-cyan-400 rounded-2xl sm:rounded-3xl px-4 sm:px-6 md:px-8 py-4 sm:py-6 shadow-2xl backdrop-blur-md text-center max-w-3xl w-full transform hover:scale-105 transition-all duration-300">
+          {/* Glowing border effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-2xl sm:rounded-3xl blur-lg opacity-30 animate-pulse -z-10"></div>
+          
+          <div className="text-xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-transparent bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-500 bg-clip-text tracking-wide sm:tracking-wider md:tracking-widest animate-shimmer" style={{letterSpacing: "0.05em"}}>
+            UOK ROBOT BATTLES
+          </div>
+          <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-transparent bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text mt-1 sm:mt-2 tracking-wide sm:tracking-wider md:tracking-widest animate-pulse">
+            2025
+          </div>
+          <div className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-cyan-400 mt-1 sm:mt-2 tracking-wide sm:tracking-wider md:tracking-widest animate-bounce">
+            LIGHT WEIGHT CATEGORY
+          </div>
         </div>
       </div>
+
+      {/* Main Content */}
       {team1Logo && team2Logo && (
-        <div>
-          <div className="hidden md:inline-grid mt-2 mx-8 md:mb-6 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12  text-right  md:pt-4  ">
-            <div
-              data-aos="fade-right"
-              data-aos-delay="500"
-              data-aos-duration="1000"
-              style={{
-                backgroundImage: `url(${team1Logo})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundColor: "#0DECC4",
-              }}
-              className=" md:col-span-3 lg:col-span-5 rounded-l-2xl text-2xl md:text-4xl text-red-600 pt-3 "
-            >
-              <span style={{ color: "#FFF338" }}>TEAM</span>
-              <br /> {team1name}
+        <div className="flex flex-col items-center justify-center flex-1 w-full relative z-10 px-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+          {/* Mobile Layout - Stacked */}
+          <div className="flex flex-col lg:hidden items-center justify-center w-full gap-4 max-w-md">
+            {/* Team 1 */}
+            <div className="relative group w-full" data-aos="slide-right" data-aos-duration="800" data-aos-delay="500">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
+              <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-red-900/30 to-gray-900/95 border-2 rounded-2xl px-4 py-6 border-red-500 w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
+                <div className="text-lg font-bold text-transparent bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text uppercase tracking-wider mb-3 animate-pulse">
+                  TEAM {team1name}
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
+                  <img 
+                    src={team1Logo} 
+                    className="relative w-24 h-24 object-contain rounded-full border-2 border-red-500 bg-gradient-to-br from-gray-900 to-red-900/20 mb-3 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
+                  />
+                </div>
+                <div className="w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent rounded-full animate-pulse"></div>
+              </div>
             </div>
 
-            <div className="md:col-span-3 lg:col-span-2 ">
-              <img
-                data-aos="fade-up"
-                data-aos-delay="1000"
-                data-aos-duration="500"
-                src={versusImg}
-                alt="robot 1 vs robot 2"
-                className="w-1/6 sm:w-1/3 mx-auto"
-              />
+            {/* VS and Timer */}
+            <div className="flex flex-col items-center justify-center w-full" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="700">
+              <div className="relative mb-4">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 blur-2xl opacity-50 animate-pulse"></div>
+                <div className="relative text-4xl font-extrabold text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text animate-bounce">
+                  VS
+                </div>
+              </div>
+              
+              {/* Timer Display */}
+              <div className="relative bg-gradient-to-br from-gray-900/95 via-green-900/30 to-gray-900/95 border-2 border-green-400 rounded-xl px-4 py-3 backdrop-blur-md shadow-2xl transform hover:scale-105 transition-all duration-300 w-full max-w-xs">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-cyan-400 rounded-xl blur-lg opacity-30 animate-pulse -z-10"></div>
+                
+                <div className="text-xs font-bold text-cyan-200 uppercase tracking-wider mb-1 text-center animate-pulse">
+                  TIME REMAINING
+                </div>
+                <div className="text-3xl font-extrabold text-transparent bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-center mb-2 animate-pulse">
+                  {mainTime ? Math.floor(mainTime / 60) : mainTime || "0"}:
+                  {mainTime
+                    ? (mainTime % 60).toLocaleString("en-US", {
+                        minimumIntegerDigits: 2,
+                        useGrouping: false,
+                      })
+                    : mainTime || "00"}
+                </div>
+                <div className="text-xs font-bold text-cyan-200 uppercase tracking-wider mb-1 text-center animate-pulse">
+                  ADDITIONAL TIME
+                </div>
+                <div className="text-xl font-extrabold text-transparent bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-center animate-pulse">
+                  {pitTime || "0"}
+                </div>
+              </div>
             </div>
-            <div
-              data-aos="fade-left"
-              data-aos-delay="500"
-              data-aos-duration="1000"
-              style={{
-                backgroundImage: `url(${team2Logo})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center ",
-                backgroundColor: "#001AFF",
-              }}
-              className="md:col-span-3 lg:col-span-5  rounded-r-2xl text-left text-2xl md:text-4xl text-red-600 pt-3"
-            >
-              <span style={{ color: "#FFF338" }}>TEAM</span>
-              <br />
-              {team2name}
+
+            {/* Team 2 */}
+            <div className="relative group w-full" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
+              <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-blue-900/30 to-gray-900/95 border-2 rounded-2xl px-4 py-6 border-blue-400 w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
+                <div className="text-lg font-bold text-transparent bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text uppercase tracking-wider mb-3 animate-pulse">
+                  TEAM {team2name}
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
+                  <img 
+                    src={team2Logo} 
+                    className="relative w-24 h-24 object-contain rounded-full border-2 border-blue-400 bg-gradient-to-br from-gray-900 to-blue-900/20 mb-3 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
+                  />
+                </div>
+                <div className="w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full animate-pulse"></div>
+              </div>
             </div>
           </div>
-          <div
-            data-aos="zoom-in-up"
-            data-aos-delay="1500"
-            data-aos-duration="500"
-            className="md:hidden mt-8 flex flex-row items-center justify-center text-2xl text-red-500"
-          >
-            {"TEAM " + team1name}
-          </div>
 
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-12 md:pt-5  md:my-1 mx-8 ">
-            <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center md:flex-col flex-row  ">
-              {/* <div className="w-1 h-full bg-white"></div> */}
-              <img
-                data-aos="zoom-out-up"
-                data-aos-delay="1500"
-                data-aos-duration="500"
-                src={team1Logo}
-                className="w-2/5 md:w-4/5 mx-auto"
-                style={{ paddingRight: "10px", backgroundColor: "#0DECC4" }}
-              />
-              <div className=" hidden md:block md:flex md:flex-col items-center justify-center ">
-                <div className=" text-xl text-left text-white pt-3">LEADER</div>
-                <div
-                  className="text-xl text-left "
-                  style={{ color: "#FFF338" }}
-                >
-                  {team1Leader}
-                  <hr className=" md:border-2  border-white my-5 md:hidden" />
+          {/* Desktop Layout - Horizontal */}
+          <div className="hidden lg:flex flex-row items-center justify-center w-full gap-6 xl:gap-16">
+            {/* Team 1 */}
+            <div className="relative group" data-aos="slide-right" data-aos-duration="800" data-aos-delay="500">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
+              <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-red-900/30 to-gray-900/95 border-4 rounded-3xl px-6 py-8 xl:px-10 xl:py-10 border-red-500 max-w-sm w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
+                <div className="text-xl xl:text-3xl font-bold text-transparent bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text uppercase tracking-wider mb-4 animate-pulse">
+                  TEAM {team1name}
+                </div>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
+                  <img 
+                    src={team1Logo} 
+                    className="relative w-36 h-36 xl:w-44 xl:h-44 object-contain rounded-full border-4 border-red-500 bg-gradient-to-br from-gray-900 to-red-900/20 mb-4 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
+                  />
+                </div>
+                <div className="w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent rounded-full animate-pulse"></div>
+              </div>
+            </div>
+
+            {/* VS and Timer */}
+            <div className="flex flex-col items-center justify-center px-4 xl:px-8" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="700">
+              <div className="relative mb-6">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 blur-2xl opacity-50 animate-pulse"></div>
+                <div className="relative text-6xl xl:text-8xl font-extrabold text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text animate-bounce">
+                  VS
                 </div>
               </div>
-              <div className="md:hidden flex flex-col items-center justify-center text-center">
-                <div className="  text-xl   text-white pt-3">LEADER</div>
-                <div className="text-xl   " style={{ color: "#FFF338" }}>
-                  {team1Leader}
-                  <hr className=" md:border-2  border-white my-5 md:hidden" />
+              
+              {/* Timer Display */}
+              <div className="relative bg-gradient-to-br from-gray-900/95 via-green-900/30 to-gray-900/95 border-4 border-green-400 rounded-2xl px-6 py-4 backdrop-blur-md shadow-2xl transform hover:scale-105 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-cyan-400 rounded-2xl blur-lg opacity-30 animate-pulse -z-10"></div>
+                
+                <div className="text-base xl:text-lg font-bold text-cyan-200 uppercase tracking-widest mb-2 text-center animate-pulse">
+                  TIME REMAINING
+                </div>
+                <div className="text-5xl xl:text-7xl font-extrabold text-transparent bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-center mb-4 animate-pulse">
+                  {mainTime ? Math.floor(mainTime / 60) : mainTime || "0"}:
+                  {mainTime
+                    ? (mainTime % 60).toLocaleString("en-US", {
+                        minimumIntegerDigits: 2,
+                        useGrouping: false,
+                      })
+                    : mainTime || "00"}
+                </div>
+                <div className="text-base xl:text-lg font-bold text-cyan-200 uppercase tracking-widest mb-2 text-center animate-pulse">
+                  ADDITIONAL TIME
+                </div>
+                <div className="text-3xl xl:text-4xl font-extrabold text-transparent bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-center animate-pulse">
+                  {pitTime || "0"}
                 </div>
               </div>
             </div>
 
-            <div className="border-2 border-white rounded-xl md:border-none md:col-span-3 lg:col-span-6 py-4 md:py-0">
-              <div className="text-3xl text-center text-white">
-                TIME REMAINING
-              </div>
-              <div className="text-8xl text-center text-white">
-                {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
-                {mainTime
-                  ? (mainTime % 60).toLocaleString("en-US", {
-                      minimumIntegerDigits: 2,
-                      useGrouping: false,
-                    })
-                  : mainTime || "00"}
-              </div>
-              <hr className="hidden md:border-2  md:border-white my-5" />
-              <div className="mt-4 md-mt-0 text-2xl text-center text-white">
-                ADDITIONAL TIME
-              </div>
-              <div className="text-6xl text-center text-green-400">
-                {pitTime || "0"}
-              </div>
-              <div className="text-xl  text-center text-white">SECONDS</div>
-            </div>
-            <div
-              data-aos="zoom-in-up"
-              data-aos-delay="1500"
-              data-aos-duration="500"
-              className="md:hidden  flex flex-row items-center justify-center text-2xl text-red-500"
-            >
-              {"TEAM " + team2name}
-            </div>
-
-            <div className="md:col-span-3 lg:col-span-3  flex items-center justify-center md:flex-col-reverse flex-row  ">
-              <div className="for-position-change-purpose">
-                <div className=" hidden md:block  md:flex md:flex-col items-center justify-center ">
-                  <div className=" text-xl text-left text-white pt-3">
-                    LEADER
-                  </div>
-                  <div
-                    className="text-xl text-left "
-                    style={{ color: "#FFF338" }}
-                  >
-                    {team2Leader}
-                    <hr className=" md:border-2  border-white my-5 md:hidden" />
-                  </div>
+            {/* Team 2 */}
+            <div className="relative group" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
+              <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-blue-900/30 to-gray-900/95 border-4 rounded-3xl px-6 py-8 xl:px-10 xl:py-10 border-blue-400 max-w-sm w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
+                <div className="text-xl xl:text-3xl font-bold text-transparent bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text uppercase tracking-wider mb-4 animate-pulse">
+                  TEAM {team2name}
                 </div>
-                <div className="md:hidden  flex flex-col items-center text-center justify-center">
-                  <div className=" text-xl  text-white pt-3">LEADER</div>
-                  <div
-                    className="text-lg md:text-xl "
-                    style={{ color: "#FFF338" }}
-                  >
-                    {team2Leader}
-                    <hr className=" md:border-2  border-white my-5 md:hidden " />
-                  </div>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
+                  <img 
+                    src={team2Logo} 
+                    className="relative w-36 h-36 xl:w-44 xl:h-44 object-contain rounded-full border-4 border-blue-400 bg-gradient-to-br from-gray-900 to-blue-900/20 mb-4 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
+                  />
                 </div>
+                <div className="w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full animate-pulse"></div>
               </div>
-              <img
-                data-aos="zoom-out-up"
-                data-aos-delay="1500"
-                data-aos-duration="500"
-                src={team2Logo}
-                className="w-2/5 md:w-4/5 mx-auto"
-                style={{ paddingLeft: "10px", backgroundColor: "#001AFF" }}
-              />
             </div>
           </div>
         </div>
       )}
-      {/* Move Brackets button above LogoSlider */}
-      <div className="container mt-10 m-auto flex justify-center">
-        <Link
-          to={"/bracket"}
-          className="py-5 px-20 w-[60%] text-2xl bg-[rgba(255,255,255,0.7)] hover:bg-[rgba(255,255,255,1)] flex justify-center items-center text-center rounded-xl" >
-          Brackets
-        </Link>
+
+      {/* Bottom Sponsors Section */}
+      <div className="flex flex-row w-full px-2 sm:px-4 pb-2 sm:pb-4 mt-auto relative z-10" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="900">
+        <div className="w-full bg-gradient-to-r from-gray-900/90 via-cyan-900/20 to-gray-900/90 rounded-xl sm:rounded-2xl backdrop-blur-md border border-cyan-400/40 p-2 sm:p-4 shadow-2xl">
+          <LogoSlider logos={logos} speed={35} />
+        </div>
       </div>
-      <div className="container mt-10">
-        <LogoSlider logos={logos} />
-      </div>
-      
+
+      {/* Winner Dialog */}
+      <Dialog isOpen={!!winnerData} title="🏆 WINNER!" winnerData={winnerData || {name: "", logo: ""}} onClose={() => setWinnerData(null)} />
     </div>
   );
 }
 
 export default Main;
+
