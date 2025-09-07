@@ -6,12 +6,12 @@ interface LogoSliderProps {
 }
 
 const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
-  // Create multiple copies for truly seamless infinite scroll
-  const logoList = [...logos, ...logos, ...logos, ...logos]; // 4 copies for better seamless effect
+  // Triple the list for seamless effect and ensure enough content
+  const logoList = [...logos, ...logos, ...logos];
 
   return (
     <div
-      className="w-full rounded-xl sm:rounded-2xl shadow-2xl border border-cyan-400/40 overflow-hidden relative"
+      className="w-full min-h-16 sm:min-h-16 bg-black/90 rounded-xl sm:rounded-2xl shadow-2xl border-2 border-cyan-400 overflow-hidden relative"
       style={{
         padding: "0.5rem 0 0.75rem 0",
         boxShadow: "0 8px 40px 0 rgba(6,182,212,0.3), inset 0 0 20px rgba(6,182,212,0.1)",
@@ -25,28 +25,31 @@ const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 via-blue-500/20 to-purple-500/30 rounded-xl sm:rounded-2xl blur-sm animate-pulse"></div>
       
       {/* Title */}
-      <div className="absolute top-1 sm:top-2 left-2 sm:left-4 text-xs sm:text-sm font-bold text-cyan-400 uppercase tracking-wider z-10">
-        Sponsors & Partners
+      <div
+        className="absolute top-0.5 sm:top-1 left-1 sm:left-4 right-1 sm:right-4 text-[10px] sm:text-sm font-bold text-cyan-400 uppercase tracking-wide z-10 truncate"
+      >
+        <span className="hidden sm:inline">Sponsors & Partners</span>
+        <span className="sm:hidden">Sponsors & Partners</span>
       </div>
       
       {/* Endless scrolling container */}
-      <div className="relative overflow-hidden mt-3 sm:mt-4">
+      <div className="relative overflow-hidden mt-3 sm:mt-4 w-full">
         <div
-          className="flex items-center gap-x-3 sm:gap-x-4 md:gap-x-6"
+          className="flex items-center gap-x-4 sm:gap-x-6 md:gap-x-8"
           style={{
-            width: "max-content",
             animation: `slideEndless ${speed}s linear infinite`,
+            width: 'max-content',
           }}
         >
           {logoList.map((logo, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-16 sm:w-20 md:w-28 flex justify-center items-center p-1.5 sm:p-2 md:p-3 rounded-lg sm:rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-110"
+              className="flex-shrink-0 w-14 sm:w-20 md:w-28 flex justify-center items-center p-1 sm:p-2 md:p-3 rounded-lg sm:rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 group overflow-visible"
             >
               <img
                 src={logo}
                 alt={`Sponsor ${(index % logos.length) + 1}`}
-                className="h-6 sm:h-8 md:h-12 w-auto object-contain filter drop-shadow-lg"
+                className="h-5 sm:h-8 md:h-12 w-auto object-contain filter drop-shadow-lg transition-transform duration-300 group-hover:scale-125"
               />
             </div>
           ))}
@@ -60,7 +63,7 @@ const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
             transform: translateX(0);
           }
           100% {
-            transform: translateX(-25%);
+            transform: translateX(-33.333%);
           }
         }
         
@@ -74,3 +77,4 @@ const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
 };
 
 export default LogoSlider;
+

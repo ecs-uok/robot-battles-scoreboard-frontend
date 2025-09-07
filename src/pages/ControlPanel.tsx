@@ -274,7 +274,7 @@ function ControlPanel() {
                 className="transition bg-gray-200 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-xl shadow"
                 onClick={handlePitCounter}
               >
-                {pit ? "RESET" : "START"} 20 COUNTER
+                {pit ? "RESET" : "START"} ADDITIONAL COUNTER
               </button>
               <div className={`mt-1 text-sm font-semibold ${pitStatus ? "text-green-600" : "text-red-500"} text-center`}>
                 {pitStatus ? "Pit Open" : "Pit Close"}

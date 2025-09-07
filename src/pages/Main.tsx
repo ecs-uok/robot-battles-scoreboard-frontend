@@ -4,7 +4,7 @@ import "aos/dist/aos.css";
 import "../styles/scoreboard.css";
 import FireWorks from "../components/FireWorks";
 import LogoSlider from "../components/LogoSlider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 //images
 import TitleImg from "../assets/Images/scoreboard-title.png";
@@ -106,6 +106,7 @@ function Main() {
   ];
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const navigate = useNavigate();
 
   async function setTeamInfo() {
     fetch(
@@ -234,8 +235,8 @@ function Main() {
       </div>
 
       {/* Main Content */}
-      {team1Logo && team2Logo && (
-        <div className="flex flex-col items-center justify-center flex-1 w-full relative z-10 px-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+      {team1Logo && team2Logo ? (
+        <div className="flex flex-col items-center justify-center flex-1 w-full relative z-10 px-4 mb-4 sm:mb-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
           {/* Mobile Layout - Stacked */}
           <div className="flex flex-col lg:hidden items-center justify-center w-full gap-4 max-w-md">
             {/* Team 1 */}
@@ -382,11 +383,25 @@ function Main() {
             </div>
           </div>
         </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center flex-1 w-full relative z-10 px-4 mb-4" style={{ minHeight: "40vh" }}>
+          <div className="bg-gradient-to-br from-gray-900/95 via-blue-900/90 to-cyan-900/95 border-2 border-cyan-400 rounded-2xl px-8 py-8 shadow-2xl backdrop-blur-md text-center max-w-lg w-full">
+            <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text mb-4 animate-pulse">
+              There is no game started
+            </div>
+            <button
+              className="mt-4 px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-all duration-200 text-lg"
+              onClick={() => navigate("/bracket")}
+            >
+              Show Bracket
+            </button>
+          </div>
+        </div>
       )}
 
       {/* Bottom Sponsors Section */}
-      <div className="flex flex-row w-full px-2 sm:px-4 pb-2 sm:pb-4 mt-auto relative z-10" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="900">
-        <div className="w-full bg-gradient-to-r from-gray-900/90 via-cyan-900/20 to-gray-900/90 rounded-xl sm:rounded-2xl backdrop-blur-md border border-cyan-400/40 p-2 sm:p-4 shadow-2xl">
+      <div className="w-full px-2 sm:px-4 pb-6 sm:pb-4 pt-4 sm:pt-0 mt-auto relative z-20" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+        <div className="w-full bg-gradient-to-r from-gray-900/90 via-cyan-900/20 to-gray-900/90 rounded-xl sm:rounded-2xl backdrop-blur-md border-2 border-cyan-400 p-2 sm:p-4 shadow-2xl">
           <LogoSlider logos={logos} speed={35} />
         </div>
       </div>
