@@ -39,16 +39,6 @@ const Dialog: React.FC<DialogProps> = ({ isOpen, title, winnerData, onClose }) =
     <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 backdrop-blur-sm p-4" >
       <FireWorks fire={winnerData!=null?true:false} />
       <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl max-w-sm sm:max-w-md w-full p-6 sm:p-8 border border-cyan-400/30 animate-pulse-glow relative mx-4">
-        {/* Close button */}
-        {onClose && (
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 sm:top-4 sm:right-4 text-cyan-400 hover:text-white transition-colors duration-200 text-xl sm:text-2xl font-bold z-10"
-            aria-label="Close"
-          >
-            ×
-          </button>
-        )}
         
         <div className="flex justify-center items-center mb-4 sm:mb-6">
           <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text animate-pulse text-center">{title}</h3>
@@ -75,6 +65,44 @@ const Dialog: React.FC<DialogProps> = ({ isOpen, title, winnerData, onClose }) =
   );
 };
 
+interface DrawDialogProps {
+  isOpen: boolean;
+  onClose?: () => void;
+}
+
+const DrawDialog: React.FC<DrawDialogProps> = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 backdrop-blur-sm p-4" >
+      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl max-w-sm sm:max-w-md w-full p-6 sm:p-8 border border-orange-400/30 animate-pulse-glow relative mx-4">
+        
+        <div className="flex justify-center items-center mb-4 sm:mb-6">
+          <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-gradient-to-r from-orange-400 via-yellow-500 to-orange-600 bg-clip-text animate-pulse text-center">🤝 DRAW!</h3>
+        </div>
+        
+        <div className="flex flex-col items-center">
+          <div className="relative mb-6">
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
+            <div className="relative w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center border-4 border-orange-400 shadow-2xl">
+              <span className="text-4xl sm:text-5xl">🤝</span>
+            </div>
+          </div>
+          
+          <div className="text-center">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-transparent bg-gradient-to-r from-orange-400 to-yellow-500 bg-clip-text animate-bounce mb-2">
+              It's a Tie!
+            </div>
+            <div className="text-sm sm:text-base text-orange-300 animate-pulse">
+              Both teams fought valiantly
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function Main() {
   var team1Id: number;
   var team2Id: number;
@@ -94,6 +122,8 @@ function Main() {
   const [winnerData, setWinnerData] = useState<{name: string; logo: string;} | null>(null);
   const [winnerIds, setWinnerIds] = useState<{winner_id?: any, team1_id?: any, team2_id?: any, game_id?: any}>({});
   const [currentGameId, setCurrentGameId] = useState<number | null>(null);
+  const [gameStatus, setGameStatus] = useState<boolean>(false);
+  const [isDrawGame, setIsDrawGame] = useState<boolean>(false);
 
   const logos = [
     ecscLogo,
@@ -135,6 +165,21 @@ function Main() {
         const eventData = JSON.parse(event.data);
         setMainTime(eventData.mainTime);
         setPitTime(eventData.pitTime);
+        
+        // Update game status from backend (three states: "active", "shown", "deactive")
+        const gameStatusValue = eventData.gameStatus;
+        setGameStatus(gameStatusValue === 'shown'); // Only show dialogs when status is "shown"
+        
+        // Update draw status from backend
+        const drawStatus = eventData.isDraw === 'true' || eventData.isDraw === true;
+        setIsDrawGame(drawStatus);
+        
+        // Debug logging
+        console.log('Event data:', eventData);
+        console.log('Game status (raw):', gameStatusValue);
+        console.log('Game status (boolean):', gameStatusValue === 'shown');
+        console.log('Draw status:', drawStatus);
+        console.log('Winner ID:', eventData.winnerId);
 
         if (
           oldVal != eventData.gameId ||
@@ -167,23 +212,41 @@ function Main() {
   useEffect(() => {
     const { winner_id, team1_id, team2_id, game_id } = winnerIds;
     
-    // Update winner data when there's a valid winner
+    console.log('Winner effect triggered:', { winner_id, team1_id, team2_id, game_id });
+    console.log('Team names:', { team1name, team2name });
+    console.log('Team logos:', { team1Logo, team2Logo });
+    
+    // Only set winner data if there's a valid winner (backend handles draw logic)
     if (winner_id && team1_id && team2_id && winner_id !== 0 && winner_id !== "0") {
       if (winner_id == team1_id) {
-        setWinnerData({
+        const winnerInfo = {
           name: team1name ?? "",
           logo: team1Logo ?? ""
-        });
+        };
+        console.log('Setting winner data for team 1:', winnerInfo);
+        setWinnerData(winnerInfo);
       } else if (winner_id == team2_id) {
-        setWinnerData({
+        const winnerInfo = {
           name: team2name ?? "",
           logo: team2Logo ?? ""
-        });
+        };
+        console.log('Setting winner data for team 2:', winnerInfo);
+        setWinnerData(winnerInfo);
       }
     } else {
       // Clear winner data if no valid winner
+      console.log('Clearing winner data');
       setWinnerData(null);
     }
+    
+    // Debug dialog visibility
+    console.log('Dialog visibility check:', {
+      winnerData: !!winnerData,
+      gameStatus,
+      isDrawGame,
+      shouldShowWinner: !!winnerData && gameStatus && !isDrawGame,
+      shouldShowDraw: isDrawGame && gameStatus
+    });
   }, [winnerIds, team1name, team2name, team1Logo, team2Logo]);
 
   return (
@@ -407,7 +470,16 @@ function Main() {
       </div>
 
       {/* Winner Dialog */}
-      <Dialog isOpen={!!winnerData} title="🏆 WINNER!" winnerData={winnerData || {name: "", logo: ""}} onClose={() => setWinnerData(null)} />
+      <Dialog 
+        isOpen={!!winnerData && gameStatus && !isDrawGame} 
+        title="🏆 WINNER!" 
+        winnerData={winnerData || {name: "", logo: ""}} 
+      />
+      
+      {/* Draw Dialog */}
+      <DrawDialog 
+        isOpen={isDrawGame && gameStatus} 
+      />
     </div>
   );
 }
