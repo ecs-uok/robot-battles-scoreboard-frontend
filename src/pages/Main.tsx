@@ -4,12 +4,10 @@ import "aos/dist/aos.css";
 import "../styles/scoreboard.css";
 import FireWorks from "../components/FireWorks";
 import LogoSlider from "../components/LogoSlider";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 //images
-import TitleImg from "../assets/Images/scoreboard-title.png";
 import bgImg from "../assets/Images/scoreboard-background.png";
-import versusImg from "../assets/Images/versus-img.png";
 
 import varioSystem from "../assets/Images/Vario-Systems.png";
 import zone24x7 from "../assets/Images/Zone24x7.png";
@@ -29,10 +27,9 @@ interface DialogProps {
   isOpen: boolean;
   title: string;
   winnerData: {name: string, logo: string};
-  onClose?: () => void;
 }
 
-const Dialog: React.FC<DialogProps> = ({ isOpen, title, winnerData, onClose }) => {
+const Dialog: React.FC<DialogProps> = ({ isOpen, title, winnerData }) => {
   if (!isOpen) return null;
 
   return (
@@ -67,10 +64,9 @@ const Dialog: React.FC<DialogProps> = ({ isOpen, title, winnerData, onClose }) =
 
 interface DrawDialogProps {
   isOpen: boolean;
-  onClose?: () => void;
 }
 
-const DrawDialog: React.FC<DrawDialogProps> = ({ isOpen, onClose }) => {
+const DrawDialog: React.FC<DrawDialogProps> = ({ isOpen }) => {
   if (!isOpen) return null;
 
   return (
@@ -114,14 +110,10 @@ function Main() {
   const [team1name, setTeam1Name] = useState();
   const [team2name, setTeam2Name] = useState();
 
-  const [team1Leader, setTeam1Leader] = useState();
-  const [team2Leader, setTeam2Leader] = useState();
-
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
   const [winnerData, setWinnerData] = useState<{name: string; logo: string;} | null>(null);
   const [winnerIds, setWinnerIds] = useState<{winner_id?: any, team1_id?: any, team2_id?: any, game_id?: any}>({});
-  const [currentGameId, setCurrentGameId] = useState<number | null>(null);
   const [gameStatus, setGameStatus] = useState<boolean>(false);
   const [isDrawGame, setIsDrawGame] = useState<boolean>(false);
 
@@ -148,8 +140,6 @@ function Main() {
         setTeam2Name(data.team2.name);
         setTeam1Logo(data.team1.logo);
         setTeam2Logo(data.team2.logo);
-        setTeam1Leader(data.team1.leader);
-        setTeam2Leader(data.team2.leader);
       });
   }
 
@@ -192,7 +182,6 @@ function Main() {
           team2Id = eventData.team2Id;
           winnerId = eventData.winnerId;
           
-          setCurrentGameId(eventData.gameId);
           setTeamInfo();
           setWinnerIds({
             team1_id: eventData.team1Id,
@@ -485,4 +474,5 @@ function Main() {
 }
 
 export default Main;
+
 
