@@ -449,6 +449,12 @@ function Main() {
             >
               Show Bracket
             </button>
+            <button
+              className="mt-4 px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-all duration-200 text-lg"
+              onClick={() => navigate("/GameHistory")}
+            >
+              Show Game History
+            </button>
           </div>
         </div>
       )}
