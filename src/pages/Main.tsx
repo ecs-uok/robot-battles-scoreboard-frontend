@@ -7,7 +7,7 @@ import LogoSlider from "../components/LogoSlider";
 import { useNavigate } from "react-router-dom";
 
 //images
-import bgImg from "../assets/Images/scoreboard-background.png";
+const bgImg = "https://iili.io/Kujx7Bp.md.png";
 
 import varioSystem from "../assets/Images/Vario-Systems.png";
 import zone24x7 from "../assets/Images/Zone24x7.png";
