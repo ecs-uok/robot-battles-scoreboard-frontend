@@ -16,6 +16,7 @@ import ecscLogo from "../assets/Images/ECSC_transparent.png";
 import gavelLogo from "../assets/Images/gavel.png";
 import codeChefLogo from "../assets/Images/Codechefs.png";
 import hackSL from "../assets/Images/HackSL.png";
+import xydder_3d from "../assets/Images/XYDDER_3D.png";
 
 
 // **
@@ -124,7 +125,8 @@ function Main() {
     hackSL,
     codeChefLogo,
     IEEELogo,
-    gavelLogo
+    gavelLogo,
+    xydder_3d
   ];
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
