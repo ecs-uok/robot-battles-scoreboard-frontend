@@ -9,14 +9,15 @@ import { useNavigate } from "react-router-dom";
 //images
 const bgImg = "https://iili.io/Kujx7Bp.md.png";
 
-import varioSystem from "../assets/Images/Vario-Systems.png";
-import zone24x7 from "../assets/Images/Zone24x7.png";
-import IEEELogo from "../assets/Images/IEEE logo.png";
-import ecscLogo from "../assets/Images/ECSC_transparent.png";
-import gavelLogo from "../assets/Images/gavel.png";
-import codeChefLogo from "../assets/Images/Codechefs.png";
-import hackSL from "../assets/Images/HackSL.png";
-import xydder_3d from "../assets/Images/XYDDER_3D.png";
+// Sponsor logos served from public folder for faster loads and stable URLs
+const varioSystem = "/sponsors/Vario-Systems.png";
+const zone24x7 = "/sponsors/Zone24x7.png";
+const IEEELogo = "/sponsors/IEEE logo.png";
+const ecscLogo = "/sponsors/ECSC_transparent.png";
+const gavelLogo = "/sponsors/gavel.png";
+const codeChefLogo = "/sponsors/Codechefs.png";
+const hackSL = "/sponsors/HackSL.png";
+const xydder_3d = "/sponsors/XYDDER_3D.png";
 
 
 // **
