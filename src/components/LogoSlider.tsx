@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 interface LogoSliderProps {
   logos: string[];
   speed?: number; // in seconds for one full loop
 }
 
-const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
+const LogoSlider: React.FC<LogoSliderProps> = React.memo(({ logos, speed = 30 }) => {
   // Triple the list for seamless effect and ensure enough content
-  const logoList = [...logos, ...logos, ...logos];
+  const logoList = useMemo(() => [...logos, ...logos, ...logos], [logos]);
 
   return (
     <div
@@ -33,12 +33,14 @@ const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
       </div>
       
       {/* Endless scrolling container */}
-      <div className="relative overflow-hidden mt-3 sm:mt-4 w-full">
+      <div className="relative overflow-hidden mt-3 sm:mt-4 w-full" style={{ willChange: "transform" }}>
         <div
           className="flex items-center gap-x-4 sm:gap-x-6 md:gap-x-8"
           style={{
             animation: `slideEndless ${speed}s linear infinite`,
             width: 'max-content',
+            willChange: 'transform',
+            transform: 'translateZ(0)'
           }}
         >
           {logoList.map((logo, index) => (
@@ -50,6 +52,7 @@ const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
                 src={logo}
                 alt={`Sponsor ${(index % logos.length) + 1}`}
                 className="h-5 sm:h-8 md:h-12 w-auto object-contain filter drop-shadow-lg transition-transform duration-300 group-hover:scale-125"
+                loading="lazy"
               />
             </div>
           ))}
@@ -60,10 +63,10 @@ const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
       <style>{`
         @keyframes slideEndless {
           0% {
-            transform: translateX(0);
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translateX(-33.333%);
+            transform: translate3d(-33.333%, 0, 0);
           }
         }
         
@@ -74,7 +77,7 @@ const LogoSlider: React.FC<LogoSliderProps> = ({ logos, speed = 30 }) => {
       `}</style>
     </div>
   );
-};
+});
 
 export default LogoSlider;
 

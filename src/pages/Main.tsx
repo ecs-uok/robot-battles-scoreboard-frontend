@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../styles/scoreboard.css";
@@ -118,7 +118,7 @@ function Main() {
   const [gameStatus, setGameStatus] = useState<boolean>(false);
   const [isDrawGame, setIsDrawGame] = useState<boolean>(false);
 
-  const logos = [
+  const logos = useMemo(() => [
     ecscLogo,
     varioSystem,
     zone24x7,
@@ -127,7 +127,7 @@ function Main() {
     IEEELogo,
     gavelLogo,
     xydder_3d
-  ];
+  ], []);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
