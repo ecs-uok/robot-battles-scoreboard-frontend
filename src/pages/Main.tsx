@@ -18,6 +18,7 @@ const gavelLogo = "/sponsors/gavel.png";
 const codeChefLogo = "/sponsors/Codechefs.png";
 const hackSL = "/sponsors/HackSL.png";
 const xydder_3d = "/sponsors/XYDDER_3D.png";
+const michelin = "/sponsors/Michelin.png";
 
 
 // **
@@ -127,7 +128,8 @@ function Main() {
     codeChefLogo,
     IEEELogo,
     gavelLogo,
-    xydder_3d
+    xydder_3d,
+    michelin
   ], []);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
