@@ -11,7 +11,10 @@ interface gameType {
   gameid: string;
   team1score: string;
   team2score: string;
+  team3name?: string;
+  team3score?: string;
   winnerId?: string | number;
+  isDraw?: boolean;
 }
 const ShowGames = () => {
   const [gamesList, setGamesList] = useState<Array<gameType>>([]);
@@ -31,37 +34,34 @@ const ShowGames = () => {
   }, []);
   console.log(gamesList);
   const content = gamesList.map((game) => {
-    // Determine winner using winnerId
+    // Determine winner using winnerId or score fallback (supports 2 or 3 teams)
     let winnerName = "";
-    if (game.winnerId && game.winnerId !== "0" && game.winnerId !== 0) {
-      // winnerId matches team1 or team2? (Assume team ids are not available here, fallback to score comparison if needed)
-      // If you want to show "Draw" for 0, else show nothing if winnerId missing
-      if (game.winnerId === undefined || game.winnerId === null || game.winnerId === "0" || game.winnerId === 0) {
-        winnerName = "Draw";
-      } else if (game.winnerId === (game as any).team1id) {
-        winnerName = game.team1name;
-      } else if (game.winnerId === (game as any).team2id) {
-        winnerName = game.team2name;
-      } else {
-        // fallback: try to infer by score
-        if (Number(game.team1score) > Number(game.team2score)) {
-          winnerName = game.team1name;
-        } else if (Number(game.team2score) > Number(game.team1score)) {
-          winnerName = game.team2name;
-        } else {
-          winnerName = "Draw";
-        }
-      }
+    const hasTeam3 = !!game.team3name && game.team3name !== "";
+
+    // If backend flagged draw or winnerId is 0/null, show Draw
+    if (game.isDraw === true || game.winnerId === 0 || game.winnerId === "0") {
+      winnerName = "Draw";
+    } else if (hasTeam3) {
+      // 3-team fallback by comparing scores
+      const t1 = Number(game.team1score);
+      const t2 = Number(game.team2score);
+      const t3 = Number(game.team3score ?? "0");
+      const max = Math.max(t1, t2, t3);
+      const winners = [
+        { name: game.team1name, score: t1 },
+        { name: game.team2name, score: t2 },
+        { name: game.team3name as string, score: t3 },
+      ].filter((t) => t.score === max);
+      winnerName = winners.length === 1 ? winners[0].name : "Draw";
     } else {
-      // fallback: try to infer by score
-      if (Number(game.team1score) > Number(game.team2score)) {
-        winnerName = game.team1name;
-      } else if (Number(game.team2score) > Number(game.team1score)) {
-        winnerName = game.team2name;
-      } else {
-        winnerName = "Draw";
-      }
+      // 2-team fallback by comparing scores
+      const t1 = Number(game.team1score);
+      const t2 = Number(game.team2score);
+      if (t1 > t2) winnerName = game.team1name;
+      else if (t2 > t1) winnerName = game.team2name;
+      else winnerName = "Draw";
     }
+
     // Color logic for winner
     const winnerColor =
       winnerName === "Draw"
@@ -70,30 +70,41 @@ const ShowGames = () => {
         ? "text-blue-600"
         : winnerName === game.team2name
         ? "text-yellow-600"
-        : "text-red-500";
+        : "text-green-600";
+    const isWinner1 = winnerName === game.team1name;
+    const isWinner2 = winnerName === game.team2name;
+    const isWinner3 = hasTeam3 && winnerName === game.team3name;
     return (
       <div key={game.gameid} className="flex justify-center px-2">
         <div className="w-full max-w-3xl bg-white/90 rounded-3xl shadow-2xl my-4 px-3 py-4 md:px-6 md:py-6 border border-blue-200 flex flex-col items-center transition-all duration-300 hover:scale-[1.015] hover:shadow-3xl">
-          <div className="flex flex-col md:flex-row w-full items-center mb-2">
-            <div className="flex-1 flex flex-col items-center justify-center mb-1 md:mb-0">
-              <div className="text-base md:text-xl font-extrabold text-blue-700 uppercase tracking-widest text-center break-words">
-                {game.team1name}
-              </div>
+          <div className="w-full flex flex-col items-center mb-2">
+            <div className="text-sm md:text-lg font-bold text-gray-400 tracking-widest text-center whitespace-nowrap mb-2">
+              MATCH NO: <span className="text-blue-700">{game.gameid}</span>
             </div>
-            <div className="flex flex-col items-center justify-center mx-0 md:mx-2">
-              <div className="text-sm md:text-lg font-bold text-gray-400 tracking-widest text-center whitespace-nowrap mb-1">
-                MATCH NO: <span className="text-blue-700">{game.gameid}</span>
+            <div className={`grid ${hasTeam3 ? "grid-cols-3" : "grid-cols-2"} gap-3 md:gap-6 w-full`}>
+              {/* Team 1 */}
+              <div className={`flex flex-col items-center justify-center bg-blue-50 rounded-2xl p-3 shadow-inner border ${isWinner1 ? "border-blue-400" : "border-transparent"}`}>
+                <div className="text-base md:text-xl font-extrabold text-blue-700 uppercase tracking-widest text-center break-words">
+                  {game.team1name}
+                </div>
+                <div className="mt-1 text-2xl md:text-5xl font-extrabold text-blue-900 drop-shadow-lg">{game.team1score}</div>
               </div>
-              <div className="flex flex-row items-center">
-                <span className="text-2xl md:text-5xl font-extrabold text-blue-900 drop-shadow-lg">{game.team1score}</span>
-                <span className="px-2 md:px-4 text-2xl md:text-5xl font-extrabold text-gray-400 drop-shadow-lg">:</span>
-                <span className="text-2xl md:text-5xl font-extrabold text-yellow-600 drop-shadow-lg">{game.team2score}</span>
+              {/* Team 2 */}
+              <div className={`flex flex-col items-center justify-center bg-yellow-50 rounded-2xl p-3 shadow-inner border ${isWinner2 ? "border-yellow-400" : "border-transparent"}`}>
+                <div className="text-base md:text-xl font-extrabold text-yellow-600 uppercase tracking-widest text-center break-words">
+                  {game.team2name}
+                </div>
+                <div className="mt-1 text-2xl md:text-5xl font-extrabold text-yellow-600 drop-shadow-lg">{game.team2score}</div>
               </div>
-            </div>
-            <div className="flex-1 flex flex-col items-center justify-center mt-1 md:mt-0">
-              <div className="text-base md:text-xl font-extrabold text-yellow-500 uppercase tracking-widest text-center break-words">
-                {game.team2name}
-              </div>
+              {/* Team 3 (optional) */}
+              {hasTeam3 && (
+                <div className={`flex flex-col items-center justify-center bg-green-50 rounded-2xl p-3 shadow-inner border ${isWinner3 ? "border-green-400" : "border-transparent"}`}>
+                  <div className="text-base md:text-xl font-extrabold text-green-600 uppercase tracking-widest text-center break-words">
+                    {game.team3name}
+                  </div>
+                  <div className="mt-1 text-2xl md:text-5xl font-extrabold text-green-600 drop-shadow-lg">{game.team3score ?? "0"}</div>
+                </div>
+              )}
             </div>
           </div>
           {/* Winner for mobile - after both team names */}

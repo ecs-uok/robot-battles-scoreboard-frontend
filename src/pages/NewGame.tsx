@@ -8,6 +8,8 @@ function NewGame() {
   const [teams, setTeams] = useState<{ [id: string]: { leader: string; logo: string; name: string } }>({});
   const [team1id, setTeam1id] = useState<string>("");
   const [team2id, setTeam2id] = useState<string>("");
+  const [team3id, setTeam3id] = useState<string>("");
+  const [isThreeTeam, setIsThreeTeam] = useState<boolean>(false);
   const [gameNo, setGameNo] = useState(1);
   const [totalTime, setTotalTime] = useState(180);
   const [pitOpenTime, setPitOpenTime] = useState(60);
@@ -23,6 +25,7 @@ function NewGame() {
         if (ids.length > 0) {
           setTeam1id(ids[0]);
           setTeam2id(ids.length > 1 ? ids[1] : ids[0]);
+          setTeam3id(ids.length > 2 ? ids[2] : "");
         }
       });
     fetch(host + "/nextGameId")
@@ -33,11 +36,15 @@ function NewGame() {
   }, []);
 
   async function setGameDetails() {
-    var body = JSON.stringify({
+    const payload: any = {
       gameId: `${gameNo}`,
       team1: team1id,
       team2: team2id,
-    });
+    };
+    if (isThreeTeam && team3id) {
+      payload.team3 = team3id;
+    }
+    var body = JSON.stringify(payload);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -90,6 +97,21 @@ function NewGame() {
       </div>
       <div className="w-full flex justify-center">
         <div className="bg-white/90 rounded-2xl shadow-2xl p-4 max-w-3xl w-full mx-2 border border-blue-200">
+          {/* Match Type Toggle */}
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <button
+              className={`px-4 py-2 rounded-lg font-bold shadow border ${!isThreeTeam ? "bg-blue-600 text-white border-blue-700" : "bg-gray-100 text-gray-700 border-gray-300"}`}
+              onClick={() => setIsThreeTeam(false)}
+            >
+              2 Teams
+            </button>
+            <button
+              className={`px-4 py-2 rounded-lg font-bold shadow border ${isThreeTeam ? "bg-blue-600 text-white border-blue-700" : "bg-gray-100 text-gray-700 border-gray-300"}`}
+              onClick={() => setIsThreeTeam(true)}
+            >
+              3 Teams
+            </button>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Team A */}
             <div className="flex flex-col items-center">
@@ -138,6 +160,35 @@ function NewGame() {
               )}
             </div>
           </div>
+
+          {/* Team C - visible only for 3-team matches */}
+          {isThreeTeam && (
+            <div className="grid grid-cols-1 gap-8 mt-4">
+              <div className="flex flex-col items-center">
+                <div className="text-xl font-bold mb-2 px-6 py-2 rounded-lg bg-green-500 text-gray-900 shadow">
+                  TEAM C
+                </div>
+                <select
+                  className="w-full mt-2 mb-4 p-2 rounded-lg border-2 border-green-300 focus:border-green-600 focus:ring-2 focus:ring-green-200 transition"
+                  value={team3id}
+                  onChange={(e) => setTeam3id(e.target.value)}
+                >
+                  <option value="">Select team</option>
+                  {Object.entries(teams).map(([id, team]) => (
+                    <option key={id} value={id}>
+                      {team.name}
+                    </option>
+                  ))}
+                </select>
+                {team3id && teams[team3id] && (
+                  <div className="flex flex-col items-center">
+                    <img src={teams[team3id].logo} alt="logo" className="w-20 h-20 rounded-full border-4 border-green-200 shadow mb-2 bg-white object-contain" />
+                    <div className="text-gray-700 text-sm font-semibold">Leader: <span className="text-green-700">{teams[team3id].leader}</span></div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
             <div className="flex flex-col items-center">

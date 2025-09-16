@@ -10,15 +10,18 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function ControlPanel() {
   var team1Id: number;
   var team2Id: number;
+  var team3Id: number;
 
   const [mainTime, setMainTime] = useState();
   const [pitTime, setPitTime] = useState();
 
   const [team1name, setTeam1Name] = useState();
   const [team2name, setTeam2Name] = useState();
+  const [team3name, setTeam3Name] = useState<string | undefined>(undefined);
 
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
+  const [team3Logo, setTeam3Logo] = useState<string | undefined>(undefined);
 
   async function setTeamInfo() {
     fetch(
@@ -31,6 +34,14 @@ function ControlPanel() {
         setTeam2Name(data.team2.name);
         setTeam1Logo(data.team1.logo);
         setTeam2Logo(data.team2.logo);
+        // Optional team 3
+        if (data.team3 && data.team3.name) {
+          setTeam3Name(data.team3.name);
+          setTeam3Logo(data.team3.logo);
+        } else {
+          setTeam3Name(undefined);
+          setTeam3Logo(undefined);
+        }
       });
   }
   const navigate = useNavigate();
@@ -124,11 +135,13 @@ function ControlPanel() {
         if (
           oldVal != eventData.gameId ||
           team1Id != eventData.team1Id ||
-          team2Id != eventData.team2Id
+          team2Id != eventData.team2Id ||
+          team3Id != eventData.team3Id
         ) {
           oldVal = eventData.gameId;
           team1Id = eventData.team1Id;
           team2Id = eventData.team2Id;
+          team3Id = eventData.team3Id;
           setTeamInfo();
         }
       };
@@ -195,53 +208,113 @@ function ControlPanel() {
       <div className="w-full flex justify-center px-2">
         <div className="relative bg-white/95 rounded-3xl shadow-2xl p-3 md:p-6 max-w-4xl w-full mx-0 border border-blue-200 flex flex-col gap-6 md:gap-8">
           {/* Teams and Timer Row */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-            {/* Team 1 */}
-            <div className="flex flex-col items-center gap-2 bg-blue-50 rounded-2xl p-3 md:p-4 shadow-inner min-h-[120px] md:min-h-[180px] mb-2 md:mb-0">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-4 border-blue-200 flex items-center justify-center shadow">
-                {team1Logo && (
-                  <img src={team1Logo} alt="Team 1 Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full" />
-                )}
-              </div>
-              <div className="mt-2 text-base md:text-lg font-bold text-blue-700 uppercase tracking-wide text-center break-words">{team1name}</div>
-            </div>
-            {/* Timer Card - Overlapping and Centered */}
-            <div className="relative flex flex-col items-center justify-center z-10 my-2 md:my-0">
-              <div className="absolute -top-7 md:-top-8 left-1/2 -translate-x-1/2 w-full flex justify-center">
-                <span className="bg-blue-200 px-3 md:px-6 py-1 md:py-2 rounded-t-xl text-base md:text-lg font-bold text-blue-800 tracking-widest shadow border-b-2 border-blue-400">
-                  TIME REMAINING
-                </span>
-              </div>
-              <div
-                className="relative z-10 font-bold text-4xl md:text-5xl text-white bg-black px-4 md:px-6 py-2 rounded-2xl shadow-2xl border-2 border-blue-400 outline outline-2 outline-yellow-400 font-custom"
-                style={{ letterSpacing: "0.15em", fontVariantNumeric: "tabular-nums", marginTop: "2.2rem" }}
-              >
-                {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
-                {mainTime
-                  ? (mainTime % 60).toLocaleString("en-US", {
-                      minimumIntegerDigits: 2,
-                      useGrouping: false,
-                    })
-                  : mainTime || "00"}
-              </div>
-              <div className="mt-3 md:mt-4 flex flex-col items-center">
-                <span className="text-green-700 font-bold text-base md:text-lg tracking-wide">ADDITIONAL TIME</span>
-                <div className="font-bold text-xl md:text-2xl text-green-600 bg-white px-3 md:px-4 py-1 rounded-xl shadow border border-green-200 mt-2">
-                  {pitTime || "0"}
+          {team3Logo && team3name ? (
+            <>
+              {/* Top row: three teams */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+                {/* Team 1 */}
+                <div className="flex flex-col items-center gap-2 bg-blue-50 rounded-2xl p-3 md:p-4 shadow-inner min-h-[120px] md:min-h-[180px] mb-2 md:mb-0">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-4 border-blue-200 flex items-center justify-center shadow">
+                    {team1Logo && (
+                      <img src={team1Logo} alt="Team 1 Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full" />
+                    )}
+                  </div>
+                  <div className="mt-2 text-base md:text-lg font-bold text-blue-700 uppercase tracking-wide text-center break-words">{team1name}</div>
                 </div>
-                <span className="text-xs text-gray-600 mt-1">SECONDS</span>
+                {/* Team 2 */}
+                <div className="flex flex-col items-center gap-2 bg-yellow-50 rounded-2xl p-3 md:p-4 shadow-inner min-h-[120px] md:min-h-[180px] mb-2 md:mb-0">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-4 border-yellow-200 flex items-center justify-center shadow">
+                    {team2Logo && (
+                      <img src={team2Logo} alt="Team 2 Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full" />
+                    )}
+                  </div>
+                  <div className="mt-2 text-base md:text-lg font-bold text-yellow-600 uppercase tracking-wide text-center break-words">{team2name}</div>
+                </div>
+                {/* Team 3 */}
+                <div className="flex flex-col items-center gap-2 bg-green-50 rounded-2xl p-3 md:p-4 shadow-inner min-h-[120px] md:min-h-[180px] mb-2 md:mb-0">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-4 border-green-200 flex items-center justify-center shadow">
+                    <img src={team3Logo} alt="Team 3 Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full" />
+                  </div>
+                  <div className="mt-2 text-base md:text-lg font-bold text-green-700 uppercase tracking-wide text-center break-words">{team3name}</div>
+                </div>
+              </div>
+              {/* Timer below */}
+              <div className="relative flex flex-col items-center justify-center z-10 my-2 md:my-0">
+                <div className="absolute -top-7 md:-top-8 left-1/2 -translate-x-1/2 w-full flex justify-center">
+                  <span className="bg-blue-200 px-3 md:px-6 py-1 md:py-2 rounded-t-xl text-base md:text-lg font-bold text-blue-800 tracking-widest shadow border-b-2 border-blue-400">
+                    TIME REMAINING
+                  </span>
+                </div>
+                <div
+                  className="relative z-10 font-bold text-4xl md:text-5xl text-white bg-black px-4 md:px-6 py-2 rounded-2xl shadow-2xl border-2 border-blue-400 outline outline-2 outline-yellow-400 font-custom"
+                  style={{ letterSpacing: "0.15em", fontVariantNumeric: "tabular-nums", marginTop: "2.2rem" }}
+                >
+                  {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
+                  {mainTime
+                    ? (mainTime % 60).toLocaleString("en-US", {
+                        minimumIntegerDigits: 2,
+                        useGrouping: false,
+                      })
+                    : mainTime || "00"}
+                </div>
+                <div className="mt-3 md:mt-4 flex flex-col items-center">
+                  <span className="text-green-700 font-bold text-base md:text-lg tracking-wide">ADDITIONAL TIME</span>
+                  <div className="font-bold text-xl md:text-2xl text-green-600 bg-white px-3 md:px-4 py-1 rounded-xl shadow border border-green-200 mt-2">
+                    {pitTime || "0"}
+                  </div>
+                  <span className="text-xs text-gray-600 mt-1">SECONDS</span>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+              {/* Team 1 */}
+              <div className="flex flex-col items-center gap-2 bg-blue-50 rounded-2xl p-3 md:p-4 shadow-inner min-h-[120px] md:min-h-[180px] mb-2 md:mb-0">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-4 border-blue-200 flex items-center justify-center shadow">
+                  {team1Logo && (
+                    <img src={team1Logo} alt="Team 1 Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full" />
+                  )}
+                </div>
+                <div className="mt-2 text-base md:text-lg font-bold text-blue-700 uppercase tracking-wide text-center break-words">{team1name}</div>
+              </div>
+              {/* Timer Card - Overlapping and Centered */}
+              <div className="relative flex flex-col items-center justify-center z-10 my-2 md:my-0">
+                <div className="absolute -top-7 md:-top-8 left-1/2 -translate-x-1/2 w-full flex justify-center">
+                  <span className="bg-blue-200 px-3 md:px-6 py-1 md:py-2 rounded-t-xl text-base md:text-lg font-bold text-blue-800 tracking-widest shadow border-b-2 border-blue-400">
+                    TIME REMAINING
+                  </span>
+                </div>
+                <div
+                  className="relative z-10 font-bold text-4xl md:text-5xl text-white bg-black px-4 md:px-6 py-2 rounded-2xl shadow-2xl border-2 border-blue-400 outline outline-2 outline-yellow-400 font-custom"
+                  style={{ letterSpacing: "0.15em", fontVariantNumeric: "tabular-nums", marginTop: "2.2rem" }}
+                >
+                  {mainTime ? Math.floor(mainTime / 60) : mainTime || "00"}:
+                  {mainTime
+                    ? (mainTime % 60).toLocaleString("en-US", {
+                        minimumIntegerDigits: 2,
+                        useGrouping: false,
+                      })
+                    : mainTime || "00"}
+                </div>
+                <div className="mt-3 md:mt-4 flex flex-col items-center">
+                  <span className="text-green-700 font-bold text-base md:text-lg tracking-wide">ADDITIONAL TIME</span>
+                  <div className="font-bold text-xl md:text-2xl text-green-600 bg-white px-3 md:px-4 py-1 rounded-xl shadow border border-green-200 mt-2">
+                    {pitTime || "0"}
+                  </div>
+                  <span className="text-xs text-gray-600 mt-1">SECONDS</span>
+                </div>
+              </div>
+              {/* Team 2 */}
+              <div className="flex flex-col items-center gap-2 bg-yellow-50 rounded-2xl p-3 md:p-4 shadow-inner min-h-[120px] md:min-h-[180px] mb-2 md:mb-0">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-4 border-yellow-200 flex items-center justify-center shadow">
+                  {team2Logo && (
+                    <img src={team2Logo} alt="Team 2 Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full" />
+                  )}
+                </div>
+                <div className="mt-2 text-base md:text-lg font-bold text-yellow-600 uppercase tracking-wide text-center break-words">{team2name}</div>
               </div>
             </div>
-            {/* Team 2 */}
-            <div className="flex flex-col items-center gap-2 bg-yellow-50 rounded-2xl p-3 md:p-4 shadow-inner min-h-[120px] md:min-h-[180px] mb-2 md:mb-0">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white border-4 border-yellow-200 flex items-center justify-center shadow">
-                {team2Logo && (
-                  <img src={team2Logo} alt="Team 2 Logo" className="w-12 h-12 md:w-16 md:h-16 object-contain rounded-full" />
-                )}
-              </div>
-              <div className="mt-2 text-base md:text-lg font-bold text-yellow-600 uppercase tracking-wide text-center break-words">{team2name}</div>
-            </div>
-          </div>
+          )}
           {/* Buttons */}
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-6 mt-2">
             <div className="flex flex-col gap-3">

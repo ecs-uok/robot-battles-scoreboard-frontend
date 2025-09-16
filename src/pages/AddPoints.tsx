@@ -10,6 +10,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 function AddPoints() {
   const [team1Points, setTeam1Points] = useState("");
   const [team2Points, setTeam2Points] = useState("");
+  const [team3Points, setTeam3Points] = useState<string>("");
 
   const handleInputChange1 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeam1Points(event.target.value);
@@ -17,22 +18,30 @@ function AddPoints() {
   const handleInputChange2 = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTeam2Points(event.target.value);
   };
+  const handleInputChange3 = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTeam3Points(event.target.value);
+  };
   const [gameNo, setGameNo] = useState();
   var team1Id: number;
   var team2Id: number;
 
   const [team1name, setTeam1Name] = useState();
   const [team2name, setTeam2Name] = useState();
+  const [team3name, setTeam3Name] = useState<string | undefined>(undefined);
 
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
+  const [team3Logo, setTeam3Logo] = useState<string | undefined>(undefined);
 
   const [winnerId, setWinnerId] = useState<number | string | undefined>(
     undefined
   );
 
   function saveGame() {
-    const body = { team1score: team1Points, team2score: team2Points };
+    const body: any = { team1score: team1Points, team2score: team2Points };
+    if (team3name) {
+      body.team3score = team3Points;
+    }
     const requestOptions = {
       method: "POST",
       headers: {
@@ -59,6 +68,13 @@ function AddPoints() {
         setTeam2Name(data.team2.name);
         setTeam1Logo(data.team1.logo);
         setTeam2Logo(data.team2.logo);
+        if (data.team3 && data.team3.name) {
+          setTeam3Name(data.team3.name);
+          setTeam3Logo(data.team3.logo);
+        } else {
+          setTeam3Name(undefined);
+          setTeam3Logo(undefined);
+        }
       });
   }
 
@@ -173,6 +189,32 @@ function AddPoints() {
               </div>
             </div>
           </div>
+          {team3name && (
+            <div className="grid grid-cols-1 gap-8 items-center mt-6">
+              {/* Team 3 */}
+              <div className="flex flex-col items-center gap-4">
+                <div className="text-2xl md:text-3xl font-bold text-green-600 uppercase tracking-wide">
+                  {team3name}
+                </div>
+                <img
+                  src={team3Logo}
+                  className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-green-200 shadow bg-white object-contain"
+                  alt="Team 3 Logo"
+                />
+                <div className="w-44 min-h-[64px] flex items-center justify-center bg-green-50 border-2 border-green-300 rounded-xl shadow">
+                  <input
+                    type="number"
+                    value={team3Points}
+                    className="text-center text-3xl font-bold text-green-700 bg-transparent outline-none w-full placeholder:text-green-300"
+                    onChange={handleInputChange3}
+                    placeholder="Enter points"
+                    min={0}
+                    style={{ fontSize: "1rem" }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
           <div className="flex flex-col items-center mt-4">
             <button
               className="bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 text-black font-bold px-10 py-4 rounded-2xl shadow-lg text-2xl tracking-widest transition-all duration-200 uppercase"
