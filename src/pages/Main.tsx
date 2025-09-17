@@ -101,6 +101,78 @@ const DrawDialog: React.FC<DrawDialogProps> = ({ isOpen }) => {
   );
 };
 
+// Clean Modern Rounded Square
+const Hexagon: React.FC<{children: React.ReactNode, borderColor: string}> = ({ children, borderColor }) => (
+  <div className="relative group">
+    {/* Subtle outer glow */}
+    <div 
+      className="absolute inset-0 rounded-3xl"
+      style={{
+        width: '370px',
+        height: '350px',
+        background: `linear-gradient(135deg, ${borderColor}40, transparent, ${borderColor}40)`,
+        filter: 'blur(20px)',
+        margin: '0 auto',
+        transform: 'translate(-15px, -15px)',
+        opacity: 0.6
+      }}
+    ></div>
+    
+    {/* Main rounded square */}
+    <div 
+      className="relative transition-all duration-300 group-hover:scale-105 rounded-2xl"
+      style={{
+        width: '350px',
+        height: '330px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+        background: `linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))`,
+        border: `3px solid ${borderColor}`,
+        backdropFilter: 'blur(10px)',
+        margin: '0 auto',
+        boxShadow: `0 0 20px ${borderColor}50`
+      }}
+    >
+    {children}
+    </div>
+  </div>
+);
+
+// Clean Team Name Pill
+const TeamNamePill: React.FC<{children: React.ReactNode, gradient: string}> = ({ children, gradient }) => (
+  <div className="relative">
+    {/* Subtle glow */}
+    <div 
+      className="absolute inset-0 rounded-full blur-md opacity-50"
+      style={{
+        background: gradient,
+        transform: 'scale(1.1)'
+      }}
+    ></div>
+    
+    {/* Main pill */}
+    <div 
+      className="relative transition-all duration-300 hover:scale-105"
+      style={{
+        minWidth: '140px',
+        padding: '12px 32px',
+        borderRadius: '25px',
+    background: gradient,
+    color: '#fff',
+        fontWeight: 600,
+        fontSize: '1.1rem',
+        letterSpacing: '0.1em',
+    textAlign: 'center',
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.2)'
+      }}
+    >
+    {children}
+    </div>
+  </div>
+);
+
 function Main() {
   var team1Id: number;
   var team2Id: number;
@@ -266,7 +338,6 @@ function Main() {
     });
   }, [winnerIds, team1name, team2name, team1Logo, team2Logo]);
 
-  const isThreeTeams = !!(team3Logo && team3name);
 
   return (
     <div
@@ -278,50 +349,55 @@ function Main() {
         minHeight: "100vh",
       }}
     >
-      {/* Animated Background Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-cyan-900/20 animate-pulse"></div>
-      <div className="absolute inset-0 bg-black/30"></div>
+      {/* Clean Background Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-900/60 via-purple-900/60 to-pink-900/60"></div>
+      <div className="absolute inset-0 bg-black/40"></div>
       
-      {/* Floating Particles Effect */}
+      {/* Subtle Lighting Effects */}
+      <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl"></div>
+      
+      {/* Minimal Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-2 h-2 bg-cyan-400 rounded-full opacity-20 animate-float"
+            className="absolute w-1 h-1 bg-white rounded-full opacity-30 animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 4}s`
+              animationDuration: `${2 + Math.random() * 4}s`
             }}
           ></div>
         ))}
       </div>
 
-      {/* Title Section - replaced with image */}
-        <div className="w-full flex flex-col items-center justify-center mt-4 sm:mt-6 mb-2 px-4 relative z-10" data-aos="fade-down" data-aos-duration="1000">
+      {/* Title Section - UOK Robot Battles */}
+        <div className="w-full flex flex-col items-center justify-center mt-2 mb-4 px-4 relative z-10" data-aos="fade-down" data-aos-duration="1000">
           <img
             src="/main-scoreboard-title.png"
-            alt="Main Scoreboard Title"
-            className="w-full max-w-md rounded-2xl sm:rounded-3xl shadow-2xl backdrop-blur-md mb-2"
+            alt="UOK Robot Battles 2K25"
+            className="w-full max-w-xs sm:max-w-sm rounded-xl shadow-xl backdrop-blur-md mb-1"
             style={{objectFit: 'cover'}}
           />
-          <div className="text-gray-300 font-extrabold text-lg sm:text-xl md:text-2xl tracking-widest text-center drop-shadow-lg pt-2" style={{letterSpacing: '0.08em'}}>
+          <div className="text-gray-300 font-bold text-sm sm:text-base md:text-lg tracking-wider text-center drop-shadow-lg" style={{letterSpacing: '0.08em'}}>
             LIGHT WEIGHT CATEGORY
           </div>
         </div>
 
       {team1Logo && team2Logo ? (
         <div className="flex flex-col items-center justify-center w-full relative z-10 px-4 mb-12 sm:mb-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+          {/* Match Number Section */}
           {(gameNo !== undefined || gameName) && (
-            <div className="flex items-center justify-center mb-2 gap-3">
+            <div className="flex items-center justify-center mb-4 gap-2">
               {gameNo !== undefined && gameNo !== null && (
-                <div className="text-base sm:text-lg md:text-xl font-bold text-cyan-300 drop-shadow-lg tracking-wider animate-pulse mb-1">
-                  Match NO : {gameNo}
+                <div className="text-lg sm:text-xl md:text-2xl font-bold text-cyan-300 drop-shadow-lg tracking-wider animate-pulse">
+                  MATCH NO : {gameNo}
                 </div>
               )}
               {(gameNo !== undefined && gameName) && (
-                <span className="text-cyan-400 font-bold text-xl mx-2">|</span>
+                <span className="text-cyan-400 font-bold text-lg mx-1">|</span>
               )}
               {gameName && (
                 <div className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-400 drop-shadow-lg tracking-wider animate-pulse">
@@ -330,324 +406,265 @@ function Main() {
               )}
             </div>
           )}
-          {/* Mobile Layout - Stacked */}
-          <div className={`flex flex-col lg:hidden items-center justify-center w-full ${isThreeTeams ? 'gap-3 max-w-lg' : 'gap-4 max-w-md'}`}>
-            {/* Team 1 */}
-            <div className="relative group w-full" data-aos="slide-right" data-aos-duration="800" data-aos-delay="500">
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
-              <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-red-900/30 to-gray-900/95 border-2 rounded-2xl px-4 py-6 border-red-500 w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                <div className="text-lg font-bold text-transparent bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text uppercase tracking-wider mb-3 animate-pulse">
-                  TEAM {team1name}
+          
+          {/* Mobile Layout - Vertical Stack */}
+          <div className="flex flex-col lg:hidden items-center justify-start w-full max-w-4xl gap-3 pb-4">
+            {/* Teams Row Above Timer - Large Mobile Layout */}
+            <div className="flex flex-row items-start justify-center w-full gap-2 px-1">
+              {/* Team 1 */}
+              <div className="flex flex-col items-center flex-1" data-aos="slide-right" data-aos-duration="800" data-aos-delay="700">
+                {/* Large Team Logo Container */}
+                <div className="relative group">
+                  {/* Outer glow */}
+                  <div 
+                    className="absolute inset-0 rounded-3xl"
+                    style={{
+                      width: '150px',
+                      height: '150px',
+                      background: 'linear-gradient(135deg, #22d3ee40, transparent, #22d3ee40)',
+                      filter: 'blur(12px)',
+                      margin: '0 auto',
+                      transform: 'translate(-8px, -8px)',
+                      opacity: 0.6
+                    }}
+                  ></div>
+                  
+                  {/* Main rounded square */}
+                  <div 
+                    className="relative transition-all duration-300 group-hover:scale-105 rounded-3xl"
+                    style={{
+                      width: '140px',
+                      height: '140px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
+                      border: '3px solid #22d3ee',
+                      backdropFilter: 'blur(10px)',
+                      margin: '0 auto',
+                      boxShadow: '0 0 20px #22d3ee50'
+                    }}
+                  >
+                    <img 
+                      src={team1Logo} 
+                      className="object-cover rounded-3xl"
+                      style={{
+                        width: '100%',
+                        height: '100%'
+                      }}
+                      alt="Team 1 Logo"
+                    />
+                  </div>
                 </div>
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                  <img 
-                    src={team1Logo} 
-                    className={`relative ${isThreeTeams ? 'w-20 h-20' : 'w-24 h-24'} object-contain rounded-full border-2 border-red-500 bg-gradient-to-br from-gray-900 to-red-900/20 mb-3 shadow-2xl transform hover:rotate-12 transition-all duration-300`} 
-                  />
+                
+                <div className="mt-2 mb-1 text-xs font-bold text-white tracking-wider text-center uppercase">
+                  TEAM
                 </div>
-                <div className="w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent rounded-full animate-pulse"></div>
+                <div 
+                  className="relative transition-all duration-300 hover:scale-105"
+                  style={{
+                    minWidth: '100px',
+                    padding: '8px 16px',
+                    borderRadius: '20px',
+                    background: 'linear-gradient(90deg, #22d3ee 0%, #06b6d4 100%)',
+                    color: '#fff',
+                    fontWeight: 600,
+                    fontSize: '0.8rem',
+                    letterSpacing: '0.1em',
+                    textAlign: 'center',
+                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)'
+                  }}
+                >
+                  {team1name || "NEW WAR"}
+                </div>
+              </div>
+
+              {/* Team 2 */}
+              <div className="flex flex-col items-center flex-1" data-aos="slide-left" data-aos-duration="800" data-aos-delay="700">
+                {/* Large Team Logo Container */}
+                <div className="relative group">
+                  {/* Outer glow */}
+                  <div 
+                    className="absolute inset-0 rounded-3xl"
+                    style={{
+                      width: '150px',
+                      height: '150px',
+                      background: 'linear-gradient(135deg, #ec489940, transparent, #ec489940)',
+                      filter: 'blur(12px)',
+                      margin: '0 auto',
+                      transform: 'translate(-8px, -8px)',
+                      opacity: 0.6
+                    }}
+                  ></div>
+                  
+                  {/* Main rounded square */}
+                  <div 
+                    className="relative transition-all duration-300 group-hover:scale-105 rounded-3xl"
+                    style={{
+                      width: '140px',
+                      height: '140px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
+                      border: '3px solid #ec4899',
+                      backdropFilter: 'blur(10px)',
+                      margin: '0 auto',
+                      boxShadow: '0 0 20px #ec489950'
+                    }}
+                  >
+                    <img 
+                      src={team2Logo} 
+                      className="object-cover rounded-3xl"
+                      style={{
+                        width: '100%',
+                        height: '100%'
+                      }}
+                      alt="Team 2 Logo"
+                    />
+                  </div>
+                </div>
+                
+                <div className="mt-2 mb-1 text-xs font-bold text-white tracking-wider text-center uppercase">
+                  TEAM
+                </div>
+                <div 
+                  className="relative transition-all duration-300 hover:scale-105"
+                  style={{
+                    minWidth: '100px',
+                    padding: '8px 16px',
+                    borderRadius: '20px',
+                    background: 'linear-gradient(90deg, #ec4899 0%, #be185d 100%)',
+                    color: '#fff',
+                    fontWeight: 600,
+                    fontSize: '0.8rem',
+                    letterSpacing: '0.1em',
+                    textAlign: 'center',
+                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)'
+                  }}
+                >
+                  {team2name || "AZURE BOT"}
+                </div>
               </div>
             </div>
 
-            {/* VS and Timer */}
-            <div className="flex flex-col items-center justify-center w-full" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="700">
-              <div className="relative mb-4">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 blur-2xl opacity-50 animate-pulse"></div>
-                <div className={`relative ${isThreeTeams ? 'text-3xl' : 'text-4xl'} font-extrabold text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text animate-bounce`}>
-                  VS
+            {/* Timer Section Below Teams */}
+            <div className="flex flex-col items-center justify-center">
+              {/* Timer Container */}
+              <div className="flex flex-col items-center bg-gradient-to-b from-teal-900/60 via-green-900/70 to-green-800/60 backdrop-blur-md rounded-2xl p-3 border border-green-400/40 shadow-2xl min-w-[200px]">
+                <div className="text-white font-medium uppercase tracking-wider mb-1 text-center text-xs">
+                  TIME REMAINING
+                </div>
+                <div className="text-3xl font-bold mb-2 text-center" style={{
+                  background: 'linear-gradient(to right, #ffffff, #4ade80)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  letterSpacing: '0.1em'
+                }}>
+                  {mainTime ? Math.floor(mainTime / 60) : "3"}:
+                  {mainTime
+                    ? (mainTime % 60).toLocaleString("en-US", {
+                        minimumIntegerDigits: 2,
+                        useGrouping: false,
+                      })
+                    : "00"}
+                </div>
+                <div className="text-gray-300 font-medium uppercase tracking-wider mb-1 text-center text-xs">
+                  ADDITIONAL TIME
+                </div>
+                <div className="text-xl font-bold text-gray-300">
+                  {pitTime || "20"}<span className="text-sm ml-1">s</span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Desktop Layout - Same as Mobile */}
+          <div className="hidden lg:flex flex-row items-center justify-center w-full max-w-6xl gap-16">
+            {/* Team 1 */}
+            <div className="flex flex-col items-center" data-aos="slide-right" data-aos-duration="800" data-aos-delay="500">
+              <Hexagon borderColor="#22d3ee">
+                <img 
+                  src={team1Logo} 
+                  className="object-cover rounded-2xl"
+                  style={{
+                    width: '100%',
+                    height: '100%'
+                  }}
+                  alt="Team 1 Logo"
+                />
+              </Hexagon>
+              <div className="mt-6 mb-3 text-base font-medium text-gray-300 tracking-wider text-center uppercase">
+                TEAM
+              </div>
+              <TeamNamePill gradient="linear-gradient(90deg, #22d3ee 0%, #06b6d4 100%)">
+                {team1name || "BUMBLEBEE"}
+              </TeamNamePill>
+            </div>
+
+            {/* VS and Timer - Vertical Layout */}
+            <div className="flex flex-col items-center justify-center">
+              {/* Decorative line above VS */}
+              <div className="w-px h-14 bg-gradient-to-b from-transparent via-white to-transparent opacity-60 mb-3"></div>
               
-              {/* Timer Display - hidden when 3 teams */}
-              {!isThreeTeams && (
-                <div className="relative bg-gradient-to-br from-gray-900/95 via-green-900/30 to-gray-900/95 border-2 border-green-400 rounded-xl px-4 py-3 backdrop-blur-md shadow-2xl transform hover:scale-105 transition-all duration-300 w-full max-w-xs">
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-cyan-400 rounded-xl blur-lg opacity-30 animate-pulse -z-10"></div>
-                  
-                  <div className="text-xs font-bold text-cyan-200 uppercase tracking-wider mb-1 text-center animate-pulse">
-                    TIME REMAINING
-                  </div>
-                  <div className="text-3xl font-extrabold text-transparent bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-center mb-2 animate-pulse">
-                    {mainTime ? Math.floor(mainTime / 60) : mainTime || "0"}:
-                    {mainTime
-                      ? (mainTime % 60).toLocaleString("en-US", {
-                          minimumIntegerDigits: 2,
-                          useGrouping: false,
-                        })
-                      : mainTime || "00"}
-                  </div>
-                  <div className="text-xs font-bold text-cyan-200 uppercase tracking-wider mb-1 text-center animate-pulse">
-                    ADDITIONAL TIME
-                  </div>
-                  <div className="text-xl font-extrabold text-transparent bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-center animate-pulse">
-                    {pitTime || "0"}
-                  </div>
+              {/* VS */}
+              <div className="text-7xl font-bold text-white tracking-wider mb-6">
+                VS
+              </div>
+              
+              {/* Decorative line below VS */}
+              <div className="w-px h-14 bg-gradient-to-b from-transparent via-white to-transparent opacity-60 mb-3"></div>
+              
+              {/* Timer Container */}
+              <div className="flex flex-col items-center bg-gradient-to-b from-cyan-900/60 via-cyan-900/70 to-cyan-800/60 backdrop-blur-md rounded-2xl p-6 border border-cyan-400/40 shadow-2xl min-w-[280px]">
+                <div className="text-white font-medium uppercase tracking-wider mb-4 text-center text-lg">
+                TIME REMAINING
+              </div>
+                <div className="text-8xl font-bold text-center" style={{
+                  background: 'linear-gradient(to right, #ffffff, #A855F7)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  letterSpacing: '0.1em'
+                }}>
+                  {mainTime ? Math.floor(mainTime / 60) : "3"}:
+                {mainTime
+                  ? (mainTime % 60).toLocaleString("en-US", {
+                      minimumIntegerDigits: 2,
+                      useGrouping: false,
+                    })
+                    : "00"}
+              </div>
+                <div className="text-gray-300 font-medium uppercase tracking-wider mb-3 text-center">
+                ADDITIONAL TIME
+              </div>
+                <div className="text-4xl font-bold text-gray-300">
+                  {pitTime || "20"}<span className="text-xl ml-1">s</span>
                 </div>
-              )}
+              </div>
             </div>
 
             {/* Team 2 */}
-            <div className="relative group w-full" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
-              <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-blue-900/30 to-gray-900/95 border-2 rounded-2xl px-4 py-6 border-blue-400 w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                <div className="text-lg font-bold text-transparent bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text uppercase tracking-wider mb-3 animate-pulse">
-                  TEAM {team2name}
-                </div>
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                  <img 
-                    src={team2Logo} 
-                    className={`relative ${isThreeTeams ? 'w-20 h-20' : 'w-24 h-24'} object-contain rounded-full border-2 border-blue-400 bg-gradient-to-br from-gray-900 to-blue-900/20 mb-3 shadow-2xl transform hover:rotate-12 transition-all duration-300`} 
-                  />
-                </div>
-                <div className="w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full animate-pulse"></div>
+            <div className="flex flex-col items-center" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
+              <Hexagon borderColor="#ec4899">
+                <img 
+                  src={team2Logo} 
+                  className="object-cover rounded-2xl"
+                  style={{
+                    width: '100%',
+                    height: '100%'
+                  }}
+                  alt="Team 2 Logo"
+                />
+              </Hexagon>
+              <div className="mt-6 mb-3 text-base font-medium text-gray-300 tracking-wider text-center uppercase">
+                TEAM
               </div>
+              <TeamNamePill gradient="linear-gradient(90deg, #ec4899 0%, #be185d 100%)">
+                {team2name || "BLOCKBOTS"}
+              </TeamNamePill>
             </div>
-            {/* 3-Team Mobile Layout - Triangular arrangement */}
-            {team3Logo && team3name && (
-              <>
-                {/* Team 2 (left side) */}
-                <div className="relative group w-full" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
-                  <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-blue-900/30 to-gray-900/95 border-2 rounded-2xl px-4 py-5 border-blue-400 w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                    <div className="text-base font-bold text-transparent bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text uppercase tracking-wider mb-3 animate-pulse">
-                      TEAM {team2name}
-                    </div>
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                      <img 
-                        src={team2Logo} 
-                        className="relative w-20 h-20 object-contain rounded-full border-2 border-blue-400 bg-gradient-to-br from-gray-900 to-blue-900/20 mb-3 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
-                      />
-                    </div>
-                    <div className="w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-
-                {/* VS divider */}
-                <div className="flex flex-col items-center justify-center w-full" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="700">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 blur-xl opacity-50 animate-pulse"></div>
-                    <div className="relative text-3xl font-extrabold text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text animate-bounce">
-                      VS
-                    </div>
-                  </div>
-                </div>
-
-                {/* Team 3 (right side) */}
-                <div className="relative group w-full" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-lime-500 rounded-2xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
-                  <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-green-900/30 to-gray-900/95 border-2 rounded-2xl px-4 py-5 border-green-400 w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                    <div className="text-base font-bold text-transparent bg-gradient-to-r from-green-400 to-lime-500 bg-clip-text uppercase tracking-wider mb-3 animate-pulse">
-                      TEAM {team3name}
-                    </div>
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-lime-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                      <img 
-                        src={team3Logo} 
-                        className="relative w-20 h-20 object-contain rounded-full border-2 border-green-400 bg-gradient-to-br from-gray-900 to-green-900/20 mb-3 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
-                      />
-                    </div>
-                    <div className="w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-
-                {/* Timer at bottom */}
-                <div className="flex flex-col items-center justify-center w-full" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="900">
-                  <div className="relative bg-gradient-to-br from-gray-900/95 via-green-900/30 to-gray-900/95 border-2 border-green-400 rounded-xl px-4 py-3 backdrop-blur-md shadow-2xl transform hover:scale-105 transition-all duration-300 w-full max-w-xs">
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-cyan-400 rounded-xl blur-lg opacity-30 animate-pulse -z-10"></div>
-                    
-                    <div className="text-xs font-bold text-cyan-200 uppercase tracking-wider mb-1 text-center animate-pulse">
-                      TIME REMAINING
-                    </div>
-                    <div className="text-3xl font-extrabold text-transparent bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-center mb-2 animate-pulse">
-                      {mainTime ? Math.floor(mainTime / 60) : mainTime || "0"}:
-                      {mainTime
-                        ? (mainTime % 60).toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false,
-                          })
-                        : mainTime || "00"}
-                    </div>
-                    <div className="text-xs font-bold text-cyan-200 uppercase tracking-wider mb-1 text-center animate-pulse">
-                      ADDITIONAL TIME
-                    </div>
-                    <div className="text-xl font-extrabold text-transparent bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-center animate-pulse">
-                      {pitTime || "0"}
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Desktop Layout - Horizontal */}
-          <div className={`hidden lg:flex ${isThreeTeams ? 'flex-col' : 'flex-row'} items-center justify-center w-full ${isThreeTeams ? 'gap-8' : 'gap-6 xl:gap-16'}`}>
-            {/* Three Teams Layout */}
-            {isThreeTeams ? (
-              <>
-                {/* Team 1 at top */}
-                <div className="relative group" data-aos="slide-right" data-aos-duration="800" data-aos-delay="500">
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
-                  <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-red-900/30 to-gray-900/95 border-4 rounded-3xl px-8 py-6 border-red-500 max-w-sm w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                    <div className="text-2xl font-bold text-transparent bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text uppercase tracking-wider mb-4 animate-pulse">
-                      TEAM {team1name}
-                    </div>
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                      <img 
-                        src={team1Logo} 
-                        className="relative w-28 h-28 object-contain rounded-full border-4 border-red-500 bg-gradient-to-br from-gray-900 to-red-900/20 mb-4 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
-                      />
-                    </div>
-                    <div className="w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-
-                {/* Row with Team 2, Timer, and Team 3 */}
-                <div className="flex flex-row items-center justify-center w-full gap-8">
-                  {/* Team 2 */}
-                  <div className="relative group" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
-                    <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-blue-900/30 to-gray-900/95 border-4 rounded-3xl px-8 py-6 border-blue-400 max-w-sm w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                      <div className="text-2xl font-bold text-transparent bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text uppercase tracking-wider mb-4 animate-pulse">
-                        TEAM {team2name}
-                      </div>
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                        <img 
-                          src={team2Logo} 
-                          className="relative w-28 h-28 object-contain rounded-full border-4 border-blue-400 bg-gradient-to-br from-gray-900 to-blue-900/20 mb-4 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
-                        />
-                      </div>
-                      <div className="w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full animate-pulse"></div>
-                    </div>
-                  </div>
-
-                  {/* Timer in center */}
-                  <div className="flex flex-col items-center justify-center" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="700">
-                    <div className="relative bg-gradient-to-br from-gray-900/95 via-green-900/30 to-gray-900/95 border-4 border-green-400 rounded-2xl px-6 py-4 backdrop-blur-md shadow-2xl transform hover:scale-105 transition-all duration-300">
-                      <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-cyan-400 rounded-2xl blur-lg opacity-30 animate-pulse -z-10"></div>
-                      
-                      <div className="text-base font-bold text-cyan-200 uppercase tracking-widest mb-2 text-center animate-pulse">
-                        TIME REMAINING
-                      </div>
-                      <div className="text-5xl font-extrabold text-transparent bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-center mb-4 animate-pulse">
-                        {mainTime ? Math.floor(mainTime / 60) : mainTime || "0"}:
-                        {mainTime
-                          ? (mainTime % 60).toLocaleString("en-US", {
-                              minimumIntegerDigits: 2,
-                              useGrouping: false,
-                            })
-                          : mainTime || "00"}
-                      </div>
-                      <div className="text-base font-bold text-cyan-200 uppercase tracking-widest mb-2 text-center animate-pulse">
-                        ADDITIONAL TIME
-                      </div>
-                      <div className="text-3xl font-extrabold text-transparent bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-center animate-pulse">
-                        {pitTime || "0"}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Team 3 */}
-                  <div className="relative group" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-lime-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
-                    <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-green-900/30 to-gray-900/95 border-4 rounded-3xl px-8 py-6 border-green-400 max-w-sm w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                      <div className="text-2xl font-bold text-transparent bg-gradient-to-r from-green-400 to-lime-500 bg-clip-text uppercase tracking-wider mb-4 animate-pulse">
-                        TEAM {team3name}
-                      </div>
-                      <div className="relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-lime-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                        <img 
-                          src={team3Logo} 
-                          className="relative w-28 h-28 object-contain rounded-full border-4 border-green-400 bg-gradient-to-br from-gray-900 to-green-900/20 mb-4 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
-                        />
-                      </div>
-                      <div className="w-full h-1 bg-gradient-to-r from-transparent via-green-500 to-transparent rounded-full animate-pulse"></div>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Two Teams Layout */}
-                {/* Team 1 */}
-                <div className="relative group" data-aos="slide-right" data-aos-duration="800" data-aos-delay="500">
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
-                  <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-red-900/30 to-gray-900/95 border-4 rounded-3xl px-6 py-8 xl:px-10 xl:py-10 border-red-500 max-w-sm w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                    <div className="text-xl xl:text-3xl font-bold text-transparent bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text uppercase tracking-wider mb-4 animate-pulse">
-                      TEAM {team1name}
-                    </div>
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                      <img 
-                        src={team1Logo} 
-                        className="relative w-36 h-36 xl:w-44 xl:h-44 object-contain rounded-full border-4 border-red-500 bg-gradient-to-br from-gray-900 to-red-900/20 mb-4 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
-                      />
-                    </div>
-                    <div className="w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* Two Teams VS and Timer (only for 2 teams) */}
-            {!isThreeTeams && (
-              <>
-                {/* VS and Timer */}
-                <div className="flex flex-col items-center justify-center px-4 xl:px-8" data-aos="zoom-in" data-aos-duration="800" data-aos-delay="700">
-                  <div className="relative mb-6">
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 blur-2xl opacity-50 animate-pulse"></div>
-                    <div className="relative text-6xl xl:text-8xl font-extrabold text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text animate-bounce">
-                      VS
-                    </div>
-                  </div>
-                  
-                  {/* Timer Display */}
-                  <div className="relative bg-gradient-to-br from-gray-900/95 via-green-900/30 to-gray-900/95 border-4 border-green-400 rounded-2xl px-6 py-4 backdrop-blur-md shadow-2xl transform hover:scale-105 transition-all duration-300">
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-cyan-400 rounded-2xl blur-lg opacity-30 animate-pulse -z-10"></div>
-                    
-                    <div className="text-base xl:text-lg font-bold text-cyan-200 uppercase tracking-widest mb-2 text-center animate-pulse">
-                      TIME REMAINING
-                    </div>
-                    <div className="text-5xl xl:text-7xl font-extrabold text-transparent bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-center mb-4 animate-pulse">
-                      {mainTime ? Math.floor(mainTime / 60) : mainTime || "0"}:
-                      {mainTime
-                        ? (mainTime % 60).toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false,
-                          })
-                        : mainTime || "00"}
-                    </div>
-                    <div className="text-base xl:text-lg font-bold text-cyan-200 uppercase tracking-widest mb-2 text-center animate-pulse">
-                      ADDITIONAL TIME
-                    </div>
-                    <div className="text-3xl xl:text-4xl font-extrabold text-transparent bg-gradient-to-r from-yellow-400 to-green-400 bg-clip-text text-center animate-pulse">
-                      {pitTime || "0"}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Team 2 */}
-                <div className="relative group" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-300 animate-pulse"></div>
-                  <div className="relative flex flex-col items-center bg-gradient-to-br from-gray-900/95 via-blue-900/30 to-gray-900/95 border-4 rounded-3xl px-6 py-8 xl:px-10 xl:py-10 border-blue-400 max-w-sm w-full backdrop-blur-md transform hover:scale-105 transition-all duration-300 hover:shadow-2xl">
-                    <div className="text-xl xl:text-3xl font-bold text-transparent bg-gradient-to-r from-blue-400 to-cyan-500 bg-clip-text uppercase tracking-wider mb-4 animate-pulse">
-                      TEAM {team2name}
-                    </div>
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                      <img 
-                        src={team2Logo} 
-                        className="relative w-36 h-36 xl:w-44 xl:h-44 object-contain rounded-full border-4 border-blue-400 bg-gradient-to-br from-gray-900 to-blue-900/20 mb-4 shadow-2xl transform hover:rotate-12 transition-all duration-300" 
-                      />
-                    </div>
-                    <div className="w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent rounded-full animate-pulse"></div>
-                  </div>
-                </div>
-              </>
-            )}
           </div>
         </div>
       ) : (
@@ -674,7 +691,7 @@ function Main() {
 
       {/* Bottom Sponsors Section */}
       <div className="w-full px-2 sm:px-4 pb-6 sm:pb-4 pt-4 sm:pt-0 mt-auto relative z-20" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-        <div className="w-full bg-gradient-to-r from-gray-900/90 via-cyan-900/20 to-gray-900/90 rounded-xl sm:rounded-2xl backdrop-blur-md border-2 border-cyan-400 p-2 sm:p-4 shadow-2xl">
+        <div className="w-full bg-gradient-to-r from-gray-900/90 via-cyan-900/20 to-gray-900/90 rounded-xl sm:rounded-2xl backdrop-blur-md  p-2 sm:p-4 shadow-2xl">
           <LogoSlider logos={logos} speed={35} />
         </div>
       </div>
