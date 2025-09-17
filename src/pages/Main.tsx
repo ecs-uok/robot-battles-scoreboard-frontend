@@ -1,13 +1,12 @@
 import { useEffect, useState, useMemo } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import "../styles/scoreboard.css";
 import FireWorks from "../components/FireWorks";
 import LogoSlider from "../components/LogoSlider";
 import { useNavigate } from "react-router-dom";
 
 //images
-const bgImg = "https://iili.io/Kujx7Bp.md.png";
+const bgImg = "/scoreboard-background.png";
 
 // Sponsor logos served from public folder for faster loads and stable URLs
 const varioSystem = "/sponsors/Vario-Systems.png";
@@ -107,6 +106,7 @@ function Main() {
   var team2Id: number;
   var team3Id: number;
   var winnerId: number | string;
+  const [gameNo, setGameNo] = useState<number | undefined>(undefined); // <-- add state for game id
 
   const [mainTime, setMainTime] = useState();
   const [pitTime, setPitTime] = useState();
@@ -150,6 +150,7 @@ function Main() {
         setTeam1Logo(data.team1.logo);
         setTeam2Logo(data.team2.logo);
         setGameName(data.gameName || "");
+        setGameNo(data.gameId); // <-- set game ID here
         if (data.team3 && data.team3.name) {
           setTeam3Name(data.team3.name);
           setTeam3Logo(data.team3.logo);
@@ -297,30 +298,36 @@ function Main() {
         ))}
       </div>
 
-      {/* Title Section */}
-      <div className="w-full flex justify-center mt-4 sm:mt-6 mb-2 px-4 relative z-10" data-aos="fade-down" data-aos-duration="1000">
-        <div className="relative bg-gradient-to-br from-gray-900/95 via-blue-900/90 to-cyan-900/95 border-2 sm:border-4 border-cyan-400 rounded-2xl sm:rounded-3xl px-4 sm:px-6 md:px-8 py-4 sm:py-6 shadow-2xl backdrop-blur-md text-center max-w-3xl w-full transform hover:scale-105 transition-all duration-300">
-          {/* Glowing border effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-2xl sm:rounded-3xl blur-lg opacity-30 animate-pulse -z-10"></div>
-          
-          <div className="text-xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-transparent bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-500 bg-clip-text tracking-wide sm:tracking-wider md:tracking-widest animate-shimmer" style={{letterSpacing: "0.05em"}}>
-            UOK ROBOT BATTLES
-          </div>
-          <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-transparent bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text mt-1 sm:mt-2 tracking-wide sm:tracking-wider md:tracking-widest animate-pulse">
-            2025
-          </div>
-          <div className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-cyan-400 mt-1 sm:mt-2 tracking-wide sm:tracking-wider md:tracking-widest animate-bounce">
+      {/* Title Section - replaced with image */}
+        <div className="w-full flex flex-col items-center justify-center mt-4 sm:mt-6 mb-2 px-4 relative z-10" data-aos="fade-down" data-aos-duration="1000">
+          <img
+            src="/main-scoreboard-title.png"
+            alt="Main Scoreboard Title"
+            className="w-full max-w-md rounded-2xl sm:rounded-3xl shadow-2xl backdrop-blur-md mb-2"
+            style={{objectFit: 'cover'}}
+          />
+          <div className="text-gray-300 font-extrabold text-lg sm:text-xl md:text-2xl tracking-widest text-center drop-shadow-lg pt-2" style={{letterSpacing: '0.08em'}}>
             LIGHT WEIGHT CATEGORY
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
       {team1Logo && team2Logo ? (
-        <div className="flex flex-col items-center justify-center flex-1 w-full relative z-10 px-4 mb-4 sm:mb-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
-          {gameName && (
-            <div className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-400 text-center mb-2 drop-shadow-lg tracking-wider animate-pulse">
-              {gameName}
+        <div className="flex flex-col items-center justify-center w-full relative z-10 px-4 mb-12 sm:mb-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+          {(gameNo !== undefined || gameName) && (
+            <div className="flex items-center justify-center mb-2 gap-3">
+              {gameNo !== undefined && gameNo !== null && (
+                <div className="text-base sm:text-lg md:text-xl font-bold text-cyan-300 drop-shadow-lg tracking-wider animate-pulse mb-1">
+                  Match NO : {gameNo}
+                </div>
+              )}
+              {(gameNo !== undefined && gameName) && (
+                <span className="text-cyan-400 font-bold text-xl mx-2">|</span>
+              )}
+              {gameName && (
+                <div className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-400 drop-shadow-lg tracking-wider animate-pulse">
+                  {gameName}
+                </div>
+              )}
             </div>
           )}
           {/* Mobile Layout - Stacked */}
