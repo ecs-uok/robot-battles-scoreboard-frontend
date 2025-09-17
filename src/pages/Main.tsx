@@ -114,6 +114,7 @@ function Main() {
   const [team1name, setTeam1Name] = useState();
   const [team2name, setTeam2Name] = useState();
   const [team3name, setTeam3Name] = useState<string | undefined>(undefined);
+  const [gameName, setGameName] = useState<string>("");
 
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
@@ -148,6 +149,7 @@ function Main() {
         setTeam2Name(data.team2.name);
         setTeam1Logo(data.team1.logo);
         setTeam2Logo(data.team2.logo);
+        setGameName(data.gameName || "");
         if (data.team3 && data.team3.name) {
           setTeam3Name(data.team3.name);
           setTeam3Logo(data.team3.logo);
@@ -316,6 +318,11 @@ function Main() {
       {/* Main Content */}
       {team1Logo && team2Logo ? (
         <div className="flex flex-col items-center justify-center flex-1 w-full relative z-10 px-4 mb-4 sm:mb-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+          {gameName && (
+            <div className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-400 text-center mb-2 drop-shadow-lg tracking-wider animate-pulse">
+              {gameName}
+            </div>
+          )}
           {/* Mobile Layout - Stacked */}
           <div className={`flex flex-col lg:hidden items-center justify-center w-full ${isThreeTeams ? 'gap-3 max-w-lg' : 'gap-4 max-w-md'}`}>
             {/* Team 1 */}

@@ -18,6 +18,7 @@ function ControlPanel() {
   const [team1name, setTeam1Name] = useState();
   const [team2name, setTeam2Name] = useState();
   const [team3name, setTeam3Name] = useState<string | undefined>(undefined);
+  const [gameName, setGameName] = useState<string>("");
 
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
@@ -34,6 +35,7 @@ function ControlPanel() {
         setTeam2Name(data.team2.name);
         setTeam1Logo(data.team1.logo);
         setTeam2Logo(data.team2.logo);
+        setGameName(data.gameName || "");
         // Optional team 3
         if (data.team3 && data.team3.name) {
           setTeam3Name(data.team3.name);
@@ -334,6 +336,9 @@ function ControlPanel() {
             <div className="flex flex-col gap-3 items-center justify-center">
               <div className="text-base md:text-lg font-bold text-blue-700 text-center mb-1 tracking-wider">
                 {gameNo !== undefined && gameNo !== null ? `Game ID: ${gameNo}` : ""}
+                {gameName ? (
+                  <div className="text-sm font-semibold text-gray-600 mt-1">{gameName}</div>
+                ) : null}
               </div>
               <button
                 className="transition bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 text-black font-bold py-2 px-8 rounded-xl shadow"

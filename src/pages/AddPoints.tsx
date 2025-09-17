@@ -28,6 +28,7 @@ function AddPoints() {
   const [team1name, setTeam1Name] = useState();
   const [team2name, setTeam2Name] = useState();
   const [team3name, setTeam3Name] = useState<string | undefined>(undefined);
+  const [gameName, setGameName] = useState<string>("");
 
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
@@ -68,6 +69,7 @@ function AddPoints() {
         setTeam2Name(data.team2.name);
         setTeam1Logo(data.team1.logo);
         setTeam2Logo(data.team2.logo);
+        setGameName(data.gameName || "");
         if (data.team3 && data.team3.name) {
           setTeam3Name(data.team3.name);
           setTeam3Logo(data.team3.logo);
@@ -125,6 +127,9 @@ function AddPoints() {
       <div className="w-full flex flex-col items-center mt-5 mb-2">
         <div className="text-xl md:text-2xl font-bold text-blue-700 text-center mb-1 tracking-wider">
           {gameNo !== undefined && gameNo !== null ? `Game ID: ${gameNo}` : ""}
+          {gameName ? (
+            <div className="text-sm font-semibold text-gray-600 mt-1">{gameName}</div>
+          ) : null}
         </div>
         <div className="text-3xl md:text-4xl font-bold text-green-400 text-center mb-6 drop-shadow-lg tracking-wider">
           {winnerId !== undefined && winnerId !== null

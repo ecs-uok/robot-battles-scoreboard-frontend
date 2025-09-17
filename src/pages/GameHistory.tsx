@@ -15,6 +15,7 @@ interface gameType {
   team3score?: string;
   winnerId?: string | number;
   isDraw?: boolean;
+  gameName?: string;
 }
 const ShowGames = () => {
   const [gamesList, setGamesList] = useState<Array<gameType>>([]);
@@ -80,6 +81,9 @@ const ShowGames = () => {
           <div className="w-full flex flex-col items-center mb-2">
             <div className="text-sm md:text-lg font-bold text-gray-400 tracking-widest text-center whitespace-nowrap mb-2">
               MATCH NO: <span className="text-blue-700">{game.gameid}</span>
+              {game.gameName ? (
+                <div className="text-xs md:text-base font-semibold text-gray-600 mt-1">{game.gameName}</div>
+              ) : null}
             </div>
             <div className={`grid ${hasTeam3 ? "grid-cols-3" : "grid-cols-2"} gap-3 md:gap-6 w-full`}>
               {/* Team 1 */}

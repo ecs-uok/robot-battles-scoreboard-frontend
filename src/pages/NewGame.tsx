@@ -11,6 +11,7 @@ function NewGame() {
   const [team3id, setTeam3id] = useState<string>("");
   const [isThreeTeam, setIsThreeTeam] = useState<boolean>(false);
   const [gameNo, setGameNo] = useState(1);
+  const [gameName, setGameName] = useState<string>("");
   const [totalTime, setTotalTime] = useState(180);
   const [pitOpenTime, setPitOpenTime] = useState(60);
   const [pitTime, setPitTime] = useState(20);
@@ -38,6 +39,7 @@ function NewGame() {
   async function setGameDetails() {
     const payload: any = {
       gameId: `${gameNo}`,
+      gameName: gameName,
       team1: team1id,
       team2: team2id,
     };
@@ -97,6 +99,18 @@ function NewGame() {
       </div>
       <div className="w-full flex justify-center">
         <div className="bg-white/90 rounded-2xl shadow-2xl p-4 max-w-3xl w-full mx-2 border border-blue-200">
+          {/* Game Name Input */}
+          <div className="mb-6 flex flex-col items-center">
+            <label className="text-lg font-semibold text-gray-700 mb-1">Game Name</label>
+            <input
+              type="text"
+              className="text-center text-lg rounded-lg border-2 border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 p-2 w-64 transition"
+              value={gameName}
+              onChange={e => setGameName(e.target.value)}
+              placeholder="Enter game name (optional)"
+              maxLength={50}
+            />
+          </div>
           {/* Match Type Toggle */}
           <div className="flex items-center justify-center gap-4 mb-4">
             <button
