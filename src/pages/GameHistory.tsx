@@ -80,7 +80,7 @@ function GameHistory() {
   };
 
   // Helper function to determine winner name
-  const getWinnerName = (game) => {
+  const getWinnerName = (game: any) => {
     if (game.isDraw) return "Draw";
     
     const team1Score = parseInt(game.team1score) || 0;
