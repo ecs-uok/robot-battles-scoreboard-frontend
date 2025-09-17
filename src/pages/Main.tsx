@@ -92,7 +92,7 @@ const DrawDialog: React.FC<DrawDialogProps> = ({ isOpen }) => {
               It's a Tie!
             </div>
             <div className="text-sm sm:text-base text-orange-300 animate-pulse">
-              Both teams fought valiantly
+              The teams fought valiantly
             </div>
           </div>
         </div>
@@ -101,15 +101,15 @@ const DrawDialog: React.FC<DrawDialogProps> = ({ isOpen }) => {
   );
 };
 
-// Clean Modern Rounded Square
-const Hexagon: React.FC<{children: React.ReactNode, borderColor: string}> = ({ children, borderColor }) => (
+// Clean Modern Rounded Square - Add size parameter
+const Hexagon: React.FC<{children: React.ReactNode, borderColor: string, size?: 'normal' | 'small'}> = ({ children, borderColor, size = 'normal' }) => (
   <div className="relative group">
     {/* Subtle outer glow */}
     <div 
       className="absolute inset-0 rounded-3xl"
       style={{
-        width: '370px',
-        height: '350px',
+        width: size === 'small' ? '220px' : '280px',
+        height: size === 'small' ? '200px' : '260px',
         background: `linear-gradient(135deg, ${borderColor}40, transparent, ${borderColor}40)`,
         filter: 'blur(20px)',
         margin: '0 auto',
@@ -122,11 +122,11 @@ const Hexagon: React.FC<{children: React.ReactNode, borderColor: string}> = ({ c
     <div 
       className="relative transition-all duration-300 group-hover:scale-105 rounded-2xl"
       style={{
-        width: '350px',
-        height: '330px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+        width: size === 'small' ? '200px' : '260px',
+        height: size === 'small' ? '180px' : '240px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         background: `linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))`,
         border: `3px solid ${borderColor}`,
         backdropFilter: 'blur(10px)',
@@ -134,7 +134,7 @@ const Hexagon: React.FC<{children: React.ReactNode, borderColor: string}> = ({ c
         boxShadow: `0 0 20px ${borderColor}50`
       }}
     >
-    {children}
+      {children}
     </div>
   </div>
 );
@@ -387,7 +387,7 @@ function Main() {
         </div>
 
       {team1Logo && team2Logo ? (
-        <div className="flex flex-col items-center justify-center w-full relative z-10 px-4 mb-12 sm:mb-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
+        <div className="flex flex-col items-center justify-start lg:justify-center w-full relative z-10 px-4 mb-12 sm:mb-0 flex-grow lg:flex-grow-0 pt-8 lg:pt-0" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300">
           {/* Match Number Section */}
           {(gameNo !== undefined || gameName) && (
             <div className="flex items-center justify-center mb-4 gap-2">
@@ -409,18 +409,17 @@ function Main() {
           
           {/* Mobile Layout - Vertical Stack */}
           <div className="flex flex-col lg:hidden items-center justify-start w-full max-w-4xl gap-3 pb-4">
-            {/* Teams Row Above Timer - Large Mobile Layout */}
-            <div className="flex flex-row items-start justify-center w-full gap-2 px-1">
+            {/* Teams Row Above Timer - Mobile Layout */}
+            <div className={`flex flex-row items-start justify-center w-full gap-2 px-1 ${team3name && team3Logo ? 'flex-wrap' : ''}`}>
               {/* Team 1 */}
-              <div className="flex flex-col items-center flex-1" data-aos="slide-right" data-aos-duration="800" data-aos-delay="700">
-                {/* Large Team Logo Container */}
+              <div className={`flex flex-col items-center ${team3name && team3Logo ? 'flex-1 min-w-[100px]' : 'flex-1'}`} data-aos="slide-right" data-aos-duration="800" data-aos-delay="700">
+                {/* Team Logo Container */}
                 <div className="relative group">
-                  {/* Outer glow */}
                   <div 
                     className="absolute inset-0 rounded-3xl"
                     style={{
-                      width: '150px',
-                      height: '150px',
+                      width: team3name && team3Logo ? '80px' : '120px',
+                      height: team3name && team3Logo ? '80px' : '120px',
                       background: 'linear-gradient(135deg, #22d3ee40, transparent, #22d3ee40)',
                       filter: 'blur(12px)',
                       margin: '0 auto',
@@ -429,12 +428,11 @@ function Main() {
                     }}
                   ></div>
                   
-                  {/* Main rounded square */}
                   <div 
                     className="relative transition-all duration-300 group-hover:scale-105 rounded-3xl"
                     style={{
-                      width: '140px',
-                      height: '140px',
+                      width: team3name && team3Logo ? '70px' : '110px',
+                      height: team3name && team3Logo ? '70px' : '110px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -463,13 +461,13 @@ function Main() {
                 <div 
                   className="relative transition-all duration-300 hover:scale-105"
                   style={{
-                    minWidth: '100px',
-                    padding: '8px 16px',
+                    minWidth: team3name && team3Logo ? '70px' : '100px',
+                    padding: team3name && team3Logo ? '6px 12px' : '8px 16px',
                     borderRadius: '20px',
                     background: 'linear-gradient(90deg, #22d3ee 0%, #06b6d4 100%)',
                     color: '#fff',
                     fontWeight: 600,
-                    fontSize: '0.8rem',
+                    fontSize: team3name && team3Logo ? '0.6rem' : '0.8rem',
                     letterSpacing: '0.1em',
                     textAlign: 'center',
                     boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
@@ -481,15 +479,14 @@ function Main() {
               </div>
 
               {/* Team 2 */}
-              <div className="flex flex-col items-center flex-1" data-aos="slide-left" data-aos-duration="800" data-aos-delay="700">
-                {/* Large Team Logo Container */}
+              <div className={`flex flex-col items-center ${team3name && team3Logo ? 'flex-1 min-w-[100px]' : 'flex-1'}`} data-aos="slide-left" data-aos-duration="800" data-aos-delay="700">
+                {/* Team Logo Container */}
                 <div className="relative group">
-                  {/* Outer glow */}
                   <div 
                     className="absolute inset-0 rounded-3xl"
                     style={{
-                      width: '150px',
-                      height: '150px',
+                      width: team3name && team3Logo ? '80px' : '120px',
+                      height: team3name && team3Logo ? '80px' : '120px',
                       background: 'linear-gradient(135deg, #ec489940, transparent, #ec489940)',
                       filter: 'blur(12px)',
                       margin: '0 auto',
@@ -498,12 +495,11 @@ function Main() {
                     }}
                   ></div>
                   
-                  {/* Main rounded square */}
                   <div 
                     className="relative transition-all duration-300 group-hover:scale-105 rounded-3xl"
                     style={{
-                      width: '140px',
-                      height: '140px',
+                      width: team3name && team3Logo ? '70px' : '110px',
+                      height: team3name && team3Logo ? '70px' : '110px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -532,13 +528,13 @@ function Main() {
                 <div 
                   className="relative transition-all duration-300 hover:scale-105"
                   style={{
-                    minWidth: '100px',
-                    padding: '8px 16px',
+                    minWidth: team3name && team3Logo ? '70px' : '100px',
+                    padding: team3name && team3Logo ? '6px 12px' : '8px 16px',
                     borderRadius: '20px',
                     background: 'linear-gradient(90deg, #ec4899 0%, #be185d 100%)',
                     color: '#fff',
                     fontWeight: 600,
-                    fontSize: '0.8rem',
+                    fontSize: team3name && team3Logo ? '0.6rem' : '0.8rem',
                     letterSpacing: '0.1em',
                     textAlign: 'center',
                     boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
@@ -548,16 +544,85 @@ function Main() {
                   {team2name || "AZURE BOT"}
                 </div>
               </div>
+
+              {/* Team 3 - Show only if exists */}
+              {team3name && team3Logo && (
+                <div className="flex flex-col items-center flex-1 min-w-[100px]" data-aos="slide-up" data-aos-duration="800" data-aos-delay="900">
+                  {/* Team Logo Container */}
+                  <div className="relative group">
+                    <div 
+                      className="absolute inset-0 rounded-3xl"
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        background: 'linear-gradient(135deg, #10b98140, transparent, #10b98140)',
+                        filter: 'blur(12px)',
+                        margin: '0 auto',
+                        transform: 'translate(-8px, -8px)',
+                        opacity: 0.6
+                      }}
+                    ></div>
+                    
+                    <div 
+                      className="relative transition-all duration-300 group-hover:scale-105 rounded-3xl"
+                      style={{
+                        width: '70px',
+                        height: '70px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05))',
+                        border: '3px solid #10b981',
+                        backdropFilter: 'blur(10px)',
+                        margin: '0 auto',
+                        boxShadow: '0 0 20px #10b98150'
+                      }}
+                    >
+                      <img 
+                        src={team3Logo} 
+                        className="object-cover rounded-3xl"
+                        style={{
+                          width: '100%',
+                          height: '100%'
+                        }}
+                        alt="Team 3 Logo"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2 mb-1 text-xs font-bold text-white tracking-wider text-center uppercase">
+                    TEAM
+                  </div>
+                  <div 
+                    className="relative transition-all duration-300 hover:scale-105"
+                    style={{
+                      minWidth: '70px',
+                      padding: '6px 12px',
+                      borderRadius: '20px',
+                      background: 'linear-gradient(90deg, #10b981 0%, #059669 100%)',
+                      color: '#fff',
+                      fontWeight: 600,
+                      fontSize: '0.6rem',
+                      letterSpacing: '0.1em',
+                      textAlign: 'center',
+                      boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)'
+                    }}
+                  >
+                    {team3name}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Timer Section Below Teams */}
             <div className="flex flex-col items-center justify-center">
               {/* Timer Container */}
-              <div className="flex flex-col items-center bg-gradient-to-b from-teal-900/60 via-green-900/70 to-green-800/60 backdrop-blur-md rounded-2xl p-3 border border-green-400/40 shadow-2xl min-w-[200px]">
-                <div className="text-white font-medium uppercase tracking-wider mb-1 text-center text-xs">
+              <div className="flex flex-col items-center bg-gradient-to-b from-teal-900/60 via-green-900/70 to-green-800/60 backdrop-blur-md rounded-xl p-3 border border-green-400/40 shadow-2xl min-w-[200px]">
+                <div className="text-white font-medium uppercase tracking-wider mb-2 text-center text-sm">
                   TIME REMAINING
                 </div>
-                <div className="text-3xl font-bold mb-2 text-center" style={{
+                <div className="text-4xl font-bold mb-2 text-center" style={{
                   background: 'linear-gradient(to right, #ffffff, #4ade80)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
@@ -571,100 +636,248 @@ function Main() {
                       })
                     : "00"}
                 </div>
-                <div className="text-gray-300 font-medium uppercase tracking-wider mb-1 text-center text-xs">
+                <div className="text-gray-300 font-medium uppercase tracking-wider mb-2 text-center text-sm">
                   ADDITIONAL TIME
                 </div>
-                <div className="text-xl font-bold text-gray-300">
-                  {pitTime || "20"}<span className="text-sm ml-1">s</span>
+                <div className="text-2xl font-bold text-gray-300">
+                  {pitTime || "20"}<span className="text-lg ml-1">s</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Desktop Layout - Same as Mobile */}
-          <div className="hidden lg:flex flex-row items-center justify-center w-full max-w-6xl gap-16">
-            {/* Team 1 */}
-            <div className="flex flex-col items-center" data-aos="slide-right" data-aos-duration="800" data-aos-delay="500">
-              <Hexagon borderColor="#22d3ee">
-                <img 
-                  src={team1Logo} 
-                  className="object-cover rounded-2xl"
-                  style={{
-                    width: '100%',
-                    height: '100%'
-                  }}
-                  alt="Team 1 Logo"
-                />
-              </Hexagon>
-              <div className="mt-6 mb-3 text-base font-medium text-gray-300 tracking-wider text-center uppercase">
-                TEAM
-              </div>
-              <TeamNamePill gradient="linear-gradient(90deg, #22d3ee 0%, #06b6d4 100%)">
-                {team1name || "BUMBLEBEE"}
-              </TeamNamePill>
-            </div>
+          {/* Desktop Layout */}
+          <div className="hidden lg:flex flex-col items-center justify-center w-full max-w-6xl gap-8">
+            {team3name && team3Logo ? (
+              // 3-team layout with timer below
+              <>
+                {/* Teams Row */}
+                <div className="flex flex-row items-center justify-center w-full gap-16">
+                  {/* Team 1 */}
+                  <div className="flex flex-col items-center" data-aos="slide-right" data-aos-duration="800" data-aos-delay="500">
+                    <Hexagon borderColor="#22d3ee" size="small">
+                      <img 
+                        src={team1Logo} 
+                        className="object-cover rounded-2xl"
+                        style={{
+                          width: '100%',
+                          height: '100%'
+                        }}
+                        alt="Team 1 Logo"
+                      />
+                    </Hexagon>
+                    <div className="mt-4 mb-2 text-sm font-medium text-gray-300 tracking-wider text-center uppercase">
+                      TEAM
+                    </div>
+                    <div 
+                      className="relative transition-all duration-300 hover:scale-105"
+                      style={{
+                        minWidth: '120px',
+                        padding: '10px 24px',
+                        borderRadius: '25px',
+                        background: 'linear-gradient(90deg, #22d3ee 0%, #06b6d4 100%)',
+                        color: '#fff',
+                        fontWeight: 600,
+                        fontSize: '0.9rem',
+                        letterSpacing: '0.1em',
+                        textAlign: 'center',
+                        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)'
+                      }}
+                    >
+                      {team1name || "TEAM 1"}
+                    </div>
+                  </div>
 
-            {/* VS and Timer - Vertical Layout */}
-            <div className="flex flex-col items-center justify-center">
-              {/* Decorative line above VS */}
-              <div className="w-px h-14 bg-gradient-to-b from-transparent via-white to-transparent opacity-60 mb-3"></div>
-              
-              {/* VS */}
-              <div className="text-7xl font-bold text-white tracking-wider mb-6">
-                VS
-              </div>
-              
-              {/* Decorative line below VS */}
-              <div className="w-px h-14 bg-gradient-to-b from-transparent via-white to-transparent opacity-60 mb-3"></div>
-              
-              {/* Timer Container */}
-              <div className="flex flex-col items-center bg-gradient-to-b from-cyan-900/60 via-cyan-900/70 to-cyan-800/60 backdrop-blur-md rounded-2xl p-6 border border-cyan-400/40 shadow-2xl min-w-[280px]">
-                <div className="text-white font-medium uppercase tracking-wider mb-4 text-center text-lg">
-                TIME REMAINING
-              </div>
-                <div className="text-8xl font-bold text-center" style={{
-                  background: 'linear-gradient(to right, #ffffff, #A855F7)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  letterSpacing: '0.1em'
-                }}>
-                  {mainTime ? Math.floor(mainTime / 60) : "3"}:
-                {mainTime
-                  ? (mainTime % 60).toLocaleString("en-US", {
-                      minimumIntegerDigits: 2,
-                      useGrouping: false,
-                    })
-                    : "00"}
-              </div>
-                <div className="text-gray-300 font-medium uppercase tracking-wider mb-3 text-center">
-                ADDITIONAL TIME
-              </div>
-                <div className="text-4xl font-bold text-gray-300">
-                  {pitTime || "20"}<span className="text-xl ml-1">s</span>
+                  {/* Team 2 */}
+                  <div className="flex flex-col items-center" data-aos="fade-up" data-aos-duration="800" data-aos-delay="600">
+                    <Hexagon borderColor="#ec4899" size="small">
+                      <img 
+                        src={team2Logo} 
+                        className="object-cover rounded-2xl"
+                        style={{
+                          width: '100%',
+                          height: '100%'
+                        }}
+                        alt="Team 2 Logo"
+                      />
+                    </Hexagon>
+                    <div className="mt-4 mb-2 text-sm font-medium text-gray-300 tracking-wider text-center uppercase">
+                      TEAM
+                    </div>
+                    <div 
+                      className="relative transition-all duration-300 hover:scale-105"
+                      style={{
+                        minWidth: '120px',
+                        padding: '10px 24px',
+                        borderRadius: '25px',
+                        background: 'linear-gradient(90deg, #ec4899 0%, #be185d 100%)',
+                        color: '#fff',
+                        fontWeight: 600,
+                        fontSize: '0.9rem',
+                        letterSpacing: '0.1em',
+                        textAlign: 'center',
+                        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)'
+                      }}
+                    >
+                      {team2name || "TEAM 2"}
+                    </div>
+                  </div>
+
+                  {/* Team 3 */}
+                  <div className="flex flex-col items-center" data-aos="slide-left" data-aos-duration="800" data-aos-delay="700">
+                    <Hexagon borderColor="#10b981" size="small">
+                      <img 
+                        src={team3Logo} 
+                        className="object-cover rounded-2xl"
+                        style={{
+                          width: '100%',
+                          height: '100%'
+                        }}
+                        alt="Team 3 Logo"
+                      />
+                    </Hexagon>
+                    <div className="mt-4 mb-2 text-sm font-medium text-gray-300 tracking-wider text-center uppercase">
+                      TEAM
+                    </div>
+                    <div 
+                      className="relative transition-all duration-300 hover:scale-105"
+                      style={{
+                        minWidth: '120px',
+                        padding: '10px 24px',
+                        borderRadius: '25px',
+                        background: 'linear-gradient(90deg, #10b981 0%, #059669 100%)',
+                        color: '#fff',
+                        fontWeight: 600,
+                        fontSize: '0.9rem',
+                        letterSpacing: '0.1em',
+                        textAlign: 'center',
+                        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)'
+                      }}
+                    >
+                      {team3name}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Timer Section - Below teams */}
+                <div className="flex flex-col items-center" data-aos="fade-up" data-aos-duration="800" data-aos-delay="800">
+                  <div className="flex flex-col items-center bg-gradient-to-b from-cyan-900/60 via-cyan-900/70 to-cyan-800/60 backdrop-blur-md rounded-xl p-6 border border-cyan-400/40 shadow-2xl min-w-[280px]">
+                    <div className="text-white font-medium uppercase tracking-wider mb-3 text-center text-lg">
+                      TIME REMAINING
+                    </div>
+                    <div className="text-6xl font-bold text-center" style={{
+                      background: 'linear-gradient(to right, #ffffff, #A855F7)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      letterSpacing: '0.1em'
+                    }}>
+                      {mainTime ? Math.floor(mainTime / 60) : "3"}:
+                      {mainTime
+                        ? (mainTime % 60).toLocaleString("en-US", {
+                            minimumIntegerDigits: 2,
+                            useGrouping: false,
+                          })
+                        : "00"}
+                    </div>
+                    <div className="text-gray-300 font-medium uppercase tracking-wider mb-2 text-center">
+                      ADDITIONAL TIME
+                    </div>
+                    <div className="text-3xl font-bold text-gray-300">
+                      {pitTime || "20"}<span className="text-xl ml-1">s</span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              // 2-team layout (existing code)
+              <div className="flex flex-row items-center justify-center w-full gap-16">
+                {/* Team 1 */}
+                <div className="flex flex-col items-center" data-aos="slide-right" data-aos-duration="800" data-aos-delay="500">
+                  <Hexagon borderColor="#22d3ee">
+                    <img 
+                      src={team1Logo} 
+                      className="object-cover rounded-2xl"
+                      style={{
+                        width: '100%',
+                        height: '100%'
+                      }}
+                      alt="Team 1 Logo"
+                    />
+                  </Hexagon>
+                  <div className="mt-6 mb-3 text-base font-medium text-gray-300 tracking-wider text-center uppercase">
+                    TEAM
+                  </div>
+                  <TeamNamePill gradient="linear-gradient(90deg, #22d3ee 0%, #06b6d4 100%)">
+                    {team1name || "BUMBLEBEE"}
+                  </TeamNamePill>
+                </div>
+
+                {/* VS and Timer - Vertical Layout */}
+                <div className="flex flex-col items-center justify-center">
+                  {/* Decorative line above VS */}
+                  <div className="w-px h-14 bg-gradient-to-b from-transparent via-white to-transparent opacity-60 mb-3"></div>
+                  
+                  {/* VS */}
+                  <div className="text-7xl font-bold text-white tracking-wider mb-6">
+                    VS
+                  </div>
+                  
+                  {/* Decorative line below VS */}
+                  <div className="w-px h-14 bg-gradient-to-b from-transparent via-white to-transparent opacity-60 mb-3"></div>
+                  
+                  {/* Timer Container */}
+                  <div className="flex flex-col items-center bg-gradient-to-b from-cyan-900/60 via-cyan-900/70 to-cyan-800/60 backdrop-blur-md rounded-xl p-6 border border-cyan-400/40 shadow-2xl min-w-[280px]">
+                    <div className="text-white font-medium uppercase tracking-wider mb-3 text-center text-lg">
+                      TIME REMAINING
+                    </div>
+                    <div className="text-7xl font-bold text-center" style={{
+                      background: 'linear-gradient(to right, #ffffff, #A855F7)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      letterSpacing: '0.1em'
+                    }}>
+                      {mainTime ? Math.floor(mainTime / 60) : "3"}:
+                    {mainTime
+                      ? (mainTime % 60).toLocaleString("en-US", {
+                          minimumIntegerDigits: 2,
+                          useGrouping: false,
+                        })
+                        : "00"}
+                    </div>
+                    <div className="text-gray-300 font-medium uppercase tracking-wider mb-2 text-center">
+                      ADDITIONAL TIME
+                    </div>
+                    <div className="text-3xl font-bold text-gray-300">
+                      {pitTime || "20"}<span className="text-xl ml-1">s</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Team 2 */}
+                <div className="flex flex-col items-center" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
+                  <Hexagon borderColor="#ec4899">
+                    <img 
+                      src={team2Logo} 
+                      className="object-cover rounded-2xl"
+                      style={{
+                        width: '100%',
+                        height: '100%'
+                      }}
+                      alt="Team 2 Logo"
+                    />
+                  </Hexagon>
+                  <div className="mt-6 mb-3 text-base font-medium text-gray-300 tracking-wider text-center uppercase">
+                    TEAM
+                  </div>
+                  <TeamNamePill gradient="linear-gradient(90deg, #ec4899 0%, #be185d 100%)">
+                    {team2name || "BLOCKBOTS"}
+                  </TeamNamePill>
                 </div>
               </div>
-            </div>
-
-            {/* Team 2 */}
-            <div className="flex flex-col items-center" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
-              <Hexagon borderColor="#ec4899">
-                <img 
-                  src={team2Logo} 
-                  className="object-cover rounded-2xl"
-                  style={{
-                    width: '100%',
-                    height: '100%'
-                  }}
-                  alt="Team 2 Logo"
-                />
-              </Hexagon>
-              <div className="mt-6 mb-3 text-base font-medium text-gray-300 tracking-wider text-center uppercase">
-                TEAM
-              </div>
-              <TeamNamePill gradient="linear-gradient(90deg, #ec4899 0%, #be185d 100%)">
-                {team2name || "BLOCKBOTS"}
-              </TeamNamePill>
-            </div>
+            )}
           </div>
         </div>
       ) : (
