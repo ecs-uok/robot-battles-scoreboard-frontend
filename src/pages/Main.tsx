@@ -364,20 +364,51 @@ function Main() {
       <div className="absolute top-1/3 left-1/3 w-96 h-96 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-full blur-3xl"></div>
       <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl"></div>
       
-      {/* Minimal Floating Particles */}
+      {/* Smooth Moving Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full opacity-30 animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 4}s`
-            }}
-          ></div>
-        ))}
+        {[...Array(20)].map((_, i) => {
+          const randomX = Math.random() * 100;
+          const randomY = Math.random() * 100;
+          const animationDuration = 15 + Math.random() * 25; // 15-40 seconds
+          const direction = Math.random() > 0.5 ? 1 : -1;
+          
+          return (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full opacity-30"
+              style={{
+                left: `${randomX}%`,
+                top: `${randomY}%`,
+                animation: `floatSmooth${i} ${animationDuration}s linear infinite`,
+              }}
+            >
+              <style>{`
+                @keyframes floatSmooth${i} {
+                  0% {
+                    transform: translate(0, 0) scale(0.8);
+                    opacity: 0.1;
+                  }
+                  25% {
+                    transform: translate(${direction * (20 + Math.random() * 30)}px, ${-20 - Math.random() * 40}px) scale(1.2);
+                    opacity: 0.4;
+                  }
+                  50% {
+                    transform: translate(${direction * (40 + Math.random() * 60)}px, ${-40 - Math.random() * 80}px) scale(0.9);
+                    opacity: 0.6;
+                  }
+                  75% {
+                    transform: translate(${direction * (20 + Math.random() * 30)}px, ${-60 - Math.random() * 120}px) scale(1.1);
+                    opacity: 0.3;
+                  }
+                  100% {
+                    transform: translate(0, ${-80 - Math.random() * 160}px) scale(0.7);
+                    opacity: 0.1;
+                  }
+                }
+              `}</style>
+            </div>
+          );
+        })}
       </div>
 
       {/* Title Section - UOK Robot Battles */}
