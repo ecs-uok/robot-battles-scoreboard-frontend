@@ -228,7 +228,7 @@ function NewGame() {
               <span className="text-gray-500 mt-1">seconds</span>
             </div>
             <div className="flex flex-col items-center">
-              <label className="text-lg font-semibold text-green-700 mb-1">Pit time</label>
+              <label className="text-lg font-semibold text-green-700 mb-1">Additional Time</label>
               <input
                 type="number"
                 className="text-center text-lg rounded-lg border-2 border-green-200 focus:border-green-500 focus:ring-2 focus:ring-green-100 p-2 w-24 transition"

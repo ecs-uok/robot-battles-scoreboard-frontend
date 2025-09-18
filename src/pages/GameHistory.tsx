@@ -179,7 +179,7 @@ function GameHistory() {
                 </div>
               </div>
             ) : gameHistory.length > 0 ? (
-              <div className="space-y-6 max-h-[500px] overflow-y-auto">
+              <div className="space-y-6 max-h-[500px] overflow-y-auto scrollbar-hide">
                 <div className="text-3xl font-bold text-cyan-300 mb-8">
                   Match Results ({gameHistory.length} games)
                 </div>

@@ -187,6 +187,11 @@ function Main() {
   const [team3name, setTeam3Name] = useState<string | undefined>(undefined);
   const [gameName, setGameName] = useState<string>("");
 
+  // Add leader state variables
+  const [team1Leader, setTeam1Leader] = useState();
+  const [team2Leader, setTeam2Leader] = useState();
+  const [team3Leader, setTeam3Leader] = useState<string | undefined>(undefined);
+
   const [team1Logo, setTeam1Logo] = useState();
   const [team2Logo, setTeam2Logo] = useState();
   const [team3Logo, setTeam3Logo] = useState<string | undefined>(undefined);
@@ -219,14 +224,18 @@ function Main() {
         setTeam2Name(data.team2.name);
         setTeam1Logo(data.team1.logo);
         setTeam2Logo(data.team2.logo);
+        setTeam1Leader(data.team1.leader);
+        setTeam2Leader(data.team2.leader);
         setGameName(data.gameName || "");
         setGameNo(data.gameId); // <-- set game ID here
         if (data.team3 && data.team3.name) {
           setTeam3Name(data.team3.name);
           setTeam3Logo(data.team3.logo);
+          setTeam3Leader(data.team3.leader);
         } else {
           setTeam3Name(undefined);
           setTeam3Logo(undefined);
+          setTeam3Leader(undefined);
         }
       });
   }
@@ -474,6 +483,11 @@ function Main() {
                 >
                   {team1name || "NEW WAR"}
                 </div>
+                {team1Leader && (
+                  <div className="text-[10px] text-cyan-200 font-medium text-center mt-1">
+                    Leader: {team1Leader}
+                  </div>
+                )}
               </div>
 
               {/* Team 2 */}
@@ -541,6 +555,11 @@ function Main() {
                 >
                   {team2name || "AZURE BOT"}
                 </div>
+                {team2Leader && (
+                  <div className="text-[10px] text-pink-200 font-medium text-center mt-1">
+                    Leader: {team2Leader}
+                  </div>
+                )}
               </div>
 
               {/* Team 3 - Show only if exists */}
@@ -609,6 +628,11 @@ function Main() {
                   >
                     {team3name}
                   </div>
+                  {team3Leader && (
+                    <div className="text-[10px] text-green-200 font-medium text-center mt-1">
+                      Leader: {team3Leader}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -761,7 +785,7 @@ function Main() {
                 </div>
 
                 {/* Timer Section - Below teams */}
-                <div className="flex flex-col items-center" data-aos="fade-up" data-aos-duration="800" data-aos-delay="800">
+                <div className="flex flex-col items-center pb-2" data-aos="fade-up" data-aos-duration="800" data-aos-delay="800">
                   <div className="flex flex-col items-center bg-gradient-to-b from-cyan-900/60 via-cyan-900/70 to-cyan-800/60 backdrop-blur-md rounded-xl p-6 border border-cyan-400/40 shadow-2xl min-w-[280px]">
                     <div className="text-white font-medium uppercase tracking-wider mb-3 text-center text-lg">
                       TIME REMAINING
@@ -811,6 +835,11 @@ function Main() {
                   <TeamNamePill gradient="linear-gradient(90deg, #22d3ee 0%, #06b6d4 100%)">
                     {team1name || "BUMBLEBEE"}
                   </TeamNamePill>
+                  {team1Leader && (
+                    <div className="text-sm text-cyan-200 font-medium text-center mt-3">
+                      Leader: {team1Leader}
+                    </div>
+                  )}
                 </div>
 
                 {/* VS and Timer - Vertical Layout */}
@@ -873,6 +902,11 @@ function Main() {
                   <TeamNamePill gradient="linear-gradient(90deg, #ec4899 0%, #be185d 100%)">
                     {team2name || "BLOCKBOTS"}
                   </TeamNamePill>
+                  {team2Leader && (
+                    <div className="text-sm text-pink-200 font-medium text-center mt-3">
+                      Leader: {team2Leader}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
