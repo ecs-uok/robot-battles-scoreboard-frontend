@@ -108,8 +108,8 @@ const Hexagon: React.FC<{children: React.ReactNode, borderColor: string, size?: 
     <div 
       className="absolute inset-0 rounded-3xl"
       style={{
-        width: size === 'small' ? '220px' : '280px',
-        height: size === 'small' ? '200px' : '260px',
+        width: size === 'small' ? '200px' : '200px',
+        height: size === 'small' ? '200px' : '200px',
         background: `linear-gradient(135deg, ${borderColor}40, transparent, ${borderColor}40)`,
         filter: 'blur(20px)',
         margin: '0 auto',
@@ -122,8 +122,8 @@ const Hexagon: React.FC<{children: React.ReactNode, borderColor: string, size?: 
     <div 
       className="relative transition-all duration-300 group-hover:scale-105 rounded-2xl"
       style={{
-        width: size === 'small' ? '200px' : '260px',
-        height: size === 'small' ? '180px' : '240px',
+        width: size === 'small' ? '200px' : '200px',
+        height: size === 'small' ? '200px' : '200px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

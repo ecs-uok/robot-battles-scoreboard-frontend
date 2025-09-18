@@ -46,7 +46,7 @@ const LogoSlider: React.FC<LogoSliderProps> = React.memo(({ logos, speed = 30 })
           {logoList.map((logo, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-14 sm:w-20 md:w-28 flex justify-center items-center p-1 sm:p-2 md:p-3 rounded-lg sm:rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105 group overflow-visible"
+              className="flex-shrink-0 w-14 sm:w-20 md:w-28 flex justify-center items-center p-1 sm:p-2 md:p-3 rounded-lg sm:rounded-xl bg-white border border-white/20 hover:bg-white transition-all duration-300 hover:scale-105 group overflow-visible"
             >
               <img
                 src={logo}
