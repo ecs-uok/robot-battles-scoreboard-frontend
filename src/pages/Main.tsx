@@ -14,7 +14,6 @@ const zone24x7 = "/sponsors/Zone24x7.png";
 const IEEELogo = "/sponsors/IEEE logo.png";
 const ecscLogo = "/sponsors/ECSC_transparent.png";
 const gavelLogo = "/sponsors/gavel.png";
-const codeChefLogo = "/sponsors/Codechefs.png";
 const hackSL = "/sponsors/HackSL.png";
 const xydder_3d = "/sponsors/XYDDER_3D.png";
 const michelin = "/sponsors/Michelin.png";
@@ -201,7 +200,6 @@ function Main() {
     varioSystem,
     zone24x7,
     hackSL,
-    codeChefLogo,
     IEEELogo,
     gavelLogo,
     xydder_3d,
