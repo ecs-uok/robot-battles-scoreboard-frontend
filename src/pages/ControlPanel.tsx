@@ -14,7 +14,7 @@ function ControlPanel() {
 
   const [mainTime, setMainTime] = useState();
   const [pitTime, setPitTime] = useState();
-  const [pitOpenTime, setPitOpenTime] = useState(60); // Default pit open time
+  const [pitOpenTime] = useState(60); // Default pit open time
 
   const [team1name, setTeam1Name] = useState();
   const [team2name, setTeam2Name] = useState();
@@ -300,12 +300,12 @@ function ControlPanel() {
                   <span className="text-xs text-gray-600 mt-1">SECONDS</span>
                   
                   {/* Pit Closing Countdown */}
-                  {mainTime && !pitStatus && getPitClosingTime() !== null && getPitClosingTime() > 0 && (
+                  {mainTime && !pitStatus && getPitClosingTime() !== null && getPitClosingTime()! > 0 && (
                     <div className="mt-3 flex flex-col items-center">
                       <span className="text-orange-600 font-bold text-sm tracking-wide">PIT OPENS IN</span>
                       <div className="font-bold text-lg text-orange-600 bg-orange-50 px-3 py-1 rounded-lg shadow border border-orange-200 mt-1">
-                        {Math.floor(getPitClosingTime() / 60)}:
-                        {(getPitClosingTime() % 60).toLocaleString("en-US", {
+                        {Math.floor(getPitClosingTime()! / 60)}:
+                        {(getPitClosingTime()! % 60).toLocaleString("en-US", {
                           minimumIntegerDigits: 2,
                           useGrouping: false,
                         })}
@@ -426,9 +426,9 @@ function ControlPanel() {
               </div>
               
               {/* Enhanced Pit Closing Info */}
-              {mainTime && !pitStatus && getPitClosingTime() !== null && getPitClosingTime() > 0 && (
+              {mainTime && !pitStatus && getPitClosingTime() !== null && getPitClosingTime()! > 0 && (
                 <div className="text-xs text-orange-600 text-center font-medium">
-                  Opens in {Math.floor(getPitClosingTime() / 60)}:{(getPitClosingTime() % 60).toString().padStart(2, '0')}
+                  Opens in {Math.floor(getPitClosingTime()! / 60)}:{(getPitClosingTime()! % 60).toString().padStart(2, '0')}
                 </div>
               )}
             </div>
