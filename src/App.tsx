@@ -5,6 +5,7 @@ import Main from "./pages/Main.tsx";
 import AdminPage from "./pages/Admin.tsx";
 import TonamentDrawPage from "./pages/Draw.tsx";
 import GameHistory from "./pages/GameHistory.tsx";
+import SetupNextBattle from "./pages/SetupNextBattle_backup.tsx";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/nextbattle" element={<SetupNextBattle />} />
           <Route path="/bracket" element={<TonamentDrawPage />} />
           <Route path="/Admin/*" element={<AdminPage />} />
           <Route path="/GameHistory" element={<GameHistory />} />

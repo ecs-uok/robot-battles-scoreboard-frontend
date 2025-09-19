@@ -8,6 +8,7 @@ import AddPoints from "./AddPoints.tsx";
 import GameHistory from "./GameHistory.tsx";
 import Draw from "./Draw.tsx";
 import ManageTeams from "./ManageTeams.tsx";
+import AdminSetupNextBattle from "./AdminSetupNextBattle.tsx";
 
 // Use environment variables for credentials
 const ADMIN_USER = import.meta.env.VITE_ADMIN_USER;
@@ -134,6 +135,7 @@ function AdminPage() {
         <Route path="/NewGame" element={<NewGame />} />
         <Route path="/ControlPanel" element={<ControlPanel />} />
         <Route path="/AddPoints" element={<AddPoints />} />
+        <Route path="/SetupNextBattle" element={<AdminSetupNextBattle />} />
         <Route path="/GameHistory" element={<GameHistory />} />
         <Route path="/Draw" element={<Draw />} />
         <Route path="/ManageTeams" element={<ManageTeams />} />

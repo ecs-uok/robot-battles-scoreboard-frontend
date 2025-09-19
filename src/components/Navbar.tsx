@@ -14,6 +14,7 @@ export default function Navbar({ children }: { children?: ReactNode }) {
     { to: "/Admin/GameHistory", label: "Game History" },
     { to: "/Admin/Draw", label: "Bracket" },
     { to: "/Admin/ManageTeams", label: "Manage Teams" },
+    { to: "/Admin/SetupNextBattle", label: "Setup Next Battle" },
   ];
 
   return (

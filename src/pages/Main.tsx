@@ -886,18 +886,26 @@ function Main() {
             <div className="text-3xl font-bold text-transparent bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text mb-4 animate-pulse">
               There is no game started
             </div>
-            <button
-              className="mt-4 px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-all duration-200 text-lg"
-              onClick={() => navigate("/bracket")}
-            >
-              Show Bracket
-            </button>
-            <button
-              className="mt-4 px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-all duration-200 text-lg"
-              onClick={() => navigate("/GameHistory")}
-            >
-              Show Game History
-            </button>
+            <div className="flex flex-col gap-4">
+              <button
+                className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-all duration-200 text-lg"
+                onClick={() => navigate("/nextbattle")}
+              >
+                🔥 View Next Battle
+              </button>
+              <button
+                className="px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-all duration-200 text-lg"
+                onClick={() => navigate("/bracket")}
+              >
+                Show Bracket
+              </button>
+              <button
+                className="px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-bold rounded-xl shadow-lg hover:scale-105 transition-all duration-200 text-lg"
+                onClick={() => navigate("/GameHistory")}
+              >
+                Show Game History
+              </button>
+            </div>
           </div>
         </div>
       )}
