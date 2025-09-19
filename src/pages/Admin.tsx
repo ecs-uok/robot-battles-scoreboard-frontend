@@ -12,7 +12,7 @@ import ManageTeams from "./ManageTeams.tsx";
 // Use environment variables for credentials
 const ADMIN_USER = import.meta.env.VITE_ADMIN_USER;
 const ADMIN_PASS = import.meta.env.VITE_ADMIN_PASS;
-const SESSION_TIMEOUT_MINUTES = 10; // 10 minutes
+const SESSION_TIMEOUT_MINUTES = 30; // 10 minutes
 
 function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
