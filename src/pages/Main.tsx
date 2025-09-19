@@ -9,14 +9,15 @@ import { useNavigate } from "react-router-dom";
 const bgImg = "/scoreboard-background.png";
 
 // Sponsor logos served from public folder for faster loads and stable URLs
-const varioSystem = "/sponsors/Vario-Systems.png";
-const zone24x7 = "/sponsors/Zone24x7.png";
-const IEEELogo = "/sponsors/IEEE logo.png";
-const ecscLogo = "/sponsors/ECSC_transparent.png";
-const gavelLogo = "/sponsors/gavel.png";
-const hackSL = "/sponsors/HackSL.png";
-const xydder_3d = "/sponsors/XYDDER_3D.png";
-const michelin = "/sponsors/Michelin.png";
+const varioSystem = "https://res.cloudinary.com/du5tkpcut/image/upload/v1758258135/VarioSystems_ndidnr.png";
+const zone24x7 = "https://res.cloudinary.com/du5tkpcut/image/upload/v1758258136/Zone24x7_xfsavc.png";
+const IEEELogo = "https://res.cloudinary.com/du5tkpcut/image/upload/v1758258136/IEEE_izvibv.png";
+const ecscLogo = "https://res.cloudinary.com/du5tkpcut/image/upload/v1758258135/ECSC_ogzqjy.png";
+const gavelLogo = "https://res.cloudinary.com/du5tkpcut/image/upload/v1758258136/Gavel_rv3smg.png";
+const hackSL = "https://res.cloudinary.com/du5tkpcut/image/upload/v1758258134/HackSL_uglkfd.png";
+const xydder_3d = "https://res.cloudinary.com/du5tkpcut/image/upload/v1758258135/XYDDER3D_h00s7n.png";
+const michelin = "https://res.cloudinary.com/du5tkpcut/image/upload/v1758258135/Michelin_ienabp.png";
+const yashPhoto = "https://res.cloudinary.com/du5tkpcut/image/upload/v1758258135/YashPhotography_zqhww5.png";
 
 
 // **
@@ -208,7 +209,8 @@ function Main() {
     IEEELogo,
     gavelLogo,
     xydder_3d,
-    michelin
+    michelin,
+    yashPhoto
   ], []);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
