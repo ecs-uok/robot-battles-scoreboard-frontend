@@ -8,7 +8,7 @@ const bgImg = "/scoreboard-background.png";
 
 interface GameHistoryItem {
   id: number;
-  gameId: number;
+  gameId: string;
   team1: { name: string; logo: string };
   team2: { name: string; logo: string };
   team3?: { name: string; logo: string };
@@ -40,7 +40,7 @@ function GameHistory() {
           const game = data[key];
           return {
             id: index + 1,
-            gameId: parseInt(game.gameid) || 0,
+            gameId: game.gameid || "01", // Keep as string to preserve leading zeros, default to "01" for first game
             team1: { 
               name: game.team1name || "Unknown Team", 
               logo: "/default-logo.png" // You'll need to get actual logos

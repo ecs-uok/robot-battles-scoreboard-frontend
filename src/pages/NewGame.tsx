@@ -32,13 +32,24 @@ function NewGame() {
     fetch(host + "/nextGameId")
       .then((response) => response.json())
       .then((json) => {
-        setGameNo(json.gameId);
+        // Ensure the first game ID is at least 1 (which will format as "01")
+        const nextId = json.gameId || 1;
+        setGameNo(nextId < 1 ? 1 : nextId);
+      })
+      .catch((error) => {
+        console.error("Error fetching next game ID:", error);
+        // Fallback to 1 for the first game if API fails
+        setGameNo(1);
       });
   }, []);
 
   async function setGameDetails() {
+    // Ensure gameNo is at least 1, then format with leading zero (01, 02, 03, etc.)
+    const safeGameNo = gameNo < 1 ? 1 : gameNo;
+    const formattedGameId = safeGameNo.toString().padStart(2, '0');
+    
     const payload: any = {
-      gameId: `${gameNo}`,
+      gameId: formattedGameId,
       gameName: gameName,
       team1: team1id,
       team2: team2id,
@@ -242,7 +253,7 @@ function NewGame() {
 
           <div className="flex flex-col items-center mt-8">
             <div className="text-xl font-bold text-gray-700 mb-2">
-              Game No <span className="text-blue-700">{gameNo}</span>
+              Game No <span className="text-blue-700">{(gameNo < 1 ? 1 : gameNo).toString().padStart(2, '0')}</span>
             </div>
             <button
               className="mt-2 px-8 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 text-black font-bold rounded-xl shadow-lg transition-all duration-200 text-lg tracking-wide uppercase"
