@@ -694,8 +694,8 @@ function Main() {
                 <div className="text-gray-300 font-medium uppercase tracking-wider mb-2 text-center text-sm">
                   ADDITIONAL TIME
                 </div>
-                <div className="text-2xl font-bold text-gray-300">
-                  {pitTime || "20"}<span className="text-lg ml-1">s</span>
+                <div className="text-4xl font-bold text-gray-300">
+                  {pitTime || "20"}<span className="text-3xl ml-1">s</span>
                 </div>
               </div>
             </div>
@@ -840,8 +840,8 @@ function Main() {
                     <div className="text-gray-300 font-medium uppercase tracking-wider mb-2 text-center">
                       ADDITIONAL TIME
                     </div>
-                    <div className="text-3xl font-bold text-gray-300">
-                      {pitTime || "20"}<span className="text-xl ml-1">s</span>
+                    <div className="text-5xl font-bold text-gray-300">
+                      {pitTime || "20"}<span className="text-4xl ml-1">s</span>
                     </div>
                   </div>
                 </div>
@@ -910,8 +910,8 @@ function Main() {
                     <div className="text-gray-300 font-medium uppercase tracking-wider mb-2 text-center">
                       ADDITIONAL TIME
                     </div>
-                    <div className="text-3xl font-bold text-gray-300">
-                      {pitTime || "20"}<span className="text-xl ml-1">s</span>
+                    <div className="text-5xl font-bold text-gray-300">
+                      {pitTime || "20"}<span className="text-4xl ml-1">s</span>
                     </div>
                   </div>
                 </div>

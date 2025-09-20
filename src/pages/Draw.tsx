@@ -1,9 +1,9 @@
 const Draw = () => {
-    return(
+    return (
         <>
-            <iframe 
-                src="https://challonge.com/kiwds70x/module" 
-                className="h-screen w-screen" 
+            <iframe
+                src="https://qrkit.co/1UEbXw"
+                className="h-screen w-screen"
             >
             </iframe>
         </>
